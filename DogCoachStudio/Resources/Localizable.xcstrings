@@ -1,0 +1,12 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "DogCoach Studio" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "DogCoach Studio" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}
+

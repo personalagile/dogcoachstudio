@@ -1,0 +1,51 @@
+name: DogCoachStudio
+options:
+  bundleIdPrefix: studio.dogcoach
+  deploymentTarget:
+    iOS: "18.0"
+  developmentLanguage: en
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    GENERATE_INFOPLIST_FILE: YES
+    TARGETED_DEVICE_FAMILY: "1,2"
+    CODE_SIGNING_ALLOWED: NO
+targets:
+  DogCoachStudio:
+    type: application
+    platform: iOS
+    sources:
+      - path: DogCoachStudio
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: studio.dogcoach.phase0
+        PRODUCT_MODULE_NAME: DogCoachStudio
+        INFOPLIST_KEY_CFBundleDisplayName: DogCoach Studio
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+    scheme:
+      testTargets:
+        - DogCoachStudioTests
+        - DogCoachStudioUITests
+  DogCoachStudioTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: DogCoachStudioTests
+    dependencies:
+      - target: DogCoachStudio
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: studio.dogcoach.phase0.tests
+  DogCoachStudioUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: DogCoachStudioUITests
+    dependencies:
+      - target: DogCoachStudio
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: studio.dogcoach.phase0.uitests
