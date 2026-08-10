@@ -9,6 +9,8 @@ settings:
   base:
     SWIFT_VERSION: "6.0"
     SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_EMIT_LOC_STRINGS: YES
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
     GENERATE_INFOPLIST_FILE: YES
     TARGETED_DEVICE_FAMILY: "1,2"
     CODE_SIGNING_ALLOWED: NO
@@ -25,6 +27,7 @@ targets:
         INFOPLIST_KEY_CFBundleDisplayName: DogCoach Studio
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+        ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: YES
     scheme:
       testTargets:
         - DogCoachStudioTests

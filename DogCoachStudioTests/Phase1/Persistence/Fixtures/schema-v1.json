@@ -1,0 +1,27 @@
+{
+  "models": [
+    "ClientRecord",
+    "ClientDogRoleRecord",
+    "DogRecord",
+    "IntakeRecordEntity",
+    "TrainingGoalRecord",
+    "ExerciseRecord",
+    "ExerciseVersionRecord",
+    "ExerciseLocalizationRecord",
+    "TrainingTemplateRecord",
+    "TemplateVersionRecord",
+    "TemplateExerciseRecord",
+    "ScheduledSessionRecord",
+    "BookingRecord",
+    "AttendanceRecord",
+    "CompletedSessionRecord",
+    "ExerciseSnapshotRecord",
+    "DogExerciseResultRecord",
+    "TrainingPackageRecord",
+    "PackageLedgerEntryRecord",
+    "CouponRecord",
+    "ClientReportRecord",
+    "ContentPackRecord"
+  ],
+  "version": "1.0.0"
+}

@@ -75,7 +75,7 @@ final class SessionCompletionModel {
     func advance() {
         errorMessage = nil
         guard attendanceByBookingID.values.allSatisfy({ $0 != .pending }) else {
-            errorMessage = "Resolve attendance for every booking."
+            errorMessage = String(localized: "Resolve attendance for every booking.", comment: "Validation shown when attendance is missing")
             return
         }
         guard let next = Step(rawValue: step.rawValue + 1), next != .completed else { return }
@@ -116,9 +116,9 @@ final class SessionCompletionModel {
 extension AttendanceStatus {
     var label: String {
         switch self {
-        case .pending: "Pending"
-        case .attended: "Attended"
-        case .absent: "Absent"
+        case .pending: String(localized: "Pending", comment: "Unresolved attendance status")
+        case .attended: String(localized: "Attended", comment: "Dog attended a session")
+        case .absent: String(localized: "Absent", comment: "Dog did not attend a session")
         }
     }
 }
@@ -126,12 +126,11 @@ extension AttendanceStatus {
 extension ExerciseOutcome {
     var label: String {
         switch self {
-        case .notStarted: "Not started"
-        case .strongSupport: "Strong support"
-        case .lightSupport: "Light support"
-        case .independent: "Independent"
-        case .stableWithDistraction: "Stable with distraction"
+        case .notStarted: String(localized: "Not started", comment: "Exercise outcome")
+        case .strongSupport: String(localized: "Strong support", comment: "Exercise outcome")
+        case .lightSupport: String(localized: "Light support", comment: "Exercise outcome")
+        case .independent: String(localized: "Independent", comment: "Exercise outcome")
+        case .stableWithDistraction: String(localized: "Stable with distraction", comment: "Exercise outcome")
         }
     }
 }
-

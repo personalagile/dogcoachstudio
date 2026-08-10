@@ -1,6 +1,6 @@
 # DogCoach Studio
 
-DogCoach Studio is currently in Phase 0: product validation and a deliberately small SwiftUI proof of concept for the batch session-completion workflow.
+DogCoach Studio contains the Phase-0 batch-completion proof of concept and the Phase-1 technical foundation: Swift 6 strict concurrency, dependency injection, typed diagnostics, and a local SwiftData schema v1.
 
 ## Generate and build
 
@@ -11,8 +11,14 @@ xcodegen generate
 xcodebuild -project DogCoachStudio.xcodeproj -scheme DogCoachStudio -sdk iphonesimulator build
 ```
 
+Run the full local verification from the repository root:
+
+```sh
+./scripts/verify.sh
+```
+
 Run the `DogCoachStudio` scheme to open the deterministic demo scenario. No real customer or dog data is included.
 
 ## Scope
 
-The product and execution contract is [PLAN.md](PLAN.md). Phase-0 boundaries are documented in [ADR 0001](docs/adr/0001-poc-boundaries.md). Validation materials live in `docs/validation/`.
+The product and execution contract is [PLAN.md](PLAN.md). Architecture decisions live in `docs/adr/`; current phase evidence is tracked in `docs/phase-1-status.md`. Phase-0 market-validation materials remain available in `docs/validation/`.
