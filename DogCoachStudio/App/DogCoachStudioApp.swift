@@ -17,7 +17,7 @@ struct DogCoachStudioApp: App {
         WindowGroup {
             switch bootstrap {
             case .success(let environment):
-                SessionCompletionView()
+                AppRootView(environment: environment)
                     .modelContainer(environment.persistence.container)
                     .task {
                         await environment.diagnostics.record(category: .app, code: .appLaunched)
@@ -25,6 +25,22 @@ struct DogCoachStudioApp: App {
             case .failure(let error):
                 StartupFailureView(error: error)
             }
+        }
+    }
+}
+
+private struct AppRootView: View {
+    let environment: AppEnvironment
+
+    var body: some View {
+        if ProcessInfo.processInfo.arguments.contains("--phase0-demo") {
+            SessionCompletionView()
+        } else {
+            TabView {
+                Tab("People", systemImage: "person.2") { PeopleRootView(environment: environment) }
+                Tab("Completion demo", systemImage: "checkmark.circle") { SessionCompletionView() }
+            }
+            .accessibilityIdentifier("appRootTabs")
         }
     }
 }
