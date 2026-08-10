@@ -36,6 +36,7 @@
 		B7074C55E58BB90CD9A8FC87 /* SchemaV1Validators.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B1E0CBBD7C80F073FC452A /* SchemaV1Validators.swift */; };
 		BB960F7EFBDA60B453465C1C /* schema-v1.json in Resources */ = {isa = PBXBuildFile; fileRef = E1D10E56401779098C96C477 /* schema-v1.json */; };
 		BBD555FC70A7825E1F4C7D6A /* DogCoachStudioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 501C67F09D7EA87D4544CBF5 /* DogCoachStudioApp.swift */; };
+		C2F8FE5341CBB7676F835905 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBAC47A9E9EA348A7ACB4626 /* Assets.xcassets */; };
 		C6ADBA0307CD74EB67307ED1 /* AppEnvironmentInjectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7FE855C3ADC67B97A3092D /* AppEnvironmentInjectionTests.swift */; };
 		C759F59766D2126E4A0B4F00 /* PeopleWorkflowEditors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E54DE900716BE1B81A64A /* PeopleWorkflowEditors.swift */; };
 		CA573E57CC321142660B8FB2 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5055EB1D051B5EEBD8F8B09 /* AppEnvironment.swift */; };
@@ -112,6 +113,7 @@
 		B31E5FDE27DCA7DE5DE7E3D9 /* SchemaV1PersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaV1PersistenceTests.swift; sourceTree = "<group>"; };
 		B4D876647427A02F3F5CE167 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		C74984B6C93887A8F2505E7E /* TrainingGoal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingGoal.swift; sourceTree = "<group>"; };
+		CBAC47A9E9EA348A7ACB4626 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CF580128DB016449D6010C4E /* PeopleUseCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleUseCases.swift; sourceTree = "<group>"; };
 		D5A793B74C08366A563A5A48 /* PeopleDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleDetails.swift; sourceTree = "<group>"; };
 		DA22129E1BC814B0F0D20E6C /* DemoScenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoScenario.swift; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 		AABCC11BB5398D6C82A040C0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CBAC47A9E9EA348A7ACB4626 /* Assets.xcassets */,
 				B4D876647427A02F3F5CE167 /* Localizable.xcstrings */,
 			);
 			path = Resources;
@@ -573,6 +576,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2F8FE5341CBB7676F835905 /* Assets.xcassets in Resources */,
 				9DB7992786859AB78EFAA18C /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
