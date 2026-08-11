@@ -7,14 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		05080A031D41209288FEE148 /* ContentPackImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A04F252E27E28DF01552C53 /* ContentPackImporter.swift */; };
 		06A1CFFE5AB13C93661D2A87 /* PoCCompletionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D8C4C114A97ED7CF38907F /* PoCCompletionService.swift */; };
 		1A4254C45A09AFC83C4FCFB6 /* TrainingGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74984B6C93887A8F2505E7E /* TrainingGoal.swift */; };
+		1E4CCEA3972E393A8114AA30 /* Phase3CatalogFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D075FDD1F407DC8A2FFBCB85 /* Phase3CatalogFlowTests.swift */; };
+		1FF66A24B4A10A392FB6D5E2 /* CatalogPhase3Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DC916DF8F1E2E6DDB9C97F /* CatalogPhase3Tests.swift */; };
 		228B93EFB64B3C7897D81556 /* PeopleModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68807CFA3BCBC0A7995189C9 /* PeopleModels.swift */; };
 		2345A297F92747C6D69C0855 /* PeopleDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A793B74C08366A563A5A48 /* PeopleDetails.swift */; };
 		2686DBBE4757BC2A91A7F420 /* DemoScenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA22129E1BC814B0F0D20E6C /* DemoScenario.swift */; };
+		29D9C2B57AB2801D0A9F4DFC /* content-pack-v1.schema.json in Resources */ = {isa = PBXBuildFile; fileRef = B9D115AD309AD047B010FC72 /* content-pack-v1.schema.json */; };
 		37999A4EDC52C5AEC1653907 /* SessionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F345F01DCF6A2FC855C82450 /* SessionModels.swift */; };
 		38F72C392A824AD5DC15B739 /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B84BDAE678862742001133 /* AppDependencies.swift */; };
+		3C12B975302EB46D929694FA /* TrainingTemplateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1AB00BC6A9872DD6FB26EF /* TrainingTemplateRepository.swift */; };
 		413AB901617200BCE87360ED /* ModelContainerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71242865871BEA355BF0262F /* ModelContainerFactory.swift */; };
+		44F8B6D6B75FDA022E1077B7 /* ContentPackDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2480331F3109B8047FABFF0F /* ContentPackDocument.swift */; };
 		49A805372FB785BDFB36F92C /* PeopleRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DA89BE78168B8A93FE7C71 /* PeopleRootView.swift */; };
 		4D57BDF82D2807089C6DDB28 /* SessionCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8E32CCA577F8D9956535AB /* SessionCompletionView.swift */; };
 		4D6772E59B47C0A0A08C83EE /* SwiftDataPeopleRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D2695A66FAAB833E501D5E /* SwiftDataPeopleRepository.swift */; };
@@ -30,13 +36,16 @@
 		9DB7992786859AB78EFAA18C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B4D876647427A02F3F5CE167 /* Localizable.xcstrings */; };
 		A14F7C1690CFF45F78D5CCD5 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22405B0B6CA30BC50C1FC22B /* Repository.swift */; };
 		A7C243B40470C03AF7A5B06C /* DogCoachSchemaV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCC0585D803FA3679B46029 /* DogCoachSchemaV1.swift */; };
+		ACCE6628673B8EFD868032D7 /* ExerciseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C901A5538C35DA2C365E7E1 /* ExerciseRepository.swift */; };
 		AD9F6A8BC760ADFD1BB50428 /* ClientDogRoleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F00FA3709706DB4E6707603 /* ClientDogRoleTests.swift */; };
 		ADA11D189DD10120A408ACAF /* PeopleUseCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF580128DB016449D6010C4E /* PeopleUseCases.swift */; };
 		AF2FCBE353819619C92CB40E /* SessionCompletionPoCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3345D1B6756305731642469A /* SessionCompletionPoCTests.swift */; };
+		B69EE2CFAA5F78385AF52EA7 /* CatalogDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1124B1F7C9C94CA962239A24 /* CatalogDomain.swift */; };
 		B7074C55E58BB90CD9A8FC87 /* SchemaV1Validators.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B1E0CBBD7C80F073FC452A /* SchemaV1Validators.swift */; };
 		BB960F7EFBDA60B453465C1C /* schema-v1.json in Resources */ = {isa = PBXBuildFile; fileRef = E1D10E56401779098C96C477 /* schema-v1.json */; };
 		BBD555FC70A7825E1F4C7D6A /* DogCoachStudioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 501C67F09D7EA87D4544CBF5 /* DogCoachStudioApp.swift */; };
 		C2F8FE5341CBB7676F835905 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBAC47A9E9EA348A7ACB4626 /* Assets.xcassets */; };
+		C3D1797C7033E3F6BFDC7B50 /* CatalogRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E57391333BF794993FE8ED7 /* CatalogRootView.swift */; };
 		C6ADBA0307CD74EB67307ED1 /* AppEnvironmentInjectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7FE855C3ADC67B97A3092D /* AppEnvironmentInjectionTests.swift */; };
 		C759F59766D2126E4A0B4F00 /* PeopleWorkflowEditors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E54DE900716BE1B81A64A /* PeopleWorkflowEditors.swift */; };
 		CA573E57CC321142660B8FB2 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5055EB1D051B5EEBD8F8B09 /* AppEnvironment.swift */; };
@@ -47,9 +56,11 @@
 		E72C058E24998D2896A916DA /* CodableAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950B467108F60031C81146AE /* CodableAttribute.swift */; };
 		E86C6DF785FEAE0A5F82781E /* TrainingGoalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061109A51109C155DCF8C9FC /* TrainingGoalRepository.swift */; };
 		E914A4814F0BB27DD471C266 /* SessionCompletionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008B799EC452E851A555E745 /* SessionCompletionModel.swift */; };
+		EC0A99A923C7A2998927A85E /* TemplateDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C4C8E041763B95792B28B3 /* TemplateDomain.swift */; };
 		EFCBF166A5F83E9E7AA762AD /* IntakeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE9A941C537C272B0DE6B6 /* IntakeRepository.swift */; };
 		F391C41E1463A1BA44DDCD95 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F495584603391EA367A0F2F8 /* AppError.swift */; };
 		F506A364E609FCA5FEC8A51C /* AppErrorMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DABF5A9B22638916F3B782 /* AppErrorMappingTests.swift */; };
+		F576FE63EDDBBC20DF0BFA3E /* foundation-v1.json in Resources */ = {isa = PBXBuildFile; fileRef = 3810B4CF7EA84FDCE15C5E2A /* foundation-v1.json */; };
 		F93A01BF348570A62059959F /* PeopleUseCasesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FDB5B7722D15769AB240A52 /* PeopleUseCasesTests.swift */; };
 		F955346A4E191EB70F3C8A12 /* Phase2PeopleFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8B1E5B3B0AD942DE409CAA /* Phase2PeopleFlowTests.swift */; };
 		FC901E3C80C6D441F0C23FE0 /* PeopleFeatureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AB17CF3731D2F489C3D3E3 /* PeopleFeatureModel.swift */; };
@@ -82,28 +93,37 @@
 		0922B16CD4E21463D60D6486 /* PoCModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoCModels.swift; sourceTree = "<group>"; };
 		0A31DE12E8E2ACE69F8B2BD6 /* DiagnosticExportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticExportTests.swift; sourceTree = "<group>"; };
 		0E9A4E5A4FAB3B238274462A /* SchemaV1ValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaV1ValidatorTests.swift; sourceTree = "<group>"; };
+		1124B1F7C9C94CA962239A24 /* CatalogDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogDomain.swift; sourceTree = "<group>"; };
 		1DDD604D4BBA62EDDB6D68F9 /* DogCoachStudio.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DogCoachStudio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22405B0B6CA30BC50C1FC22B /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		2480331F3109B8047FABFF0F /* ContentPackDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPackDocument.swift; sourceTree = "<group>"; };
+		2E57391333BF794993FE8ED7 /* CatalogRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogRootView.swift; sourceTree = "<group>"; };
 		31770C96C7BFF110D00C10E3 /* PackageModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageModels.swift; sourceTree = "<group>"; };
 		3345D1B6756305731642469A /* SessionCompletionPoCTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCompletionPoCTests.swift; sourceTree = "<group>"; };
+		3810B4CF7EA84FDCE15C5E2A /* foundation-v1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "foundation-v1.json"; sourceTree = "<group>"; };
 		3D8E32CCA577F8D9956535AB /* SessionCompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCompletionView.swift; sourceTree = "<group>"; };
 		42DA89BE78168B8A93FE7C71 /* PeopleRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleRootView.swift; sourceTree = "<group>"; };
 		42DEE172E7B34964FA6AB6AB /* TrainingGoalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingGoalTests.swift; sourceTree = "<group>"; };
 		48318355356265F4E2260B19 /* DogCoachStudioUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = DogCoachStudioUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A04F252E27E28DF01552C53 /* ContentPackImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPackImporter.swift; sourceTree = "<group>"; };
 		501C67F09D7EA87D4544CBF5 /* DogCoachStudioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogCoachStudioApp.swift; sourceTree = "<group>"; };
 		522EA1A0C1F422E495B721D3 /* PeopleEditors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleEditors.swift; sourceTree = "<group>"; };
 		54DABF5A9B22638916F3B782 /* AppErrorMappingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppErrorMappingTests.swift; sourceTree = "<group>"; };
+		56DC916DF8F1E2E6DDB9C97F /* CatalogPhase3Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogPhase3Tests.swift; sourceTree = "<group>"; };
 		59B84BDAE678862742001133 /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
 		5BAE9A941C537C272B0DE6B6 /* IntakeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntakeRepository.swift; sourceTree = "<group>"; };
 		68807CFA3BCBC0A7995189C9 /* PeopleModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleModels.swift; sourceTree = "<group>"; };
 		71242865871BEA355BF0262F /* ModelContainerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContainerFactory.swift; sourceTree = "<group>"; };
 		728FE7EE28262254C448F6DE /* Phase0CompletionSmokeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase0CompletionSmokeTests.swift; sourceTree = "<group>"; };
 		769A74746AB14453D09FCA38 /* IntakeDraftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntakeDraftTests.swift; sourceTree = "<group>"; };
+		7C901A5538C35DA2C365E7E1 /* ExerciseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseRepository.swift; sourceTree = "<group>"; };
+		7F1AB00BC6A9872DD6FB26EF /* TrainingTemplateRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingTemplateRepository.swift; sourceTree = "<group>"; };
 		7F9AE1A2A6ED7E39291C6195 /* ContentModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentModels.swift; sourceTree = "<group>"; };
 		8A7FE855C3ADC67B97A3092D /* AppEnvironmentInjectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironmentInjectionTests.swift; sourceTree = "<group>"; };
 		941F2295C323003B049EF37C /* PersistenceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceProvider.swift; sourceTree = "<group>"; };
 		950B467108F60031C81146AE /* CodableAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableAttribute.swift; sourceTree = "<group>"; };
 		95AB17CF3731D2F489C3D3E3 /* PeopleFeatureModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleFeatureModel.swift; sourceTree = "<group>"; };
+		97C4C8E041763B95792B28B3 /* TemplateDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateDomain.swift; sourceTree = "<group>"; };
 		9F00FA3709706DB4E6707603 /* ClientDogRoleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientDogRoleTests.swift; sourceTree = "<group>"; };
 		9F5B02FA83EDC16C2F4A8DB9 /* IntakeDraftAutosave.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntakeDraftAutosave.swift; sourceTree = "<group>"; };
 		9FCC0585D803FA3679B46029 /* DogCoachSchemaV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogCoachSchemaV1.swift; sourceTree = "<group>"; };
@@ -112,9 +132,11 @@
 		AAA7538FCAFEB74706A704C6 /* Diagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diagnostics.swift; sourceTree = "<group>"; };
 		B31E5FDE27DCA7DE5DE7E3D9 /* SchemaV1PersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaV1PersistenceTests.swift; sourceTree = "<group>"; };
 		B4D876647427A02F3F5CE167 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		B9D115AD309AD047B010FC72 /* content-pack-v1.schema.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "content-pack-v1.schema.json"; sourceTree = "<group>"; };
 		C74984B6C93887A8F2505E7E /* TrainingGoal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingGoal.swift; sourceTree = "<group>"; };
 		CBAC47A9E9EA348A7ACB4626 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CF580128DB016449D6010C4E /* PeopleUseCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleUseCases.swift; sourceTree = "<group>"; };
+		D075FDD1F407DC8A2FFBCB85 /* Phase3CatalogFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase3CatalogFlowTests.swift; sourceTree = "<group>"; };
 		D5A793B74C08366A563A5A48 /* PeopleDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleDetails.swift; sourceTree = "<group>"; };
 		DA22129E1BC814B0F0D20E6C /* DemoScenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoScenario.swift; sourceTree = "<group>"; };
 		DC8B1E5B3B0AD942DE409CAA /* Phase2PeopleFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase2PeopleFlowTests.swift; sourceTree = "<group>"; };
@@ -214,6 +236,14 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		2E2BCA6AD756FDA85BFA054B /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				97C4C8E041763B95792B28B3 /* TemplateDomain.swift */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
 		2FA6711A906F926B4ECE2E53 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
@@ -234,13 +264,32 @@
 			);
 			sourceTree = "<group>";
 		};
+		3DDBB27A867859DF957CC821 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				2E57391333BF794993FE8ED7 /* CatalogRootView.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		3E75F61D6C0250CCCF53CB51 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				B0BCFD3FC32C3A037EC0E012 /* Catalog */,
+				FF5BBE1905D4691028AA70B2 /* ContentPacks */,
 				FCE31405A5A9A6F8E32A7B36 /* Intake */,
 				C721A849F095276C5B61B6D4 /* People */,
+				FCC86716E5C8D548AA5F7114 /* Templates */,
 			);
 			path = Features;
+			sourceTree = "<group>";
+		};
+		44F27F3FA23BCFD8E493A400 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				1124B1F7C9C94CA962239A24 /* CatalogDomain.swift */,
+			);
+			path = Domain;
 			sourceTree = "<group>";
 		};
 		569322EF8983E028584FB977 /* Infrastructure */ = {
@@ -303,6 +352,15 @@
 			path = Diagnostics;
 			sourceTree = "<group>";
 		};
+		9AF02E6ECE59424ECD043F30 /* ContentPacks */ = {
+			isa = PBXGroup;
+			children = (
+				B9D115AD309AD047B010FC72 /* content-pack-v1.schema.json */,
+				3810B4CF7EA84FDCE15C5E2A /* foundation-v1.json */,
+			);
+			path = ContentPacks;
+			sourceTree = "<group>";
+		};
 		9FC9BD3B79539778BE69D02E /* Fixtures */ = {
 			isa = PBXGroup;
 			children = (
@@ -316,8 +374,17 @@
 			children = (
 				CBAC47A9E9EA348A7ACB4626 /* Assets.xcassets */,
 				B4D876647427A02F3F5CE167 /* Localizable.xcstrings */,
+				9AF02E6ECE59424ECD043F30 /* ContentPacks */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		AEBD51B233FA1A732CBA5BB1 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				7C901A5538C35DA2C365E7E1 /* ExerciseRepository.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 		AF9E47F99190DAC86D5B6BF1 /* DogCoachStudioTests */ = {
@@ -326,8 +393,27 @@
 				3345D1B6756305731642469A /* SessionCompletionPoCTests.swift */,
 				0402514317C8F743F5C2C222 /* Phase1 */,
 				20C3791209D2F94FFA56EF8C /* Phase2 */,
+				F6421A61F8FB1BC932D500FF /* Phase3 */,
 			);
 			path = DogCoachStudioTests;
+			sourceTree = "<group>";
+		};
+		B0BCFD3FC32C3A037EC0E012 /* Catalog */ = {
+			isa = PBXGroup;
+			children = (
+				AEBD51B233FA1A732CBA5BB1 /* Data */,
+				44F27F3FA23BCFD8E493A400 /* Domain */,
+				3DDBB27A867859DF957CC821 /* UI */,
+			);
+			path = Catalog;
+			sourceTree = "<group>";
+		};
+		B5E1DB4CC4D6015FB9FD6023 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				4A04F252E27E28DF01552C53 /* ContentPackImporter.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 		B8F80EB1ADD648E604F97469 /* Persistence */ = {
@@ -349,6 +435,14 @@
 				42DEE172E7B34964FA6AB6AB /* TrainingGoalTests.swift */,
 			);
 			path = Intake;
+			sourceTree = "<group>";
+		};
+		C7053EEBA89E637BD7575BCC /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				2480331F3109B8047FABFF0F /* ContentPackDocument.swift */,
+			);
+			path = Domain;
 			sourceTree = "<group>";
 		};
 		C721A849F095276C5B61B6D4 /* People */ = {
@@ -374,6 +468,7 @@
 			children = (
 				728FE7EE28262254C448F6DE /* Phase0CompletionSmokeTests.swift */,
 				DC8B1E5B3B0AD942DE409CAA /* Phase2PeopleFlowTests.swift */,
+				D075FDD1F407DC8A2FFBCB85 /* Phase3CatalogFlowTests.swift */,
 			);
 			path = DogCoachStudioUITests;
 			sourceTree = "<group>";
@@ -446,6 +541,22 @@
 			path = Domain;
 			sourceTree = "<group>";
 		};
+		F6421A61F8FB1BC932D500FF /* Phase3 */ = {
+			isa = PBXGroup;
+			children = (
+				56DC916DF8F1E2E6DDB9C97F /* CatalogPhase3Tests.swift */,
+			);
+			path = Phase3;
+			sourceTree = "<group>";
+		};
+		F6430F43E2F458B48D75525B /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				7F1AB00BC6A9872DD6FB26EF /* TrainingTemplateRepository.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		F9B5520AC451360D1CF5A1BA /* DogCoachStudio */ = {
 			isa = PBXGroup;
 			children = (
@@ -460,6 +571,15 @@
 			path = DogCoachStudio;
 			sourceTree = "<group>";
 		};
+		FCC86716E5C8D548AA5F7114 /* Templates */ = {
+			isa = PBXGroup;
+			children = (
+				F6430F43E2F458B48D75525B /* Data */,
+				2E2BCA6AD756FDA85BFA054B /* Domain */,
+			);
+			path = Templates;
+			sourceTree = "<group>";
+		};
 		FCE31405A5A9A6F8E32A7B36 /* Intake */ = {
 			isa = PBXGroup;
 			children = (
@@ -467,6 +587,15 @@
 				26DCE637B0DEBF3C5F3F6615 /* Domain */,
 			);
 			path = Intake;
+			sourceTree = "<group>";
+		};
+		FF5BBE1905D4691028AA70B2 /* ContentPacks */ = {
+			isa = PBXGroup;
+			children = (
+				B5E1DB4CC4D6015FB9FD6023 /* Data */,
+				C7053EEBA89E637BD7575BCC /* Domain */,
+			);
+			path = ContentPacks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -578,6 +707,8 @@
 			files = (
 				C2F8FE5341CBB7676F835905 /* Assets.xcassets in Resources */,
 				9DB7992786859AB78EFAA18C /* Localizable.xcstrings in Resources */,
+				29D9C2B57AB2801D0A9F4DFC /* content-pack-v1.schema.json in Resources */,
+				F576FE63EDDBBC20DF0BFA3E /* foundation-v1.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -591,13 +722,18 @@
 				38F72C392A824AD5DC15B739 /* AppDependencies.swift in Sources */,
 				CA573E57CC321142660B8FB2 /* AppEnvironment.swift in Sources */,
 				F391C41E1463A1BA44DDCD95 /* AppError.swift in Sources */,
+				B69EE2CFAA5F78385AF52EA7 /* CatalogDomain.swift in Sources */,
+				C3D1797C7033E3F6BFDC7B50 /* CatalogRootView.swift in Sources */,
 				E72C058E24998D2896A916DA /* CodableAttribute.swift in Sources */,
 				8068D705E16004C8D6776D66 /* ContentModels.swift in Sources */,
+				44F8B6D6B75FDA022E1077B7 /* ContentPackDocument.swift in Sources */,
+				05080A031D41209288FEE148 /* ContentPackImporter.swift in Sources */,
 				FD54058D6426803B31AB7E0F /* DemoDataSeeder.swift in Sources */,
 				2686DBBE4757BC2A91A7F420 /* DemoScenario.swift in Sources */,
 				FF8A9740F2AAD7791BD7F898 /* Diagnostics.swift in Sources */,
 				A7C243B40470C03AF7A5B06C /* DogCoachSchemaV1.swift in Sources */,
 				BBD555FC70A7825E1F4C7D6A /* DogCoachStudioApp.swift in Sources */,
+				ACCE6628673B8EFD868032D7 /* ExerciseRepository.swift in Sources */,
 				D1ED9AEDAE4BC7114E199FFC /* IntakeDraft.swift in Sources */,
 				6797CB573184F2F1140DB97B /* IntakeDraftAutosave.swift in Sources */,
 				EFCBF166A5F83E9E7AA762AD /* IntakeRepository.swift in Sources */,
@@ -620,8 +756,10 @@
 				4D57BDF82D2807089C6DDB28 /* SessionCompletionView.swift in Sources */,
 				37999A4EDC52C5AEC1653907 /* SessionModels.swift in Sources */,
 				4D6772E59B47C0A0A08C83EE /* SwiftDataPeopleRepository.swift in Sources */,
+				EC0A99A923C7A2998927A85E /* TemplateDomain.swift in Sources */,
 				1A4254C45A09AFC83C4FCFB6 /* TrainingGoal.swift in Sources */,
 				E86C6DF785FEAE0A5F82781E /* TrainingGoalRepository.swift in Sources */,
+				3C12B975302EB46D929694FA /* TrainingTemplateRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -631,6 +769,7 @@
 			files = (
 				7B14166B2EB2E4AF9E033E0B /* Phase0CompletionSmokeTests.swift in Sources */,
 				F955346A4E191EB70F3C8A12 /* Phase2PeopleFlowTests.swift in Sources */,
+				1E4CCEA3972E393A8114AA30 /* Phase3CatalogFlowTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -640,6 +779,7 @@
 			files = (
 				C6ADBA0307CD74EB67307ED1 /* AppEnvironmentInjectionTests.swift in Sources */,
 				F506A364E609FCA5FEC8A51C /* AppErrorMappingTests.swift in Sources */,
+				1FF66A24B4A10A392FB6D5E2 /* CatalogPhase3Tests.swift in Sources */,
 				AD9F6A8BC760ADFD1BB50428 /* ClientDogRoleTests.swift in Sources */,
 				64774025D1F2F70B8078D2FF /* DiagnosticExportTests.swift in Sources */,
 				97C9A4079F5E991C5C71A63D /* IntakeDraftTests.swift in Sources */,

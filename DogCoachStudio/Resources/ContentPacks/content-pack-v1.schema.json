@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dogcoach.studio/schemas/content-pack-v1.schema.json",
+  "title": "DogCoach Studio Content Pack v1",
+  "type": "object",
+  "required": ["schemaVersion", "packID", "packSlug", "packVersion", "title", "author", "license", "reviewStatus", "minimumAppVersion", "methodologyNote", "exercises", "templates", "checksum"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "packID": {"type": "string", "format": "uuid"},
+    "packSlug": {"type": "string", "minLength": 1},
+    "packVersion": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "title": {"type": "string", "minLength": 1},
+    "author": {"type": "string", "minLength": 1},
+    "license": {"type": "string", "minLength": 1},
+    "reviewStatus": {"const": "approved"},
+    "minimumAppVersion": {"type": "string"},
+    "methodologyNote": {"type": "string", "minLength": 1},
+    "exercises": {"type": "array", "minItems": 1},
+    "templates": {"type": "array"},
+    "checksum": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": false
+}

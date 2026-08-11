@@ -35,9 +35,12 @@ private struct AppRootView: View {
     var body: some View {
         if ProcessInfo.processInfo.arguments.contains("--phase0-demo") {
             SessionCompletionView()
+        } else if ProcessInfo.processInfo.arguments.contains("--phase3-uitesting") {
+            CatalogRootView(environment: environment)
         } else {
             TabView {
                 Tab("People", systemImage: "person.2") { PeopleRootView(environment: environment) }
+                Tab("Catalog", systemImage: "books.vertical") { CatalogRootView(environment: environment) }
                 Tab("Completion demo", systemImage: "checkmark.circle") { SessionCompletionView() }
             }
             .accessibilityIdentifier("appRootTabs")
