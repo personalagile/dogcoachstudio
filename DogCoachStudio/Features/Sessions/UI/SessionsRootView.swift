@@ -107,6 +107,11 @@ final class SessionsFeatureModel {
         } catch { self.error = AppErrorMapper.map(error, operation: "session.create"); return false }
     }
 
+    func delete(_ session: ScheduledSessionSummary) {
+        do { try repository.delete(sessionID: session.id); reload() }
+        catch { self.error = AppErrorMapper.map(error, operation: "session.delete") }
+    }
+
     func select(_ id: UUID) {
         do {
             guard let session = try repository.session(id: id) else { return }
@@ -198,6 +203,7 @@ struct SessionsRootView: View {
                 }
                 List(model.displayedSessions) { session in
                     SessionOverviewRow(session: session) { model.select(session.id) }
+                        .swipeActions { if !session.isEvaluated { Button("Delete", role: .destructive) { model.delete(session) } } }
                 }
                 .overlay {
                     if model.visibleSessions.isEmpty {

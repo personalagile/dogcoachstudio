@@ -94,6 +94,17 @@ final class SwiftDataScheduledSessionRepository {
         try context.save()
     }
 
+    func delete(sessionID: UUID) throws {
+        guard let record = try find(sessionID) else { throw SessionSchedulingError.sessionNotFound }
+        guard record.completedSession == nil,
+              !(try context.fetch(FetchDescriptor<CompletedSessionRecord>()).contains { $0.sessionID == sessionID }) else {
+            throw SessionSchedulingError.completedSessionImmutable
+        }
+        (record.bookings ?? []).forEach(context.delete)
+        context.delete(record)
+        try context.save()
+    }
+
     func session(id: UUID) throws -> ScheduledSessionRecord? { try find(id) }
 
     private func find(_ id: UUID) throws -> ScheduledSessionRecord? {

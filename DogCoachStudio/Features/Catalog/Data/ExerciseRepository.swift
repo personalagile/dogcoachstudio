@@ -9,6 +9,7 @@ protocol ExerciseRepository {
     func publish(versionID: UUID, at date: Date) throws
     func search(_ query: String, locale: String, includeArchived: Bool) throws -> [ExerciseSummary]
     func setArchived(exerciseID: UUID, archived: Bool) throws
+    func editableDraft(exerciseID: UUID) throws -> (UUID, ExerciseDraft)
 }
 
 @MainActor
@@ -67,6 +68,20 @@ final class SwiftDataExerciseRepository: ExerciseRepository {
     }
 
     func setArchived(exerciseID: UUID, archived: Bool) throws { try requireExercise(exerciseID).isArchived = archived; try save() }
+
+    func editableDraft(exerciseID: UUID) throws -> (UUID, ExerciseDraft) {
+        let exercise = try requireExercise(exerciseID)
+        let versionID = try createDraftVersion(exerciseID: exerciseID)
+        let version = try requireVersion(versionID)
+        return (versionID, ExerciseDraft(
+            durationMinutes: version.durationMinutes,
+            difficulty: ExerciseDifficulty(rawValue: version.difficultyRawValue) ?? .foundation,
+            equipment: version.equipment,
+            safetyLevel: ExerciseSafetyLevel(rawValue: version.safetyLevelRawValue) ?? .standard,
+            categoryIDs: exercise.categoryIDs,
+            localizations: (version.localizations ?? []).map(Self.localization)
+        ))
+    }
 
     private func apply(_ draft: ExerciseDraft, to version: ExerciseVersionRecord, exercise: ExerciseRecord) throws {
         exercise.categoryIDs = draft.categoryIDs; version.durationMinutes = draft.durationMinutes

@@ -18,6 +18,20 @@ struct CatalogPhase3Tests {
         #expect(second.versionNumber == 2)
     }
 
+    @Test("Published catalog entities can be reopened, updated, and archived") @MainActor
+    func fullLifecycle() throws {
+        let fixture = try Fixture()
+        let exerciseID = try fixture.exercises.create(.sample(title: "Original"))
+        let original = try #require(try fixture.exercises.search("", locale: "en", includeArchived: false).first)
+        try fixture.exercises.publish(versionID: original.versionID, at: .now)
+        let (versionID, draft) = try fixture.exercises.editableDraft(exerciseID: exerciseID)
+        var changed = draft; changed.localizations[0].title = "Updated"
+        try fixture.exercises.updateDraft(versionID: versionID, draft: changed)
+        #expect(try fixture.exercises.search("updated", locale: "en", includeArchived: false).count == 1)
+        try fixture.exercises.setArchived(exerciseID: exerciseID, archived: true)
+        #expect(try fixture.exercises.search("", locale: "en", includeArchived: false).isEmpty)
+    }
+
     @Test("Locale fallback is deterministic and visible")
     func localeFallback() throws {
         let en = ExerciseLocalizationDraft(localeIdentifier: "en", title: "English")

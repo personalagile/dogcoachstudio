@@ -6,6 +6,7 @@ struct DataControlRootView: View {
     @Binding var appLockEnabled: Bool
     @State private var exportStatus: String?
     @State private var isExporting = false
+    @State private var backupURL: URL?
 
     var body: some View {
         NavigationStack {
@@ -18,6 +19,13 @@ struct DataControlRootView: View {
                     }
                     .disabled(isExporting)
                     .accessibilityIdentifier("dataExportButton")
+
+                    if let backupURL {
+                        ShareLink(item: backupURL) {
+                            Label("Share backup", systemImage: "square.and.arrow.up")
+                        }
+                        .accessibilityIdentifier("dataBackupShareLink")
+                    }
 
                     if let exportStatus {
                         Text(exportStatus)
@@ -66,6 +74,7 @@ struct DataControlRootView: View {
             let data = try service.encodedPackage()
             let url = FileManager.default.temporaryDirectory.appendingPathComponent("dogcoach-backup.json")
             try ProtectedFileWriter().write(data, to: url)
+            backupURL = url
             exportStatus = String(localized: "Backup created and integrity checked.")
             await environment.diagnostics.record(category: .export, code: .exportSucceeded)
         } catch {
@@ -99,11 +108,14 @@ struct AppLockContainer<Content: View>: View {
     }
 
     var body: some View {
-        ZStack {
+        Group {
+            if enabled && scenePhase != .active {
+                PrivacyShieldView()
+            } else if model.isLocked {
+                LockedView(model: model)
+            } else {
             content
                 .privacySensitive()
-                .allowsHitTesting(!enabled || (!model.isLocked && scenePhase == .active))
-                .accessibilityHidden(enabled && (model.isLocked || scenePhase != .active))
                 .environment(\.appLockEnabledBinding, Binding(
                     get: { enabled },
                     set: { value in
@@ -115,11 +127,6 @@ struct AppLockContainer<Content: View>: View {
                         if value { model.movedToBackground() }
                     }
                 ))
-
-            if enabled && scenePhase != .active {
-                PrivacyShieldView()
-            } else if model.isLocked {
-                LockedView(model: model)
             }
         }
         .onChange(of: scenePhase) { _, phase in

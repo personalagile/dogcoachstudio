@@ -40,6 +40,13 @@ struct DogSummary: Identifiable, Hashable, Sendable {
     }
 }
 
+struct DogTrainingSummary: Identifiable, Hashable, Sendable {
+    let id: UUID
+    let title: String
+    let completedAt: Date
+    let outcome: String
+}
+
 enum PeopleSelection: Hashable {
     case client(UUID)
     case dog(UUID)
@@ -48,6 +55,7 @@ enum PeopleSelection: Hashable {
 @MainActor
 @Observable
 final class PeopleFeatureModel {
+    private let context: ModelContext
     private let people: PeopleUseCases
     let intakeRepository: any IntakeRepository
     let goalRepository: any TrainingGoalRepository
@@ -68,6 +76,7 @@ final class PeopleFeatureModel {
         clock: any AppClock,
         uuidGenerator: any UUIDGenerating
     ) {
+        self.context = context
         people = PeopleUseCases(
             repository: SwiftDataPeopleRepository(context: context),
             clock: clock,
@@ -193,6 +202,20 @@ final class PeopleFeatureModel {
     func packages(clientID: UUID) -> [TrainingPackageSummary] {
         let dogIDs = Set(dogs.filter { dog in dog.roles.contains { $0.clientID == clientID } }.map(\.id))
         return ((try? packageRepository.summaries()) ?? []).filter { dogIDs.contains($0.dogID) }
+    }
+
+    func completedTrainings(dogID: UUID) -> [DogTrainingSummary] {
+        do {
+            let bookings = try context.fetch(FetchDescriptor<BookingRecord>()).filter { $0.dogID == dogID }
+            let sessionIDs = Set(bookings.map(\.sessionID))
+            return try context.fetch(FetchDescriptor<CompletedSessionRecord>())
+                .filter { $0.isActiveRevision && sessionIDs.contains($0.sessionID) }
+                .compactMap { completion in
+                    guard let session = completion.session ?? (try? context.fetch(FetchDescriptor<ScheduledSessionRecord>()).first { $0.id == completion.sessionID }) else { return nil }
+                    return DogTrainingSummary(id: completion.id, title: session.title, completedAt: completion.completedAt, outcome: completion.defaultOutcomeRawValue)
+                }
+                .sorted { $0.completedAt > $1.completedAt }
+        } catch { return [] }
     }
 
     private static func clientSummary(_ client: ClientRecord) -> ClientSummary {

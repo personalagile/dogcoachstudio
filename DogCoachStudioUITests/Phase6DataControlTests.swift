@@ -10,6 +10,7 @@ final class Phase6DataControlTests: XCTestCase {
         XCTAssertTrue(app.switches["appLockToggle"].exists)
         app.buttons["dataExportButton"].tap()
         XCTAssertTrue(app.staticTexts["dataExportStatus"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["dataBackupShareLink"].waitForExistence(timeout: 3))
         XCTAssertTrue(app.staticTexts["deletionPolicySummary"].exists)
     }
 
@@ -18,6 +19,7 @@ final class Phase6DataControlTests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments = ["--uitesting", "--phase6-uitesting", "--lock-enabled", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
+        XCTAssertTrue(app.descendants(matching: .any)["appLockedView"].waitForExistence(timeout: 5))
         XCTAssertFalse(app.buttons["dataExportButton"].waitForExistence(timeout: 3))
     }
 }

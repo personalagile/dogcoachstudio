@@ -55,6 +55,7 @@ enum SessionSchedulingError: Error, Equatable, Sendable {
     case sessionNotFound
     case invalidTransition(from: ScheduledSessionStatus, to: ScheduledSessionStatus)
     case duplicateBooking(UUID)
+    case completedSessionImmutable
 }
 
 struct CompletionOutcomeOverride: Hashable, Sendable {

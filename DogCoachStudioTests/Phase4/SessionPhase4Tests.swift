@@ -23,6 +23,14 @@ struct SessionPhase4Tests {
         #expect(try fixture.sessions.list().filter(\.hasOverlap).count == 2)
     }
 
+    @Test("Unevaluated sessions can be deleted without orphan bookings") @MainActor
+    func deleteUnevaluatedSession() throws {
+        let fixture = try Phase4Fixture(dogCount: 2)
+        try fixture.sessions.delete(sessionID: fixture.sessionID)
+        #expect(try fixture.sessions.list().isEmpty)
+        #expect(try fixture.context.fetchCount(FetchDescriptor<BookingRecord>()) == 0)
+    }
+
     @Test("Session overview exposes dog and primary owner names for search") @MainActor
     func participantSearchTerms() throws {
         let fixture = try Phase4Fixture(dogCount: 1)

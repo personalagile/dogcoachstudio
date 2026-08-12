@@ -89,10 +89,16 @@ struct DogFileView: View {
             intakeSection
             goalsSection
             Section("Training record") {
-                Label("Appointments and completed sessions will appear here.", systemImage: "calendar")
-                    .foregroundStyle(.secondary)
-                Label("Packages will appear here.", systemImage: "ticket")
-                    .foregroundStyle(.secondary)
+                let trainings = model.completedTrainings(dogID: dog.id)
+                if trainings.isEmpty { Text("No completed trainings").foregroundStyle(.secondary) }
+                ForEach(trainings) { training in
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(training.title).font(.headline)
+                        Text(training.completedAt, format: .dateTime.day().month().year().hour().minute())
+                        Text(training.outcome).font(.caption).foregroundStyle(.secondary)
+                    }
+                    .accessibilityIdentifier("dogCompletedTrainingRow")
+                }
             }
         }
         .navigationTitle(dog.name)

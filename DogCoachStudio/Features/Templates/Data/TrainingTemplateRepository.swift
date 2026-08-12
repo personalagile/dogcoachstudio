@@ -46,6 +46,15 @@ final class SwiftDataTrainingTemplateRepository {
 
     func setArchived(templateID: UUID, archived: Bool) throws { guard let template = try context.fetch(FetchDescriptor<TrainingTemplateRecord>()).first(where: { $0.id == templateID }) else { throw TemplateError.templateNotFound }; template.isArchived = archived; try context.save() }
 
+    func editableDraft(templateID: UUID) throws -> (UUID, TrainingTemplateDraft) {
+        let versionID = try createDraftVersion(templateID: templateID)
+        let version = try requireVersion(versionID)
+        let exercises = (version.exercises ?? []).sorted { $0.sortOrder < $1.sortOrder }.map {
+            TemplateExerciseDraft(id: $0.id, exerciseVersionID: $0.exerciseVersionID, plannedDurationMinutes: $0.plannedDurationMinutes, trainerInstruction: $0.trainerInstruction)
+        }
+        return (versionID, TrainingTemplateDraft(title: version.title, targetDurationMinutes: version.targetDurationMinutes, audience: version.audience, trainerNotes: version.trainerNotes, exercises: exercises))
+    }
+
     private func apply(_ draft: TrainingTemplateDraft, to version: TemplateVersionRecord) {
         version.title = draft.title; version.targetDurationMinutes = draft.targetDurationMinutes; version.audience = draft.audience; version.trainerNotes = draft.trainerNotes
         version.exercises = draft.exercises.enumerated().map { index, item in let record = TemplateExerciseRecord(id: item.id, templateVersionID: version.id, exerciseVersionID: item.exerciseVersionID, sortOrder: index); record.plannedDurationMinutes = item.plannedDurationMinutes; record.trainerInstruction = item.trainerInstruction; record.templateVersion = version; context.insert(record); return record }
