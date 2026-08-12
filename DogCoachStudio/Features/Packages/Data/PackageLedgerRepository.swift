@@ -39,7 +39,7 @@ final class PackageLedgerRepository {
         return try context.fetch(FetchDescriptor<TrainingPackageRecord>()).map { package in
             let balance = self.balance(package)
             let status: PackageLifecycleStatus = package.isClosed ? .closed : ((package.expiresAt.map { $0 < now } ?? false) ? .expired : (balance <= 0 ? .exhausted : .active))
-            return .init(id: package.id, dogID: package.dogID, dogName: package.dog?.name ?? "", name: package.name, balance: balance, initialUnits: package.initialUnits, expiresAt: package.expiresAt, paymentStatus: PackagePaymentStatus(rawValue: package.paymentStatusRawValue) ?? .unknown, status: status, clientID: package.clientID, clientName: package.client?.displayName ?? "", price: package.priceSnapshot, currencyCode: package.currencyCode, packageTemplateID: package.packageTemplateID)
+            return .init(id: package.id, dogID: package.dogID, dogName: package.dog?.name ?? "", name: package.name, balance: balance, initialUnits: package.initialUnits, expiresAt: package.expiresAt, paymentStatus: PackagePaymentStatus(rawValue: package.paymentStatusRawValue) ?? .unknown, status: status, clientID: package.clientID, clientName: package.client?.displayName ?? "", price: package.priceSnapshot, currencyCode: package.currencyCode, packageTemplateID: package.packageTemplateID, packageTemplateName: package.packageTemplate?.name)
         }.sorted { $0.clientName.localizedStandardCompare($1.clientName) == .orderedAscending }
     }
 

@@ -7,13 +7,14 @@ final class PackagesFeatureModel {
     private let repository: PackageLedgerRepository
     private let context: ModelContext
     private let clock: any AppClock
+    private let dataChanges: AppDataChanges
     var packages: [TrainingPackageSummary] = []
     var templates: [PackageTemplateSummary] = []
     var clients: [(id: UUID, name: String)] = []
     var error: AppError?
 
     init(environment: AppEnvironment, seedDemo: Bool = false) {
-        context = environment.persistence.mainContext; clock = environment.clock
+        context = environment.persistence.mainContext; clock = environment.clock; dataChanges = environment.dataChanges
         repository = .init(context: context, uuid: environment.uuidGenerator, clock: environment.clock)
         if seedDemo { try? seed() }; reload()
     }
@@ -29,22 +30,22 @@ final class PackagesFeatureModel {
         do {
             let draft = TrainingPackageDraft(dogID: item?.dogID ?? Self.unassignedDogID, name: name, unitType: .session, initialUnits: units, purchasedAt: clock.now(), expiresAt: item?.expiresAt, paymentStatus: item?.paymentStatus ?? .paid, price: price, currencyCode: currencyCode, clientID: clientID, packageTemplateID: templateID)
             if let item { try repository.updatePackage(id: item.id, draft: draft) } else { _ = try repository.createPackage(draft) }
-            reload(); return true
+            reload(); dataChanges.notify(); return true
         } catch { self.error = AppErrorMapper.map(error, operation: "package.create"); return false }
     }
 
     func createTemplate(name: String, units: Decimal, price: Decimal, currencyCode: String) -> Bool {
-        do { _ = try repository.createTemplate(.init(name: name, unitType: .session, units: units, price: price, currencyCode: currencyCode)); reload(); return true }
+        do { _ = try repository.createTemplate(.init(name: name, unitType: .session, units: units, price: price, currencyCode: currencyCode)); reload(); dataChanges.notify(); return true }
         catch { self.error = AppErrorMapper.map(error, operation: "package-template.create"); return false }
     }
     func updateTemplate(_ item: PackageTemplateSummary, name: String, units: Decimal, price: Decimal, currencyCode: String) -> Bool {
-        do { try repository.updateTemplate(id: item.id, draft: .init(name: name, unitType: item.unitType, units: units, price: price, currencyCode: currencyCode)); reload(); return true }
+        do { try repository.updateTemplate(id: item.id, draft: .init(name: name, unitType: item.unitType, units: units, price: price, currencyCode: currencyCode)); reload(); dataChanges.notify(); return true }
         catch { self.error = AppErrorMapper.map(error, operation: "package-template.update"); return false }
     }
 
-    func addUnit(packageID: UUID) { do { _ = try repository.adjust(packageID: packageID, units: 1, reason: "Manual adjustment"); reload() } catch { self.error = AppErrorMapper.map(error, operation: "package.adjust") } }
-    func deletePackage(_ item: TrainingPackageSummary) { do { try repository.deletePackage(id: item.id); reload() } catch { self.error = AppErrorMapper.map(error, operation: "package.delete") } }
-    func archiveTemplate(_ item: PackageTemplateSummary) { do { try repository.archiveTemplate(id: item.id); reload() } catch { self.error = AppErrorMapper.map(error, operation: "package-template.archive") } }
+    func addUnit(packageID: UUID) { do { _ = try repository.adjust(packageID: packageID, units: 1, reason: "Manual adjustment"); reload(); dataChanges.notify() } catch { self.error = AppErrorMapper.map(error, operation: "package.adjust") } }
+    func deletePackage(_ item: TrainingPackageSummary) { do { try repository.deletePackage(id: item.id); reload(); dataChanges.notify() } catch { self.error = AppErrorMapper.map(error, operation: "package.delete") } }
+    func archiveTemplate(_ item: PackageTemplateSummary) { do { try repository.archiveTemplate(id: item.id); reload(); dataChanges.notify() } catch { self.error = AppErrorMapper.map(error, operation: "package-template.archive") } }
 
     private func seed() throws {
         guard try context.fetch(FetchDescriptor<TrainingPackageRecord>()).isEmpty,
@@ -59,7 +60,8 @@ struct PackagesRootView: View {
     enum Sheet: Identifiable { case package(TrainingPackageSummary?), template(PackageTemplateSummary?); var id: String { switch self { case .package(let item): "package-\(item?.id.uuidString ?? "new")"; case .template(let item): "template-\(item?.id.uuidString ?? "new")" } } }
     @State private var model: PackagesFeatureModel
     @State private var sheet: Sheet?
-    init(environment: AppEnvironment, seedDemo: Bool = false) { _model = State(initialValue: .init(environment: environment, seedDemo: seedDemo)) }
+    private let environment: AppEnvironment
+    init(environment: AppEnvironment, seedDemo: Bool = false) { self.environment = environment; _model = State(initialValue: .init(environment: environment, seedDemo: seedDemo)) }
 
     var body: some View {
         NavigationStack {
@@ -70,6 +72,9 @@ struct PackagesRootView: View {
                         Button { sheet = .package(item) } label: { VStack(alignment: .leading, spacing: 4) {
                             HStack { Text(item.name).font(.headline); Spacer(); Text(item.status.rawValue.capitalized) }
                             Text(item.clientName.isEmpty ? String(localized: "Unknown client") : item.clientName)
+                            if let templateName = item.packageTemplateName {
+                                LabeledContent("Purchased package", value: templateName)
+                            }
                             HStack {
                                 Text("Balance: \(NSDecimalNumber(decimal: item.balance).stringValue)")
                                 Spacer()
@@ -100,6 +105,8 @@ struct PackagesRootView: View {
             .sheet(item: $sheet) { value in switch value { case .package(let item): PackageEditor(model: model, item: item); case .template(let item): PackageTemplateEditor(model: model, item: item) } }
             .alert("Could not update packages", isPresented: Binding(get: { model.error != nil }, set: { if !$0 { model.error = nil } })) { Button("OK") {} } message: { Text(model.error?.userMessage ?? "") }
             .accessibilityIdentifier("packagesRoot")
+            .onAppear { model.reload() }
+            .onChange(of: environment.dataChanges.revision) { model.reload() }
         }
     }
 }

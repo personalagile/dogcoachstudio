@@ -5453,6 +5453,62 @@
         "fr": { "stringUnit": { "state": "translated", "value": "Unités" } }
       }
     },
+    "Could not import contact": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Kontakt konnte nicht importiert werden" } },
+        "es": { "stringUnit": { "state": "translated", "value": "No se pudo importar el contacto" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Impossible d’importer le contact" } }
+      }
+    },
+    "Could not save contact": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Kontakt konnte nicht gespeichert werden" } },
+        "es": { "stringUnit": { "state": "translated", "value": "No se pudo guardar el contacto" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Impossible d’enregistrer le contact" } }
+      }
+    },
+    "Import from Contacts": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Aus Kontakte importieren" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Importar desde Contactos" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Importer depuis Contacts" } }
+      }
+    },
+    "Intake for %@": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Anamnese für %@" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Evaluación inicial de %@" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Évaluation initiale de %@" } }
+      }
+    },
+    "Purchased package": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Gekauftes Paket" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Paquete comprado" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Forfait acheté" } }
+      }
+    },
+    "Save to Contacts": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "In Kontakte sichern" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Guardar en Contactos" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Enregistrer dans Contacts" } }
+      }
+    },
+    "Saved to Contacts": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "In Kontakte gespeichert" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Guardado en Contactos" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Enregistré dans Contacts" } }
+      }
+    },
+    "Share intake PDF": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Anamnese als PDF teilen" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Compartir evaluación en PDF" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Partager l’évaluation en PDF" } }
+      }
+    },
     "Your data": {
       "localizations": {
         "de": {

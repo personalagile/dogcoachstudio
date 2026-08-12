@@ -62,6 +62,7 @@ final class PeopleFeatureModel {
     private let packageRepository: PackageLedgerRepository
     let clock: any AppClock
     let uuidGenerator: any UUIDGenerating
+    private let dataChanges: AppDataChanges
 
     var clients: [ClientSummary] = []
     var dogs: [DogSummary] = []
@@ -74,7 +75,8 @@ final class PeopleFeatureModel {
     init(
         context: ModelContext,
         clock: any AppClock,
-        uuidGenerator: any UUIDGenerating
+        uuidGenerator: any UUIDGenerating,
+        dataChanges: AppDataChanges = AppDataChanges()
     ) {
         self.context = context
         people = PeopleUseCases(
@@ -87,6 +89,7 @@ final class PeopleFeatureModel {
         packageRepository = PackageLedgerRepository(context: context, uuid: uuidGenerator, clock: clock)
         self.clock = clock
         self.uuidGenerator = uuidGenerator
+        self.dataChanges = dataChanges
         reload()
     }
 
@@ -114,49 +117,58 @@ final class PeopleFeatureModel {
         let client = try people.createClient(draft)
         reload()
         selection = .client(client.id)
+        dataChanges.notify()
     }
 
     func editClient(id: UUID, draft: ClientDraft) throws {
         _ = try people.editClient(id: id, draft: draft)
         reload()
+        dataChanges.notify()
     }
 
     func setClientArchived(id: UUID, archived: Bool) throws {
         _ = try people.setClientArchived(id: id, archived: archived)
         reload()
         if !includeArchived && archived { selection = nil }
+        dataChanges.notify()
     }
 
     func createDog(_ draft: DogDraft) throws {
         let dog = try people.createDog(draft)
         reload()
         selection = .dog(dog.id)
+        dataChanges.notify()
     }
 
     func editDog(id: UUID, draft: DogDraft) throws {
         _ = try people.editDog(id: id, draft: draft)
         reload()
+        dataChanges.notify()
     }
 
     func setDogArchived(id: UUID, archived: Bool) throws {
         _ = try people.setDogArchived(id: id, archived: archived)
         reload()
         if !includeArchived && archived { selection = nil }
+        dataChanges.notify()
     }
 
     func assignRole(clientID: UUID, dogID: UUID, kind: ClientDogRoleKind, primary: Bool) throws {
         try people.assignRole(clientID: clientID, dogID: dogID, kind: kind, isPrimaryContact: primary)
         reload()
+        dataChanges.notify()
     }
 
     func setPrimary(roleID: UUID, dogID: UUID) throws {
         try people.setPrimaryContact(roleID: roleID, dogID: dogID)
         reload()
+        dataChanges.notify()
     }
 
     func removeRole(id: UUID) throws {
         try people.removeRole(id: id)
         reload()
+        dataChanges.notify()
     }
 
     func goals(dogID: UUID) -> [TrainingGoal] {
@@ -166,11 +178,13 @@ final class PeopleFeatureModel {
     func saveGoal(_ goal: TrainingGoal) throws {
         try goalRepository.save(goal)
         contentRevision += 1
+        dataChanges.notify()
     }
 
     func deleteGoal(id: UUID) throws {
         try goalRepository.delete(id: id)
         contentRevision += 1
+        dataChanges.notify()
     }
 
     func advanceGoal(_ goal: TrainingGoal) throws {
@@ -208,6 +222,7 @@ final class PeopleFeatureModel {
     func createPackage(clientID: UUID, template: PackageTemplateSummary) throws {
         _ = try packageRepository.createPackage(.init(dogID: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!, name: template.name, unitType: template.unitType, initialUnits: template.units, purchasedAt: clock.now(), expiresAt: nil, paymentStatus: .paid, price: template.price, currencyCode: template.currencyCode, clientID: clientID, packageTemplateID: template.id))
         contentRevision += 1
+        dataChanges.notify()
     }
 
     func completedTrainings(dogID: UUID) -> [DogTrainingSummary] {

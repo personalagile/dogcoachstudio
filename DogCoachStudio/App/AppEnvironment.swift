@@ -1,4 +1,15 @@
 import Foundation
+import Observation
+
+@MainActor
+@Observable
+final class AppDataChanges {
+    private(set) var revision = 0
+
+    func notify() {
+        revision &+= 1
+    }
+}
 
 @MainActor
 struct AppEnvironment {
@@ -7,6 +18,23 @@ struct AppEnvironment {
     let uuidGenerator: any UUIDGenerating
     let dataExporter: any DataExporting
     let diagnostics: any DiagnosticRecording
+    let dataChanges: AppDataChanges
+
+    init(
+        persistence: any PersistenceProviding,
+        clock: any AppClock,
+        uuidGenerator: any UUIDGenerating,
+        dataExporter: any DataExporting,
+        diagnostics: any DiagnosticRecording,
+        dataChanges: AppDataChanges = AppDataChanges()
+    ) {
+        self.persistence = persistence
+        self.clock = clock
+        self.uuidGenerator = uuidGenerator
+        self.dataExporter = dataExporter
+        self.diagnostics = diagnostics
+        self.dataChanges = dataChanges
+    }
 
     static func live() throws -> AppEnvironment {
         let container = try ModelContainerFactory.makeDefault()

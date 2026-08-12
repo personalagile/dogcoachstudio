@@ -9,6 +9,7 @@ final class SessionsFeatureModel {
     private let completion: SessionCompletionService
     private let clock: any AppClock
     private let uuid: any UUIDGenerating
+    private let dataChanges: AppDataChanges
     var sessions: [ScheduledSessionSummary] = []
     var dogs: [(id: UUID, name: String)] = []
     var templates: [TrainingTemplateSummary] = []
@@ -29,6 +30,7 @@ final class SessionsFeatureModel {
         completion = .init(context: context, clock: environment.clock, uuid: environment.uuidGenerator)
         clock = environment.clock
         uuid = environment.uuidGenerator
+        dataChanges = environment.dataChanges
         focusedDate = environment.clock.now()
         if seedDemo { try? seedUITestDemo() }
         reload()
@@ -105,12 +107,12 @@ final class SessionsFeatureModel {
     func create(title: String, startAt: Date, duration: Int, kind: ScheduledSessionKind, templateVersionID: UUID?, dogIDs: [UUID], labels: [String] = [], packageUnits: Decimal = 1) -> Bool {
         do {
             _ = try repository.create(.init(title: title, startAt: startAt, durationMinutes: duration, locationText: nil, kind: kind, templateVersionID: templateVersionID, dogIDs: dogIDs, labels: labels, packageUnitsPerAttendee: packageUnits))
-            reload(); return true
+            reload(); dataChanges.notify(); return true
         } catch { self.error = AppErrorMapper.map(error, operation: "session.create"); return false }
     }
 
     func delete(_ session: ScheduledSessionSummary) {
-        do { try repository.delete(sessionID: session.id); reload() }
+        do { try repository.delete(sessionID: session.id); reload(); dataChanges.notify() }
         catch { self.error = AppErrorMapper.map(error, operation: "session.delete") }
     }
 
@@ -122,7 +124,7 @@ final class SessionsFeatureModel {
             if status == .scheduled { try repository.transition(sessionID: id, to: .inProgress) }
             selectedSessionID = id
             attendance = Dictionary(uniqueKeysWithValues: (session.bookings ?? []).map { ($0.id, .attended) })
-            preview = nil; completed = nil; reload()
+            preview = nil; completed = nil; reload(); dataChanges.notify()
         } catch { self.error = AppErrorMapper.map(error, operation: "session.start") }
     }
 
@@ -134,7 +136,7 @@ final class SessionsFeatureModel {
 
     func complete() {
         guard let request = request() else { return }
-        do { completed = try completion.complete(request); reload() }
+        do { completed = try completion.complete(request); reload(); dataChanges.notify() }
         catch { self.error = AppErrorMapper.map(error, operation: "session.complete") }
     }
 
@@ -142,7 +144,7 @@ final class SessionsFeatureModel {
         guard let completed else { return false }
         do {
             self.completed = try completion.correct(.init(originalCompletedSessionID: completed.completedSessionID, completionToken: uuid.makeUUID(), reason: reason, changes: []))
-            reload(); return true
+            reload(); dataChanges.notify(); return true
         } catch { self.error = AppErrorMapper.map(error, operation: "session.correct"); return false }
     }
 
@@ -176,7 +178,8 @@ final class SessionsFeatureModel {
 struct SessionsRootView: View {
     @State private var model: SessionsFeatureModel
     @State private var showsCreate = false
-    init(environment: AppEnvironment, seedDemo: Bool = false) { _model = State(initialValue: SessionsFeatureModel(environment: environment, seedDemo: seedDemo)) }
+    private let environment: AppEnvironment
+    init(environment: AppEnvironment, seedDemo: Bool = false) { self.environment = environment; _model = State(initialValue: SessionsFeatureModel(environment: environment, seedDemo: seedDemo)) }
 
     var body: some View {
         @Bindable var model = model
@@ -226,6 +229,8 @@ struct SessionsRootView: View {
             }
             .accessibilityIdentifier("sessionsRoot")
         }
+        .onAppear { model.reload() }
+        .onChange(of: environment.dataChanges.revision) { model.reload() }
     }
 }
 

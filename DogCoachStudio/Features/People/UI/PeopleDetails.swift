@@ -4,6 +4,8 @@ struct ClientDetailView: View {
     let client: ClientSummary
     let model: PeopleFeatureModel
     let present: (PeopleRootView.Sheet) -> Void
+    @State private var contactExportError: AppError?
+    @State private var contactExported = false
 
     var body: some View {
         List {
@@ -47,6 +49,7 @@ struct ClientDetailView: View {
                             Text(package.status.displayName).font(.caption).foregroundStyle(package.status.tint)
                         }
                         if !package.dogName.isEmpty { Text(package.dogName).font(.subheadline).foregroundStyle(.secondary) }
+                        if let templateName = package.packageTemplateName { LabeledContent("Purchased package", value: templateName) }
                         if let price = package.price { Text(price, format: .currency(code: "EUR")) }
                         LabeledContent("Balance", value: NSDecimalNumber(decimal: package.balance).stringValue)
                     }
@@ -63,11 +66,22 @@ struct ClientDetailView: View {
         .toolbar {
             Button("Edit", systemImage: "pencil") { present(.editClient(client)) }
                 .accessibilityIdentifier("clientEditButton")
+            Button("Save to Contacts", systemImage: "person.crop.circle.badge.checkmark") {
+                Task {
+                    do { try await AppleContactsExporter.export(client); contactExported = true }
+                    catch { contactExportError = AppErrorMapper.map(error, operation: "contacts.export") }
+                }
+            }
+            .accessibilityIdentifier("clientExportContactButton")
             Button(client.isArchived ? "Restore" : "Archive", systemImage: "archivebox") {
                 model.perform({ try model.setClientArchived(id: client.id, archived: !client.isArchived) }, operation: "client.archive")
             }
             .accessibilityIdentifier("clientArchiveButton")
         }
+        .alert("Saved to Contacts", isPresented: $contactExported) { Button("OK") {} }
+        .alert("Could not save contact", isPresented: Binding(get: { contactExportError != nil }, set: { if !$0 { contactExportError = nil } })) {
+            Button("OK") {}
+        } message: { Text(contactExportError?.userMessage ?? "") }
         .accessibilityIdentifier("clientDetail")
     }
 }
@@ -173,6 +187,11 @@ struct DogFileView: View {
                 Text(latest.clientFacing.reason.isEmpty ? "Draft saved" : latest.clientFacing.reason)
                 Text("Revision \(latest.revision) · \(latest.occurredAt.formatted(date: .abbreviated, time: .shortened))")
                     .font(.caption).foregroundStyle(.secondary)
+                IntakeShareButton(artifact: IntakePDFExporter.pdf(
+                    draft: latest,
+                    dogName: dog.name,
+                    clientName: dog.primaryOwnerName
+                ))
             } else { Text("No intake yet").foregroundStyle(.secondary) }
             Button("Open intake") { present(.intake(dog)) }.accessibilityIdentifier("dogIntakeButton")
         }

@@ -30,12 +30,17 @@ struct PeopleRootView: View {
     @State private var model: PeopleFeatureModel
     @State private var presentedSheet: Sheet?
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
+    @State private var showsContactPicker = false
+    @State private var contactImportError: AppError?
+    private let environment: AppEnvironment
 
     init(environment: AppEnvironment) {
+        self.environment = environment
         _model = State(initialValue: PeopleFeatureModel(
             context: environment.persistence.mainContext,
             clock: environment.clock,
-            uuidGenerator: environment.uuidGenerator
+            uuidGenerator: environment.uuidGenerator,
+            dataChanges: environment.dataChanges
         ))
     }
 
@@ -71,6 +76,7 @@ struct PeopleRootView: View {
                     Menu("Add", systemImage: "plus") {
                         Button("New client", systemImage: "person.badge.plus") { presentedSheet = .addClient }
                         Button("New dog", systemImage: "dog") { presentedSheet = .addDog }
+                        Button("Import from Contacts", systemImage: "person.crop.circle.badge.plus") { showsContactPicker = true }
                     }
                     .accessibilityIdentifier("peopleAddMenu")
                 }
@@ -80,6 +86,19 @@ struct PeopleRootView: View {
             detail
         }
         .navigationSplitViewStyle(.balanced)
+        .onAppear { model.reload() }
+        .onChange(of: environment.dataChanges.revision) { model.reload() }
+        .sheet(isPresented: $showsContactPicker) {
+            AppleContactPicker { imported in
+                showsContactPicker = false
+                do { try model.createClient(imported.clientDraft) }
+                catch { contactImportError = AppErrorMapper.map(error, operation: "contacts.import") }
+            } onError: { error in
+                showsContactPicker = false
+                contactImportError = AppErrorMapper.map(error, operation: "contacts.import")
+            }
+            .ignoresSafeArea()
+        }
         .sheet(item: $presentedSheet, onDismiss: { model.refreshDetailContent() }) { sheet in
             switch sheet {
             case .addClient:
@@ -112,6 +131,9 @@ struct PeopleRootView: View {
         } message: {
             Text(model.error?.userMessage ?? "")
         }
+        .alert("Could not import contact", isPresented: Binding(get: { contactImportError != nil }, set: { if !$0 { contactImportError = nil } })) {
+            Button("OK") {}
+        } message: { Text(contactImportError?.userMessage ?? "") }
         .accessibilityIdentifier("peopleAdaptiveNavigation")
     }
 

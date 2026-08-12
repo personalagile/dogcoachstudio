@@ -59,9 +59,7 @@ private struct AppRootView: View {
     @Environment(\.appLockEnabledBinding) private var appLockEnabled
 
     var body: some View {
-        if ProcessInfo.processInfo.arguments.contains("--phase0-demo") {
-            SessionCompletionView()
-        } else if ProcessInfo.processInfo.arguments.contains("--phase3-uitesting") {
+        if ProcessInfo.processInfo.arguments.contains("--phase3-uitesting") {
             CatalogRootView(environment: environment)
         } else if ProcessInfo.processInfo.arguments.contains("--phase4-uitesting") {
             SessionsRootView(environment: environment, seedDemo: true)
@@ -79,7 +77,6 @@ private struct AppRootView: View {
                 Tab("Packages", systemImage: "ticket") { PackagesRootView(environment: environment) }
                 Tab("Data", systemImage: "lock.doc") { DataControlRootView(environment: environment, appLockEnabled: appLockEnabled) }
                 Tab("Upgrade", systemImage: "sparkles") { PaywallView() }
-                Tab("Completion demo", systemImage: "checkmark.circle") { SessionCompletionView() }
             }
             .accessibilityIdentifier("appRootTabs")
         }

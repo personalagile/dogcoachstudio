@@ -25,23 +25,31 @@ final class MarketingScreenshotTests: XCTestCase {
 
     @MainActor
     private func captureCompletionReview(locale: String, name: String) {
-        let app = launch(locale: locale, arguments: ["--phase0-demo"])
-        XCTAssertTrue(app.descendants(matching: .any)["sessionCompletionFlow"].waitForExistence(timeout: 5))
-        for _ in 0..<3 { app.buttons["continueButton"].tap() }
-        XCTAssertTrue(app.descendants(matching: .any)["completionReview"].waitForExistence(timeout: 3))
+        let app = launchPersistentCompletion(locale: locale)
+        app.buttons["completionPreviewButton"].tap()
+        XCTAssertTrue(app.descendants(matching: .any)["completionPreview"].waitForExistence(timeout: 3))
         attach(app.screenshot(), locale: locale, name: name)
         app.terminate()
     }
 
     @MainActor
     private func captureCompletionResult(locale: String, name: String) {
-        let app = launch(locale: locale, arguments: ["--phase0-demo"])
-        XCTAssertTrue(app.descendants(matching: .any)["sessionCompletionFlow"].waitForExistence(timeout: 5))
-        for _ in 0..<3 { app.buttons["continueButton"].tap() }
-        app.buttons["completeSessionButton"].tap()
-        XCTAssertTrue(app.descendants(matching: .any)["completionSuccess"].waitForExistence(timeout: 5))
+        let app = launchPersistentCompletion(locale: locale)
+        app.buttons["completionPreviewButton"].tap()
+        XCTAssertTrue(app.descendants(matching: .any)["completionPreview"].waitForExistence(timeout: 3))
+        app.buttons["persistentCompleteButton"].tap()
+        XCTAssertTrue(app.descendants(matching: .any)["persistentCompletionSuccess"].waitForExistence(timeout: 5))
         attach(app.screenshot(), locale: locale, name: name)
         app.terminate()
+    }
+
+    @MainActor
+    private func launchPersistentCompletion(locale: String) -> XCUIApplication {
+        let app = launch(locale: locale, arguments: ["--phase4-uitesting"])
+        XCTAssertTrue(app.descendants(matching: .any)["sessionsRoot"].waitForExistence(timeout: 5))
+        app.buttons["scheduledSessionRow"].firstMatch.tap()
+        XCTAssertTrue(app.descendants(matching: .any)["sessionCompletionReview"].waitForExistence(timeout: 3))
+        return app
     }
 
     @MainActor

@@ -31,6 +31,7 @@ targets:
         INFOPLIST_KEY_NSFaceIDUsageDescription: "Unlock DogCoach Studio and protect private training data."
         INFOPLIST_KEY_NSCameraUsageDescription: "Take a profile photo for a dog."
         INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "Choose a profile photo for a dog."
+        INFOPLIST_KEY_NSContactsUsageDescription: "Import clients from Apple Contacts or save a client to Contacts."
         ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: YES
     scheme:
       storeKitConfiguration: DogCoachStudio/Resources/StoreKit/Products.storekit

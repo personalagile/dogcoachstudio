@@ -1,5 +1,13 @@
 import Foundation
 
+enum ExerciseOutcome: String, CaseIterable, Hashable, Sendable {
+    case notStarted
+    case strongSupport
+    case lightSupport
+    case independent
+    case stableWithDistraction
+}
+
 enum ScheduledSessionKind: String, CaseIterable, Codable, Sendable { case individual, group }
 
 enum ScheduledSessionStatus: String, CaseIterable, Codable, Sendable {

@@ -36,6 +36,7 @@ struct TrainingPackageSummary: Identifiable, Hashable, Sendable {
     let price: Decimal?
     let currencyCode: String?
     let packageTemplateID: UUID?
+    let packageTemplateName: String?
 }
 
 struct PackageTemplateDraft: Sendable {
