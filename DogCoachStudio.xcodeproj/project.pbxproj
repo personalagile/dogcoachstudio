@@ -1002,16 +1002,16 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					54B39B311C0813067854D57C = {
-						DevelopmentTeam = S5GTZRZX7L;
+						DevelopmentTeam = 32ZWRSU45R;
 						ProvisioningStyle = Automatic;
 						TestTargetID = D2EFA4B7FDFDFEB6691EDD27;
 					};
 					BBFA6E665BAA09BA45BDA6C5 = {
-						DevelopmentTeam = S5GTZRZX7L;
+						DevelopmentTeam = 32ZWRSU45R;
 						ProvisioningStyle = Automatic;
 					};
 					D2EFA4B7FDFDFEB6691EDD27 = {
-						DevelopmentTeam = S5GTZRZX7L;
+						DevelopmentTeam = 32ZWRSU45R;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1217,7 +1217,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = studio.dogcoach.phase0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.personalagile.dogcoach;
 				PRODUCT_MODULE_NAME = DogCoachStudio;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1260,7 +1260,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = S5GTZRZX7L;
+				DEVELOPMENT_TEAM = 32ZWRSU45R;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -1310,7 +1310,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = studio.dogcoach.phase0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.personalagile.dogcoach;
 				PRODUCT_MODULE_NAME = DogCoachStudio;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1385,7 +1385,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = S5GTZRZX7L;
+				DEVELOPMENT_TEAM = 32ZWRSU45R;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
