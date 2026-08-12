@@ -15,7 +15,20 @@ struct ClientDetailView: View {
             Section("Dogs") {
                 let linkedDogs = model.dogs.filter { dog in dog.roles.contains { $0.clientID == client.id } }
                 if linkedDogs.isEmpty { Text("No linked dogs").foregroundStyle(.secondary) }
-                ForEach(linkedDogs) { dog in Text(dog.name) }
+                ForEach(linkedDogs) { dog in
+                    Button {
+                        model.selection = .dog(dog.id)
+                    } label: {
+                        HStack {
+                            DogPhotoView(assetID: dog.photoAssetID, size: 36)
+                            Text(dog.name)
+                            Spacer()
+                            Image(systemName: "chevron.right").foregroundStyle(.tertiary)
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("clientDogLink")
+                }
             }
             if let notes = client.privateNotes, !notes.isEmpty {
                 Section("Private trainer notes") { Text(notes) }
@@ -42,7 +55,13 @@ struct DogFileView: View {
     var body: some View {
         List {
             Section("Overview") {
+                HStack {
+                    Spacer()
+                    DogPhotoView(assetID: dog.photoAssetID, size: 132)
+                    Spacer()
+                }
                 LabeledContent("Name", value: dog.name)
+                if let owner = dog.primaryOwnerName { LabeledContent("Owner", value: owner) }
                 if let breed = dog.breedText, !breed.isEmpty { LabeledContent("Breed", value: breed) }
                 if let birthDate = dog.birthDate { LabeledContent("Born", value: birthDate.formatted(date: .abbreviated, time: .omitted)) }
             }

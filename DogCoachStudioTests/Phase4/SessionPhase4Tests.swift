@@ -23,6 +23,19 @@ struct SessionPhase4Tests {
         #expect(try fixture.sessions.list().filter(\.hasOverlap).count == 2)
     }
 
+    @Test("Session overview exposes dog and primary owner names for search") @MainActor
+    func participantSearchTerms() throws {
+        let fixture = try Phase4Fixture(dogCount: 1)
+        let dog = try #require(try fixture.context.fetch(FetchDescriptor<DogRecord>()).first)
+        let client = ClientRecord(displayName: "Alex Owner", createdAt: fixture.now)
+        let role = ClientDogRoleRecord(clientID: client.id, dogID: dog.id, isPrimaryContact: true)
+        role.client = client; role.dog = dog; client.dogRoles = [role]; dog.clientRoles = [role]
+        fixture.context.insert(client); fixture.context.insert(role); try fixture.context.save()
+
+        let session = try #require(try fixture.sessions.list().first)
+        #expect(session.participantNames == ["Dog 0 · Alex Owner"])
+    }
+
     @Test("Preview scales from one to twenty dogs", arguments: [1, 5, 20]) @MainActor
     func previewScale(dogCount: Int) throws {
         let fixture = try Phase4Fixture(dogCount: dogCount)

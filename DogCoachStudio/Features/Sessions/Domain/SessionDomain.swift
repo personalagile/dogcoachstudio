@@ -38,7 +38,12 @@ struct ScheduledSessionSummary: Identifiable, Hashable, Sendable {
     let status: ScheduledSessionStatus
     let templateVersionID: UUID?
     let bookingCount: Int
+    let participantNames: [String]
     let hasOverlap: Bool
+}
+
+enum SessionCalendarScope: String, CaseIterable, Sendable {
+    case day, week, month
 }
 
 enum SessionSchedulingError: Error, Equatable, Sendable {

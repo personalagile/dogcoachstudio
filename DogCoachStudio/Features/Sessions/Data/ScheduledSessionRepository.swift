@@ -69,6 +69,14 @@ final class SwiftDataScheduledSessionRepository {
                 status: ScheduledSessionStatus(rawValue: record.statusRawValue) ?? .draft,
                 templateVersionID: record.templateVersionID,
                 bookingCount: (record.bookings ?? []).filter { $0.bookingStatusRawValue == SessionBookingStatus.booked.rawValue }.count,
+                participantNames: (record.bookings ?? []).compactMap { booking in
+                    guard booking.bookingStatusRawValue == SessionBookingStatus.booked.rawValue,
+                          let dog = booking.dog else { return nil }
+                    let owners = (dog.clientRoles ?? [])
+                        .filter(\.isPrimaryContact)
+                        .compactMap { $0.client?.displayName }
+                    return ([dog.name] + owners).joined(separator: " · ")
+                }.sorted(),
                 hasOverlap: overlaps
             )
         }.sorted { $0.startAt < $1.startAt }

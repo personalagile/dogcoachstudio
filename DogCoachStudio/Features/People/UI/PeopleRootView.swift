@@ -178,16 +178,16 @@ private struct DogRow: View {
     let dog: DogSummary
 
     var body: some View {
-        Label {
+        HStack(spacing: 12) {
+            DogPhotoView(assetID: dog.photoAssetID, size: 42)
             VStack(alignment: .leading) {
                 Text(dog.name)
-                Text(dog.breedText ?? "Breed not recorded")
+                Text(dog.primaryOwnerName ?? "No owner assigned")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-        } icon: {
-            Image(systemName: dog.isArchived ? "dog.circle.fill" : "dog")
         }
         .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(dog.name), owner \(dog.primaryOwnerName ?? String(localized: "not assigned"))")
     }
 }

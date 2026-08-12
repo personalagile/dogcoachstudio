@@ -18,6 +18,9 @@ final class SessionsFeatureModel {
     var preview: CompletionPreview?
     var completed: PersistentCompletionResult?
     var error: AppError?
+    var scope: SessionCalendarScope = .day
+    var focusedDate: Date
+    var searchText = ""
 
     init(environment: AppEnvironment, seedDemo: Bool = false) {
         context = environment.persistence.mainContext
@@ -25,8 +28,41 @@ final class SessionsFeatureModel {
         completion = .init(context: context, clock: environment.clock, uuid: environment.uuidGenerator)
         clock = environment.clock
         uuid = environment.uuidGenerator
+        focusedDate = environment.clock.now()
         if seedDemo { try? seedUITestDemo() }
         reload()
+    }
+
+    var visibleSessions: [ScheduledSessionSummary] {
+        let calendar = Calendar.autoupdatingCurrent
+        let interval: DateInterval? = switch scope {
+        case .day: calendar.dateInterval(of: .day, for: focusedDate)
+        case .week: calendar.dateInterval(of: .weekOfYear, for: focusedDate)
+        case .month: calendar.dateInterval(of: .month, for: focusedDate)
+        }
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        return sessions.filter { session in
+            let isInPeriod = interval?.contains(session.startAt) ?? true
+            let matches = query.isEmpty || session.title.localizedStandardContains(query)
+                || session.participantNames.contains { $0.localizedStandardContains(query) }
+            return isInPeriod && matches
+        }
+    }
+
+    var periodTitle: String {
+        switch scope {
+        case .day: return focusedDate.formatted(date: .complete, time: .omitted)
+        case .week:
+            guard let interval = Calendar.autoupdatingCurrent.dateInterval(of: .weekOfYear, for: focusedDate) else { return "" }
+            let end = interval.end.addingTimeInterval(-1)
+            return "\(interval.start.formatted(.dateTime.day().month(.abbreviated))) – \(end.formatted(.dateTime.day().month(.abbreviated).year()))"
+        case .month: return focusedDate.formatted(.dateTime.month(.wide).year())
+        }
+    }
+
+    func movePeriod(_ value: Int) {
+        let component: Calendar.Component = switch scope { case .day: .day; case .week: .weekOfYear; case .month: .month }
+        focusedDate = Calendar.autoupdatingCurrent.date(byAdding: component, value: value, to: focusedDate) ?? focusedDate
     }
 
     func reload() {
@@ -37,9 +73,9 @@ final class SessionsFeatureModel {
         } catch { self.error = AppErrorMapper.map(error, operation: "sessions.reload") }
     }
 
-    func create(title: String, duration: Int, kind: ScheduledSessionKind, templateVersionID: UUID?, dogIDs: [UUID]) -> Bool {
+    func create(title: String, startAt: Date, duration: Int, kind: ScheduledSessionKind, templateVersionID: UUID?, dogIDs: [UUID]) -> Bool {
         do {
-            _ = try repository.create(.init(title: title, startAt: clock.now(), durationMinutes: duration, locationText: nil, kind: kind, templateVersionID: templateVersionID, dogIDs: dogIDs))
+            _ = try repository.create(.init(title: title, startAt: startAt, durationMinutes: duration, locationText: nil, kind: kind, templateVersionID: templateVersionID, dogIDs: dogIDs))
             reload(); return true
         } catch { self.error = AppErrorMapper.map(error, operation: "session.create"); return false }
     }
@@ -109,18 +145,49 @@ struct SessionsRootView: View {
     init(environment: AppEnvironment, seedDemo: Bool = false) { _model = State(initialValue: SessionsFeatureModel(environment: environment, seedDemo: seedDemo)) }
 
     var body: some View {
+        @Bindable var model = model
         NavigationStack {
-            List(model.sessions) { session in
-                Button { model.select(session.id) } label: {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(session.title).font(.headline)
-                        Text("\(session.bookingCount) bookings · \(session.durationMinutes) min")
-                        if session.hasOverlap { Label("Overlaps another session", systemImage: "exclamationmark.triangle").foregroundStyle(.orange) }
+            VStack(spacing: 0) {
+                Picker("Calendar view", selection: $model.scope) {
+                    Text("Today").tag(SessionCalendarScope.day)
+                    Text("Week").tag(SessionCalendarScope.week)
+                    Text("Month").tag(SessionCalendarScope.month)
+                }
+                .pickerStyle(.segmented)
+                .padding()
+                .accessibilityIdentifier("sessionCalendarScope")
+                HStack {
+                    Button("Previous", systemImage: "chevron.left") { model.movePeriod(-1) }.labelStyle(.iconOnly)
+                    Spacer()
+                    Text(model.periodTitle).font(.headline).multilineTextAlignment(.center)
+                    Spacer()
+                    Button("Next", systemImage: "chevron.right") { model.movePeriod(1) }.labelStyle(.iconOnly)
+                }
+                .padding(.horizontal)
+                List(model.visibleSessions) { session in
+                    Button { model.select(session.id) } label: {
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack { Text(session.startAt, format: .dateTime.weekday(.abbreviated).hour().minute()).font(.subheadline); Spacer(); Text(session.status.rawValue.capitalized).font(.caption) }
+                            Text(session.title).font(.headline)
+                            if !session.participantNames.isEmpty { Text(session.participantNames.joined(separator: ", ")).font(.subheadline).foregroundStyle(.secondary) }
+                            Text("\(session.bookingCount) bookings · \(session.durationMinutes) min")
+                            if session.hasOverlap { Label("Overlaps another session", systemImage: "exclamationmark.triangle").foregroundStyle(.orange) }
+                        }
+                    }
+                    .accessibilityIdentifier("scheduledSessionRow")
+                }
+                .overlay {
+                    if model.visibleSessions.isEmpty {
+                        if model.searchText.isEmpty {
+                            ContentUnavailableView("No sessions", systemImage: "calendar", description: Text("There are no sessions in this period."))
+                        } else {
+                            ContentUnavailableView.search(text: model.searchText)
+                        }
                     }
                 }
-                .accessibilityIdentifier("scheduledSessionRow")
             }
             .navigationTitle("Sessions")
+            .searchable(text: $model.searchText, prompt: "Search client or dog")
             .toolbar { Button("Add", systemImage: "plus") { showsCreate = true }.accessibilityIdentifier("sessionAddButton") }
             .sheet(isPresented: $showsCreate) { SessionEditorView(model: model) { showsCreate = false } }
             .navigationDestination(isPresented: Binding(get: { model.selectedSessionID != nil }, set: { if !$0 { model.selectedSessionID = nil } })) {
@@ -135,6 +202,7 @@ private struct SessionEditorView: View {
     let model: SessionsFeatureModel
     let dismiss: () -> Void
     @State private var title = ""
+    @State private var startAt = Date.now
     @State private var duration = 45
     @State private var kind = ScheduledSessionKind.group
     @State private var templateVersionID: UUID?
@@ -144,6 +212,7 @@ private struct SessionEditorView: View {
         NavigationStack {
             Form {
                 TextField("Title", text: $title).accessibilityIdentifier("sessionTitleField")
+                DatePicker("Starts", selection: $startAt)
                 Stepper("Duration: \(duration) min", value: $duration, in: 5...240, step: 5)
                 Picker("Kind", selection: $kind) { ForEach(ScheduledSessionKind.allCases, id: \.self) { Text($0.rawValue.capitalized).tag($0) } }
                 Picker("Template", selection: $templateVersionID) { Text("No template").tag(UUID?.none); ForEach(model.templates) { Text($0.title).tag(Optional($0.versionID)) } }
@@ -152,7 +221,7 @@ private struct SessionEditorView: View {
             .navigationTitle("New session")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel", action: dismiss) }
-                ToolbarItem(placement: .confirmationAction) { Button("Save") { if model.create(title: title, duration: duration, kind: kind, templateVersionID: templateVersionID, dogIDs: Array(dogIDs)) { dismiss() } }.disabled(title.isEmpty).accessibilityIdentifier("sessionSaveButton") }
+                ToolbarItem(placement: .confirmationAction) { Button("Save") { if model.create(title: title, startAt: startAt, duration: duration, kind: kind, templateVersionID: templateVersionID, dogIDs: Array(dogIDs)) { dismiss() } }.disabled(title.isEmpty).accessibilityIdentifier("sessionSaveButton") }
             }
         }
     }

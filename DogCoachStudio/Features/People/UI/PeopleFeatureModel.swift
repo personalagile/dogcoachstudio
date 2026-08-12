@@ -26,6 +26,7 @@ struct DogRoleSummary: Identifiable, Hashable, Sendable {
 struct DogSummary: Identifiable, Hashable, Sendable {
     let id: UUID
     let name: String
+    let photoAssetID: String?
     let birthDate: Date?
     let breedText: String?
     let sexRawValue: String?
@@ -33,6 +34,10 @@ struct DogSummary: Identifiable, Hashable, Sendable {
     let safetyPrivateNote: String?
     let isArchived: Bool
     let roles: [DogRoleSummary]
+
+    var primaryOwnerName: String? {
+        roles.first(where: { $0.isPrimaryContact })?.clientName ?? roles.first?.clientName
+    }
 }
 
 enum PeopleSelection: Hashable {
@@ -189,6 +194,7 @@ final class PeopleFeatureModel {
         DogSummary(
             id: dog.id,
             name: dog.name,
+            photoAssetID: dog.photoAssetID,
             birthDate: dog.birthDate,
             breedText: dog.breedText,
             sexRawValue: dog.sexRawValue,

@@ -88,6 +88,7 @@
 		EC0A99A923C7A2998927A85E /* TemplateDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C4C8E041763B95792B28B3 /* TemplateDomain.swift */; };
 		EF032B6120CF62E16072BAA3 /* SyncAndHardeningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E532510D836FD061014B84B6 /* SyncAndHardeningTests.swift */; };
 		EFCBF166A5F83E9E7AA762AD /* IntakeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE9A941C537C272B0DE6B6 /* IntakeRepository.swift */; };
+		F31CBA4EF166D3113AD89082 /* DogPhotoSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F975FBBDDF6BA1C9602267 /* DogPhotoSupport.swift */; };
 		F391C41E1463A1BA44DDCD95 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F495584603391EA367A0F2F8 /* AppError.swift */; };
 		F506A364E609FCA5FEC8A51C /* AppErrorMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DABF5A9B22638916F3B782 /* AppErrorMappingTests.swift */; };
 		F576FE63EDDBBC20DF0BFA3E /* foundation-v1.json in Resources */ = {isa = PBXBuildFile; fileRef = 3810B4CF7EA84FDCE15C5E2A /* foundation-v1.json */; };
@@ -158,6 +159,7 @@
 		81AE119904176185BB13C2ED /* DataBackupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBackupService.swift; sourceTree = "<group>"; };
 		84CC22883FDBCE1F800E074B /* Phase5PackagesFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase5PackagesFlowTests.swift; sourceTree = "<group>"; };
 		854F441BF295995B1CB13D4C /* AppLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLock.swift; sourceTree = "<group>"; };
+		88F975FBBDDF6BA1C9602267 /* DogPhotoSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogPhotoSupport.swift; sourceTree = "<group>"; };
 		8A7FE855C3ADC67B97A3092D /* AppEnvironmentInjectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironmentInjectionTests.swift; sourceTree = "<group>"; };
 		8C312E4540E7401DAEA151FC /* SessionDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDomain.swift; sourceTree = "<group>"; };
 		8CF096E3A67C2F20A61033E1 /* Phase6DataControlTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase6DataControlTests.swift; sourceTree = "<group>"; };
@@ -854,6 +856,7 @@
 		F1F1185334276D2765DA8C77 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				88F975FBBDDF6BA1C9602267 /* DogPhotoSupport.swift */,
 				D5A793B74C08366A563A5A48 /* PeopleDetails.swift */,
 				522EA1A0C1F422E495B721D3 /* PeopleEditors.swift */,
 				95AB17CF3731D2F489C3D3E3 /* PeopleFeatureModel.swift */,
@@ -1068,6 +1071,7 @@
 				FF8A9740F2AAD7791BD7F898 /* Diagnostics.swift in Sources */,
 				A7C243B40470C03AF7A5B06C /* DogCoachSchemaV1.swift in Sources */,
 				BBD555FC70A7825E1F4C7D6A /* DogCoachStudioApp.swift in Sources */,
+				F31CBA4EF166D3113AD89082 /* DogPhotoSupport.swift in Sources */,
 				4F763CF87738D87CE65FF6A3 /* EntitlementDomain.swift in Sources */,
 				ACCE6628673B8EFD868032D7 /* ExerciseRepository.swift in Sources */,
 				D1ED9AEDAE4BC7114E199FFC /* IntakeDraft.swift in Sources */,
@@ -1190,6 +1194,7 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_KEY_CFBundleDisplayName = "DogCoach Studio";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Take a profile photo for a dog.";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Unlock DogCoach Studio and protect private training data.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1280,6 +1285,7 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_KEY_CFBundleDisplayName = "DogCoach Studio";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Take a profile photo for a dog.";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Unlock DogCoach Studio and protect private training data.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

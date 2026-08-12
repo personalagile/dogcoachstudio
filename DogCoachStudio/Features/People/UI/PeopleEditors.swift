@@ -1,4 +1,6 @@
+import PhotosUI
 import SwiftUI
+import UIKit
 
 struct ClientEditorView: View {
     @Environment(\.dismiss) private var dismiss
@@ -95,13 +97,18 @@ struct DogEditorView: View {
     @State private var safetyFlagsText: String
     @State private var hasBirthDate: Bool
     @State private var error: AppError?
+    @State private var selectedPhoto: PhotosPickerItem?
+    @State private var showsCamera = false
+    @State private var didSave = false
+    private let originalPhotoAssetID: String?
 
     init(model: PeopleFeatureModel, dog: DogSummary?) {
         self.model = model
         self.dog = dog
+        originalPhotoAssetID = dog?.photoAssetID
         _draft = State(initialValue: DogDraft(
             name: dog?.name ?? "",
-            photoAssetID: nil,
+            photoAssetID: dog?.photoAssetID,
             birthDate: dog?.birthDate,
             breedText: dog?.breedText,
             sexRawValue: dog?.sexRawValue,
@@ -116,6 +123,21 @@ struct DogEditorView: View {
         NavigationStack {
             Form {
                 Section("Dog") {
+                    HStack {
+                        Spacer()
+                        DogPhotoView(assetID: draft.photoAssetID, size: 132)
+                        Spacer()
+                    }
+                    PhotosPicker(selection: $selectedPhoto, matching: .images) {
+                        Label("Choose photo", systemImage: "photo.on.rectangle")
+                    }
+                    .accessibilityIdentifier("dogPhotoPicker")
+                    Button("Take photo", systemImage: "camera") { showsCamera = true }
+                        .disabled(!UIImagePickerController.isSourceTypeAvailable(.camera))
+                        .accessibilityIdentifier("dogCameraButton")
+                    if draft.photoAssetID != nil {
+                        Button("Remove photo", role: .destructive) { removePhoto() }
+                    }
                     TextField("Name", text: $draft.name)
                         .accessibilityIdentifier("dogNameField")
                     TextField("Breed", text: optionalBinding(\.breedText))
@@ -146,7 +168,47 @@ struct DogEditorView: View {
             .alert("Could not save dog", isPresented: errorBinding) { Button("OK") { } } message: {
                 Text(error?.userMessage ?? "")
             }
+            .onChange(of: selectedPhoto) { _, item in
+                guard let item else { return }
+                Task { await importPhoto(item) }
+            }
+            .sheet(isPresented: $showsCamera) {
+                CameraCaptureView { image in
+                    showsCamera = false
+                    storePhoto(image.jpegData(compressionQuality: 0.82))
+                }
+                .ignoresSafeArea()
+            }
+            .onDisappear {
+                if !didSave, let pendingID = draft.photoAssetID, pendingID != originalPhotoAssetID {
+                    DogPhotoStore.remove(pendingID)
+                }
+            }
         }
+    }
+
+    private func importPhoto(_ item: PhotosPickerItem) async {
+        do {
+            storePhoto(try await item.loadTransferable(type: Data.self))
+        } catch {
+            self.error = AppErrorMapper.map(error, operation: "dog.photo.import")
+        }
+    }
+
+    private func storePhoto(_ data: Data?) {
+        guard let data else { return }
+        do {
+            let oldID = draft.photoAssetID
+            draft.photoAssetID = try DogPhotoStore.save(data)
+            if let oldID, oldID != originalPhotoAssetID { DogPhotoStore.remove(oldID) }
+        } catch {
+            self.error = AppErrorMapper.map(error, operation: "dog.photo.save")
+        }
+    }
+
+    private func removePhoto() {
+        if let id = draft.photoAssetID, id != originalPhotoAssetID { DogPhotoStore.remove(id) }
+        draft.photoAssetID = nil
     }
 
     private func save() {
@@ -158,6 +220,10 @@ struct DogEditorView: View {
         do {
             if let dog { try model.editDog(id: dog.id, draft: draft) }
             else { try model.createDog(draft) }
+            if let originalPhotoAssetID, originalPhotoAssetID != draft.photoAssetID {
+                DogPhotoStore.remove(originalPhotoAssetID)
+            }
+            didSave = true
             dismiss()
         } catch {
             self.error = AppErrorMapper.map(error, operation: "dog.save")
