@@ -30,6 +30,25 @@ struct ClientDetailView: View {
                     .accessibilityIdentifier("clientDogLink")
                 }
             }
+            Section("Packages") {
+                let packages = model.packages(clientID: client.id)
+                if packages.isEmpty {
+                    Text("No packages").foregroundStyle(.secondary)
+                }
+                ForEach(packages) { package in
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack {
+                            Text(package.name).font(.headline)
+                            Spacer()
+                            Text(package.status.displayName).font(.caption).foregroundStyle(package.status.tint)
+                        }
+                        Text(package.dogName).font(.subheadline).foregroundStyle(.secondary)
+                        LabeledContent("Balance", value: NSDecimalNumber(decimal: package.balance).stringValue)
+                    }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityIdentifier("clientPackageRow")
+                }
+            }
             if let notes = client.privateNotes, !notes.isEmpty {
                 Section("Private trainer notes") { Text(notes) }
             }
@@ -162,4 +181,15 @@ private extension ClientDogRoleKind {
 
 private extension TrainingGoalStatus {
     var displayName: String { rawValue.capitalized }
+}
+
+private extension PackageLifecycleStatus {
+    var displayName: String { rawValue.capitalized }
+    var tint: Color {
+        switch self {
+        case .active: .green
+        case .exhausted, .expired: .orange
+        case .closed: .secondary
+        }
+    }
 }

@@ -81,6 +81,25 @@ struct PeopleUseCasesTests {
         #expect(try fixture.useCases.searchDogs(" luna ").map(\.id) == [active.id])
         #expect(Set(try fixture.useCases.searchDogs("LUNA", includeArchived: true).map(\.id)) == [active.id, archived.id])
     }
+
+    @Test("Client detail resolves packages through linked dogs and derives balance from ledger")
+    @MainActor
+    func clientPackages() throws {
+        let fixture = try PeopleFixture()
+        let client = try fixture.useCases.createClient(.init(displayName: "Package Owner"))
+        let dog = try fixture.useCases.createDog(.fixture(name: "Luna"))
+        try fixture.useCases.assignRole(clientID: client.id, dogID: dog.id, kind: .owner, isPrimaryContact: true)
+        let packageRepository = PackageLedgerRepository(context: fixture.context, uuid: SystemUUIDGenerator(), clock: fixture.clock)
+        let packageID = try packageRepository.createPackage(.init(dogID: dog.id, name: "Ten sessions", unitType: .session, initialUnits: 10, purchasedAt: fixture.clock.now(), expiresAt: nil, paymentStatus: .paid, price: nil, currencyCode: nil))
+        _ = try packageRepository.adjust(packageID: packageID, units: -2, reason: "Used before import")
+        let model = PeopleFeatureModel(context: fixture.context, clock: fixture.clock, uuidGenerator: SystemUUIDGenerator())
+
+        let package = try #require(model.packages(clientID: client.id).first)
+        #expect(package.dogName == "Luna")
+        #expect(package.name == "Ten sessions")
+        #expect(package.balance == 8)
+        #expect(package.status == .active)
+    }
 }
 
 @MainActor
@@ -89,6 +108,7 @@ private struct PeopleFixture {
     let context: ModelContext
     let repository: SwiftDataPeopleRepository
     let useCases: PeopleUseCases
+    let clock = FixedAppClock(date: Date(timeIntervalSince1970: 1_750_000_000))
 
     init() throws {
         container = try ModelContainerFactory.makeInMemory()
@@ -96,7 +116,7 @@ private struct PeopleFixture {
         repository = SwiftDataPeopleRepository(context: context)
         useCases = PeopleUseCases(
             repository: repository,
-            clock: FixedAppClock(date: Date(timeIntervalSince1970: 1_750_000_000)),
+            clock: clock,
             uuidGenerator: SystemUUIDGenerator()
         )
     }

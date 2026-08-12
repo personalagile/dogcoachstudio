@@ -51,6 +51,7 @@ final class PeopleFeatureModel {
     private let people: PeopleUseCases
     let intakeRepository: any IntakeRepository
     let goalRepository: any TrainingGoalRepository
+    private let packageRepository: PackageLedgerRepository
     let clock: any AppClock
     let uuidGenerator: any UUIDGenerating
 
@@ -74,6 +75,7 @@ final class PeopleFeatureModel {
         )
         intakeRepository = SwiftDataIntakeRepository(context: context)
         goalRepository = SwiftDataTrainingGoalRepository(context: context)
+        packageRepository = PackageLedgerRepository(context: context, uuid: uuidGenerator, clock: clock)
         self.clock = clock
         self.uuidGenerator = uuidGenerator
         reload()
@@ -173,6 +175,11 @@ final class PeopleFeatureModel {
 
     func intakeDrafts(dogID: UUID) -> [IntakeDraft] {
         (try? intakeRepository.drafts(for: dogID)) ?? []
+    }
+
+    func packages(clientID: UUID) -> [TrainingPackageSummary] {
+        let dogIDs = Set(dogs.filter { dog in dog.roles.contains { $0.clientID == clientID } }.map(\.id))
+        return ((try? packageRepository.summaries()) ?? []).filter { dogIDs.contains($0.dogID) }
     }
 
     private static func clientSummary(_ client: ClientRecord) -> ClientSummary {
