@@ -1,4 +1,5 @@
 import PhotosUI
+import Photos
 import SwiftUI
 import UIKit
 
@@ -98,8 +99,9 @@ struct DogEditorView: View {
     @State private var hasBirthDate: Bool
     @State private var error: AppError?
     @State private var selectedPhoto: PhotosPickerItem?
+    @State private var showsPhotoPicker = false
+    @State private var showsPhotoPermissionAlert = false
     @State private var showsCamera = false
-    @State private var didSave = false
     private let originalPhotoAssetID: String?
 
     init(model: PeopleFeatureModel, dog: DogSummary?) {
@@ -128,7 +130,9 @@ struct DogEditorView: View {
                         DogPhotoView(assetID: draft.photoAssetID, size: 132)
                         Spacer()
                     }
-                    PhotosPicker(selection: $selectedPhoto, matching: .images) {
+                    Button {
+                        requestPhotoAccess()
+                    } label: {
                         Label("Choose photo", systemImage: "photo.on.rectangle")
                     }
                     .accessibilityIdentifier("dogPhotoPicker")
@@ -158,7 +162,7 @@ struct DogEditorView: View {
             }
             .navigationTitle(dog == nil ? "New dog" : "Edit dog")
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { cancel() } }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") { save() }
                         .disabled(draft.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
@@ -172,6 +176,7 @@ struct DogEditorView: View {
                 guard let item else { return }
                 Task { await importPhoto(item) }
             }
+            .photosPicker(isPresented: $showsPhotoPicker, selection: $selectedPhoto, matching: .images)
             .sheet(isPresented: $showsCamera) {
                 CameraCaptureView { image in
                     showsCamera = false
@@ -179,10 +184,30 @@ struct DogEditorView: View {
                 }
                 .ignoresSafeArea()
             }
-            .onDisappear {
-                if !didSave, let pendingID = draft.photoAssetID, pendingID != originalPhotoAssetID {
-                    DogPhotoStore.remove(pendingID)
+            .alert("Photo access needed", isPresented: $showsPhotoPermissionAlert) {
+                Button("Open Settings") {
+                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
                 }
+                Button("Cancel", role: .cancel) { }
+            } message: {
+                Text("Allow photo access in Settings to select a dog photo.")
+            }
+            .interactiveDismissDisabled()
+        }
+    }
+
+    private func requestPhotoAccess() {
+        Task {
+            let status = await PHPhotoLibrary.requestAuthorization(for: .readWrite)
+            switch status {
+            case .authorized, .limited:
+                showsPhotoPicker = true
+            case .denied, .restricted:
+                showsPhotoPermissionAlert = true
+            case .notDetermined:
+                break
+            @unknown default:
+                showsPhotoPermissionAlert = true
             }
         }
     }
@@ -223,11 +248,17 @@ struct DogEditorView: View {
             if let originalPhotoAssetID, originalPhotoAssetID != draft.photoAssetID {
                 DogPhotoStore.remove(originalPhotoAssetID)
             }
-            didSave = true
             dismiss()
         } catch {
             self.error = AppErrorMapper.map(error, operation: "dog.save")
         }
+    }
+
+    private func cancel() {
+        if let pendingID = draft.photoAssetID, pendingID != originalPhotoAssetID {
+            DogPhotoStore.remove(pendingID)
+        }
+        dismiss()
     }
 
     private func optionalBinding(_ keyPath: WritableKeyPath<DogDraft, String?>) -> Binding<String> {

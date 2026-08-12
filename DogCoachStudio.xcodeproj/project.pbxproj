@@ -39,6 +39,7 @@
 		6267DC3DADEA876F2DDD00F3 /* DataBackupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AE119904176185BB13C2ED /* DataBackupService.swift */; };
 		64774025D1F2F70B8078D2FF /* DiagnosticExportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A31DE12E8E2ACE69F8B2BD6 /* DiagnosticExportTests.swift */; };
 		6797CB573184F2F1140DB97B /* IntakeDraftAutosave.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5B02FA83EDC16C2F4A8DB9 /* IntakeDraftAutosave.swift */; };
+		68EC44231A54C3A01E9FD573 /* DogPhotoStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1767F8DF4D6AE2B4F76A2C47 /* DogPhotoStoreTests.swift */; };
 		7469E745397BFC73B8106A2D /* PoCModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0922B16CD4E21463D60D6486 /* PoCModels.swift */; };
 		7B14166B2EB2E4AF9E033E0B /* Phase0CompletionSmokeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728FE7EE28262254C448F6DE /* Phase0CompletionSmokeTests.swift */; };
 		8017E1694EC7A2648397ED43 /* AppLockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0B045ED6B71FCB5D458A42 /* AppLockTests.swift */; };
@@ -127,6 +128,7 @@
 		0A31DE12E8E2ACE69F8B2BD6 /* DiagnosticExportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticExportTests.swift; sourceTree = "<group>"; };
 		0E9A4E5A4FAB3B238274462A /* SchemaV1ValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaV1ValidatorTests.swift; sourceTree = "<group>"; };
 		1124B1F7C9C94CA962239A24 /* CatalogDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogDomain.swift; sourceTree = "<group>"; };
+		1767F8DF4D6AE2B4F76A2C47 /* DogPhotoStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogPhotoStoreTests.swift; sourceTree = "<group>"; };
 		1DDD604D4BBA62EDDB6D68F9 /* DogCoachStudio.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DogCoachStudio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22405B0B6CA30BC50C1FC22B /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		2480331F3109B8047FABFF0F /* ContentPackDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPackDocument.swift; sourceTree = "<group>"; };
@@ -527,6 +529,7 @@
 			isa = PBXGroup;
 			children = (
 				9F00FA3709706DB4E6707603 /* ClientDogRoleTests.swift */,
+				1767F8DF4D6AE2B4F76A2C47 /* DogPhotoStoreTests.swift */,
 				9FDB5B7722D15769AB240A52 /* PeopleUseCasesTests.swift */,
 			);
 			path = People;
@@ -1143,6 +1146,7 @@
 				623056E769B16DC312060E62 /* CommerceAndCatalogTests.swift in Sources */,
 				5A92D6DD1AA625219F6363D2 /* DataControlTests.swift in Sources */,
 				64774025D1F2F70B8078D2FF /* DiagnosticExportTests.swift in Sources */,
+				68EC44231A54C3A01E9FD573 /* DogPhotoStoreTests.swift in Sources */,
 				97C9A4079F5E991C5C71A63D /* IntakeDraftTests.swift in Sources */,
 				E5D3CC15AE6CE987B0179E51 /* PackageAndReportTests.swift in Sources */,
 				F93A01BF348570A62059959F /* PeopleUseCasesTests.swift in Sources */,
@@ -1196,6 +1200,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "DogCoach Studio";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Take a profile photo for a dog.";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Unlock DogCoach Studio and protect private training data.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Choose a profile photo for a dog.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1287,6 +1292,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "DogCoach Studio";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Take a profile photo for a dog.";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Unlock DogCoach Studio and protect private training data.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Choose a profile photo for a dog.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				LD_RUNPATH_SEARCH_PATHS = (

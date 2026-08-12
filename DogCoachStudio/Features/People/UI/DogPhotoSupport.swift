@@ -2,19 +2,28 @@ import SwiftUI
 import UIKit
 
 enum DogPhotoStore {
-    private static var directory: URL {
-        let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+    private static let directory: URL = {
+        let base = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         return base.appending(path: "DogPhotos", directoryHint: .isDirectory)
-    }
+    }()
 
     static func save(_ data: Data) throws -> String {
+        guard let image = UIImage(data: data), let normalized = image.jpegData(compressionQuality: 0.82) else {
+            throw CocoaError(.fileReadCorruptFile)
+        }
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         let id = UUID().uuidString + ".jpg"
-        try data.write(to: directory.appending(path: id), options: .atomic)
+        let destination = directory.appendingPathComponent(id, isDirectory: false)
+        try normalized.write(to: destination, options: .atomic)
+        guard FileManager.default.fileExists(atPath: destination.path) else {
+            throw CocoaError(.fileWriteUnknown)
+        }
         return id
     }
 
-    static func url(for id: String) -> URL { directory.appending(path: id) }
+    static func url(for id: String) -> URL { directory.appendingPathComponent(id, isDirectory: false) }
+
+    static func contains(_ id: String) -> Bool { FileManager.default.fileExists(atPath: url(for: id).path()) }
 
     static func remove(_ id: String) {
         try? FileManager.default.removeItem(at: url(for: id))
