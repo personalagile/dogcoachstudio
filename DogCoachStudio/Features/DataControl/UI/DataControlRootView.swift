@@ -7,6 +7,10 @@ struct DataControlRootView: View {
     @State private var exportStatus: String?
     @State private var isExporting = false
     @State private var backupURL: URL?
+    @AppStorage("notifications.sessions") private var sessionReminders = false
+    @AppStorage("notifications.birthdays") private var birthdayReminders = false
+    @AppStorage("notifications.evaluations") private var evaluationReminders = false
+    @State private var notificationStatus: String?
 
     var body: some View {
         NavigationStack {
@@ -48,6 +52,19 @@ struct DataControlRootView: View {
                         .foregroundStyle(.secondary)
                 }
 
+                Section("Notifications") {
+                    Toggle("Session reminders", isOn: $sessionReminders)
+                        .accessibilityIdentifier("sessionReminderToggle")
+                    Toggle("Dog birthday reminders", isOn: $birthdayReminders)
+                        .accessibilityIdentifier("birthdayReminderToggle")
+                    Toggle("Unevaluated training reminders", isOn: $evaluationReminders)
+                        .accessibilityIdentifier("evaluationReminderToggle")
+                    if let notificationStatus { Text(notificationStatus).font(.footnote).foregroundStyle(.secondary) }
+                }
+                .onChange(of: sessionReminders) { updateNotifications() }
+                .onChange(of: birthdayReminders) { updateNotifications() }
+                .onChange(of: evaluationReminders) { updateNotifications() }
+
                 Section("Pilot support") {
                     Button {
                         Task { await createDiagnostics() }
@@ -62,6 +79,31 @@ struct DataControlRootView: View {
             }
             .navigationTitle("Data & Privacy")
             .accessibilityIdentifier("dataControlRoot")
+            .task { await rescheduleNotifications(requestPermission: false) }
+        }
+    }
+
+    private func updateNotifications() {
+        Task { await rescheduleNotifications(requestPermission: sessionReminders || birthdayReminders || evaluationReminders) }
+    }
+
+    @MainActor
+    private func rescheduleNotifications(requestPermission: Bool) async {
+        do {
+            let service = LocalNotificationService()
+            if requestPermission, !(try await service.requestAuthorization()) {
+                sessionReminders = false; birthdayReminders = false; evaluationReminders = false
+                notificationStatus = String(localized: "Notifications are disabled in Settings.")
+                return
+            }
+            try await service.reschedule(
+                context: environment.persistence.mainContext,
+                preferences: .init(sessionReminders: sessionReminders, birthdayReminders: birthdayReminders, evaluationReminders: evaluationReminders),
+                now: environment.clock.now()
+            )
+            notificationStatus = String(localized: "Notification schedule updated.")
+        } catch {
+            notificationStatus = String(localized: "Notifications could not be scheduled.")
         }
     }
 

@@ -5509,6 +5509,83 @@
         "fr": { "stringUnit": { "state": "translated", "value": "Partager l’évaluation en PDF" } }
       }
     },
+    "Dog birthday": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Hundegeburtstag" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Cumpleaños del perro" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Anniversaire du chien" } }
+      }
+    },
+    "Dog birthday reminders": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "An Hundegeburtstage erinnern" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Recordatorios de cumpleaños de perros" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Rappels d’anniversaire des chiens" } }
+      }
+    },
+    "Notification schedule updated.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Benachrichtigungen wurden aktualisiert." } },
+        "es": { "stringUnit": { "state": "translated", "value": "Se actualizaron las notificaciones." } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Les notifications ont été mises à jour." } }
+      }
+    },
+    "Notifications": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Benachrichtigungen" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Notificaciones" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Notifications" } }
+      }
+    },
+    "Notifications are disabled in Settings.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Benachrichtigungen sind in den Einstellungen deaktiviert." } },
+        "es": { "stringUnit": { "state": "translated", "value": "Las notificaciones están desactivadas en Ajustes." } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Les notifications sont désactivées dans Réglages." } }
+      }
+    },
+    "Notifications could not be scheduled.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Benachrichtigungen konnten nicht geplant werden." } },
+        "es": { "stringUnit": { "state": "translated", "value": "No se pudieron programar las notificaciones." } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Impossible de programmer les notifications." } }
+      }
+    },
+    "Session reminders": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Session-Erinnerungen" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Recordatorios de sesiones" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Rappels de séances" } }
+      }
+    },
+    "Today is %@'s birthday.": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Heute hat %@ Geburtstag." } },
+        "es": { "stringUnit": { "state": "translated", "value": "Hoy es el cumpleaños de %@." } },
+        "fr": { "stringUnit": { "state": "translated", "value": "C’est l’anniversaire de %@ aujourd’hui." } }
+      }
+    },
+    "Training still needs evaluation": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Training muss noch bewertet werden" } },
+        "es": { "stringUnit": { "state": "translated", "value": "El entrenamiento aún debe evaluarse" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "L’entraînement doit encore être évalué" } }
+      }
+    },
+    "Unevaluated training reminders": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "An unbewertete Trainings erinnern" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Recordatorios de entrenamientos sin evaluar" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Rappels d’entraînements non évalués" } }
+      }
+    },
+    "Upcoming session": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Bevorstehende Session" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Próxima sesión" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Séance à venir" } }
+      }
+    },
     "Your data": {
       "localizations": {
         "de": {

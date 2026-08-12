@@ -51,6 +51,13 @@ private struct ConfiguredAppRoot: View {
                         .task {
                             await environment.diagnostics.record(category: .app, code: .appLaunched)
                         }
+                        .task(id: environment.dataChanges.revision) {
+                            try? await LocalNotificationService().reschedule(
+                                context: environment.persistence.mainContext,
+                                preferences: .stored(),
+                                now: environment.clock.now()
+                            )
+                        }
     }
 }
 
