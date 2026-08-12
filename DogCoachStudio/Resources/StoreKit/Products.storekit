@@ -1,0 +1,45 @@
+{
+  "identifier" : "dogcoach-products",
+  "nonRenewingSubscriptions" : [ ],
+  "products" : [
+    {
+      "displayPrice" : "19.99",
+      "familyShareable" : false,
+      "internalID" : "foundation-pack",
+      "localizations" : [
+        { "description" : "Five reviewed foundation exercises and two lesson templates.", "displayName" : "Foundation Pack", "locale" : "en_US" },
+        { "description" : "Fünf geprüfte Grundlagenübungen und zwei Stundenpläne.", "displayName" : "Grundlagenpaket", "locale" : "de_DE" }
+      ],
+      "productID" : "studio.dogcoach.pack.foundation",
+      "referenceName" : "Foundation Pack",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : { "_applicationInternalID" : "dogcoach-studio", "_developerTeamID" : "", "_failTransactionsEnabled" : false, "_locale" : "en_US", "_storefront" : "USA", "_timeRate" : 1 },
+  "subscriptionGroups" : [
+    {
+      "id" : "dogcoach-pro",
+      "localizations" : [ ],
+      "name" : "DogCoach Pro",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [ ], "codeOffers" : [ ], "displayPrice" : "9.99", "familyShareable" : false, "groupNumber" : 1, "internalID" : "pro-monthly",
+          "localizations" : [
+            { "description" : "Create sessions, reports and package records.", "displayName" : "DogCoach Pro Monthly", "locale" : "en_US" },
+            { "description" : "Termine, Berichte und Paketbuchungen erstellen.", "displayName" : "DogCoach Pro monatlich", "locale" : "de_DE" }
+          ],
+          "productID" : "studio.dogcoach.pro.monthly", "recurringSubscriptionPeriod" : "P1M", "referenceName" : "Pro Monthly", "subscriptionGroupID" : "dogcoach-pro", "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [ ], "codeOffers" : [ ], "displayPrice" : "89.99", "familyShareable" : false, "groupNumber" : 1, "internalID" : "pro-annual",
+          "localizations" : [
+            { "description" : "Create sessions, reports and package records for one year.", "displayName" : "DogCoach Pro Annual", "locale" : "en_US" },
+            { "description" : "Termine, Berichte und Paketbuchungen für ein Jahr erstellen.", "displayName" : "DogCoach Pro jährlich", "locale" : "de_DE" }
+          ],
+          "productID" : "studio.dogcoach.pro.annual", "recurringSubscriptionPeriod" : "P1Y", "referenceName" : "Pro Annual", "subscriptionGroupID" : "dogcoach-pro", "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : { "major" : 3, "minor" : 0 }
+}

@@ -69,6 +69,8 @@ private struct AppRootView: View {
             PackagesRootView(environment: environment, seedDemo: true)
         } else if ProcessInfo.processInfo.arguments.contains("--phase6-uitesting") {
             DataControlRootView(environment: environment, appLockEnabled: appLockEnabled)
+        } else if ProcessInfo.processInfo.arguments.contains("--phase7-uitesting") {
+            PaywallView()
         } else {
             TabView {
                 Tab("People", systemImage: "person.2") { PeopleRootView(environment: environment) }
@@ -76,6 +78,7 @@ private struct AppRootView: View {
                 Tab("Sessions", systemImage: "calendar") { SessionsRootView(environment: environment) }
                 Tab("Packages", systemImage: "ticket") { PackagesRootView(environment: environment) }
                 Tab("Data", systemImage: "lock.doc") { DataControlRootView(environment: environment, appLockEnabled: appLockEnabled) }
+                Tab("Upgrade", systemImage: "sparkles") { PaywallView() }
                 Tab("Completion demo", systemImage: "checkmark.circle") { SessionCompletionView() }
             }
             .accessibilityIdentifier("appRootTabs")

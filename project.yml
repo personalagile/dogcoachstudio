@@ -30,6 +30,7 @@ targets:
         INFOPLIST_KEY_NSFaceIDUsageDescription: "Unlock DogCoach Studio and protect private training data."
         ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: YES
     scheme:
+      storeKitConfiguration: DogCoachStudio/Resources/StoreKit/Products.storekit
       testTargets:
         - DogCoachStudioTests
         - DogCoachStudioUITests

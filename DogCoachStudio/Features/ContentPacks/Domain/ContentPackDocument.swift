@@ -44,7 +44,7 @@ struct PackedTemplate: Decodable, Sendable {
     let id: UUID; let version: Int; let title: String; let audience: String; let targetDurationMinutes: Int; let trainerNotes: String?; let exerciseItems: [Item]; let reviewStatus: ContentReviewStatus
 }
 
-enum ContentPackError: Error, Equatable { case malformed, unsupportedSchema, invalidSemanticVersion, missingMetadata, notApproved, duplicateID, invalidReference, durationMismatch, checksumMismatch }
+enum ContentPackError: Error, Equatable { case malformed, unsupportedSchema, invalidSemanticVersion, missingMetadata, notApproved, missingRequiredLocale, unsupportedRiskLevel, duplicateID, invalidReference, durationMismatch, checksumMismatch }
 
 enum ContentPackValidator {
     static func decodeAndValidate(_ data: Data) throws -> ContentPackDocument {
@@ -53,6 +53,8 @@ enum ContentPackValidator {
         guard pack.packVersion.range(of: #"^\d+\.\d+\.\d+$"#, options: .regularExpression) != nil else { throw ContentPackError.invalidSemanticVersion }
         guard !pack.author.isEmpty, !pack.license.isEmpty, !pack.methodologyNote.isEmpty else { throw ContentPackError.missingMetadata }
         guard pack.reviewStatus == .approved, pack.exercises.allSatisfy({ $0.localizations.values.allSatisfy { $0.reviewStatus == .approved } }), pack.templates.allSatisfy({ $0.reviewStatus == .approved }) else { throw ContentPackError.notApproved }
+        guard pack.exercises.allSatisfy({ Set($0.localizations.keys) == Set(["de", "en"]) }) else { throw ContentPackError.missingRequiredLocale }
+        guard pack.exercises.allSatisfy({ $0.metadata.safetyLevel == .standard }) else { throw ContentPackError.unsupportedRiskLevel }
         guard Set(pack.exercises.map(\.id)).count == pack.exercises.count, Set(pack.templates.map(\.id)).count == pack.templates.count else { throw ContentPackError.duplicateID }
         let exerciseIDs = Set(pack.exercises.map(\.id))
         guard pack.templates.flatMap(\.exerciseItems).allSatisfy({ exerciseIDs.contains($0.exerciseID) }) else { throw ContentPackError.invalidReference }
