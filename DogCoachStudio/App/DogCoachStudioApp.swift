@@ -76,12 +76,15 @@ private struct AppRootView: View {
             DataControlRootView(environment: environment, appLockEnabled: appLockEnabled)
         } else if ProcessInfo.processInfo.arguments.contains("--phase7-uitesting") {
             PaywallView()
+        } else if ProcessInfo.processInfo.arguments.contains("--phase16-uitesting") {
+            FinanceRootView(environment: environment, seedDemo: true)
         } else {
             TabView {
                 Tab("People", systemImage: "person.2") { PeopleRootView(environment: environment) }
                 Tab("Catalog", systemImage: "books.vertical") { CatalogRootView(environment: environment) }
                 Tab("Sessions", systemImage: "calendar") { SessionsRootView(environment: environment) }
                 Tab("Packages", systemImage: "ticket") { PackagesRootView(environment: environment) }
+                Tab("Finance", systemImage: "chart.bar.xaxis") { FinanceRootView(environment: environment) }
                 Tab("Data", systemImage: "lock.doc") { DataControlRootView(environment: environment, appLockEnabled: appLockEnabled) }
                 Tab("Upgrade", systemImage: "sparkles") { PaywallView() }
             }

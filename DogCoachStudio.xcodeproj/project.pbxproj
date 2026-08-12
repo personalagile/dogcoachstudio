@@ -27,6 +27,7 @@
 		3C12B975302EB46D929694FA /* TrainingTemplateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1AB00BC6A9872DD6FB26EF /* TrainingTemplateRepository.swift */; };
 		40C7E7554CA0174181968A72 /* Phase13SystemFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2D5DDE16955067BA67031B /* Phase13SystemFlowTests.swift */; };
 		413AB901617200BCE87360ED /* ModelContainerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71242865871BEA355BF0262F /* ModelContainerFactory.swift */; };
+		4452B80743766D66AA472A4F /* Phase16FinanceFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB1C8297C7387C0B240611E /* Phase16FinanceFlowTests.swift */; };
 		44F8B6D6B75FDA022E1077B7 /* ContentPackDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2480331F3109B8047FABFF0F /* ContentPackDocument.swift */; };
 		4629A66F0EC301C22461B412 /* SessionDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C312E4540E7401DAEA151FC /* SessionDomain.swift */; };
 		46B37345AABD161378F26965 /* Products.storekit in Resources */ = {isa = PBXBuildFile; fileRef = B82D8D1DAB96AA60492CBA9F /* Products.storekit */; };
@@ -42,8 +43,10 @@
 		65C9A2D68DC8F76FF7A3D452 /* IntakePDFExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EC89F2A479121E85A9BB52 /* IntakePDFExporter.swift */; };
 		6797CB573184F2F1140DB97B /* IntakeDraftAutosave.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5B02FA83EDC16C2F4A8DB9 /* IntakeDraftAutosave.swift */; };
 		68EC44231A54C3A01E9FD573 /* DogPhotoStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1767F8DF4D6AE2B4F76A2C47 /* DogPhotoStoreTests.swift */; };
+		784DEF5FDC81317895542E33 /* FinancePhase16Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291FAA251BC951BF45326C26 /* FinancePhase16Tests.swift */; };
 		8017E1694EC7A2648397ED43 /* AppLockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0B045ED6B71FCB5D458A42 /* AppLockTests.swift */; };
 		8068D705E16004C8D6776D66 /* ContentModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9AE1A2A6ED7E39291C6195 /* ContentModels.swift */; };
+		80E8B6F52A3C432AD7AA33D7 /* FinanceCSVExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36776CF6BF94DBFCB5CFDCBE /* FinanceCSVExporter.swift */; };
 		86EB16609ECD3B5E64D97106 /* SessionsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060B272F0E5C70376FC91C78 /* SessionsRootView.swift */; };
 		880593F7336DDBE4FF33937E /* PersistenceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941F2295C323003B049EF37C /* PersistenceProvider.swift */; };
 		8909693B76820A1CCA0AA2E4 /* AppleContactsIntegration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CF1800FC2956050FAE0B1E /* AppleContactsIntegration.swift */; };
@@ -52,6 +55,7 @@
 		9389605DE98CF2BF28A374D4 /* SyncSpike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F70F7F964E0DD316D28FE58 /* SyncSpike.swift */; };
 		94EE5AA54AEDC1A0050A5DF9 /* PackageModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31770C96C7BFF110D00C10E3 /* PackageModels.swift */; };
 		97C9A4079F5E991C5C71A63D /* IntakeDraftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769A74746AB14453D09FCA38 /* IntakeDraftTests.swift */; };
+		99E253163C4CEB66B46702CC /* FinanceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AF3A517EE5497C021BEED2 /* FinanceRepository.swift */; };
 		9DB7992786859AB78EFAA18C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B4D876647427A02F3F5CE167 /* Localizable.xcstrings */; };
 		9E029F0EA2E54C4B9D5351C4 /* SessionPhase4Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E53AFA3E09E90F54944A3C9 /* SessionPhase4Tests.swift */; };
 		A14D773D2EF4CD697E08B4C8 /* Phase6DataControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF096E3A67C2F20A61033E1 /* Phase6DataControlTests.swift */; };
@@ -90,8 +94,10 @@
 		E86C6DF785FEAE0A5F82781E /* TrainingGoalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061109A51109C155DCF8C9FC /* TrainingGoalRepository.swift */; };
 		EC0A99A923C7A2998927A85E /* TemplateDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C4C8E041763B95792B28B3 /* TemplateDomain.swift */; };
 		ED61A7F8E6A78ACCA9143963 /* NotificationPlannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D6638119E19C14E4508E314 /* NotificationPlannerTests.swift */; };
+		ED8E0BB204D438380EC620FF /* FinanceDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1B3FC5DF4E9232A5F52A8F /* FinanceDomain.swift */; };
 		EF032B6120CF62E16072BAA3 /* SyncAndHardeningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E532510D836FD061014B84B6 /* SyncAndHardeningTests.swift */; };
 		EFCBF166A5F83E9E7AA762AD /* IntakeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE9A941C537C272B0DE6B6 /* IntakeRepository.swift */; };
+		F195FFB2804C282E96AF21A7 /* FinanceRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4603C185B083499A48DFEF2 /* FinanceRootView.swift */; };
 		F31CBA4EF166D3113AD89082 /* DogPhotoSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F975FBBDDF6BA1C9602267 /* DogPhotoSupport.swift */; };
 		F391C41E1463A1BA44DDCD95 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F495584603391EA367A0F2F8 /* AppError.swift */; };
 		F506A364E609FCA5FEC8A51C /* AppErrorMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DABF5A9B22638916F3B782 /* AppErrorMappingTests.swift */; };
@@ -137,11 +143,13 @@
 		22405B0B6CA30BC50C1FC22B /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		2480331F3109B8047FABFF0F /* ContentPackDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPackDocument.swift; sourceTree = "<group>"; };
 		280B5D554BC181B7463FAFC3 /* ExerciseMediaAndContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMediaAndContentTests.swift; sourceTree = "<group>"; };
+		291FAA251BC951BF45326C26 /* FinancePhase16Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinancePhase16Tests.swift; sourceTree = "<group>"; };
 		2CE3F04F8860040A25A34C2B /* SessionCompletionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCompletionService.swift; sourceTree = "<group>"; };
 		2D7F1E52AB4B3EF7D08D45D4 /* NotificationPlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPlanner.swift; sourceTree = "<group>"; };
 		2E05E60F99DCB117FE88AE75 /* EntitlementDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitlementDomain.swift; sourceTree = "<group>"; };
 		2E57391333BF794993FE8ED7 /* CatalogRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogRootView.swift; sourceTree = "<group>"; };
 		31770C96C7BFF110D00C10E3 /* PackageModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageModels.swift; sourceTree = "<group>"; };
+		36776CF6BF94DBFCB5CFDCBE /* FinanceCSVExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceCSVExporter.swift; sourceTree = "<group>"; };
 		3810B4CF7EA84FDCE15C5E2A /* foundation-v1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "foundation-v1.json"; sourceTree = "<group>"; };
 		42DA89BE78168B8A93FE7C71 /* PeopleRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleRootView.swift; sourceTree = "<group>"; };
 		42DEE172E7B34964FA6AB6AB /* TrainingGoalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingGoalTests.swift; sourceTree = "<group>"; };
@@ -193,13 +201,17 @@
 		A9E094C938FFF8B798A42694 /* DataControlRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataControlRootView.swift; sourceTree = "<group>"; };
 		AAA7538FCAFEB74706A704C6 /* Diagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diagnostics.swift; sourceTree = "<group>"; };
 		B31E5FDE27DCA7DE5DE7E3D9 /* SchemaV1PersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaV1PersistenceTests.swift; sourceTree = "<group>"; };
+		B4603C185B083499A48DFEF2 /* FinanceRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceRootView.swift; sourceTree = "<group>"; };
 		B4D876647427A02F3F5CE167 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		B52A21F16C3D2229C0A3B674 /* PackageOwnershipAndSessionLabelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageOwnershipAndSessionLabelsTests.swift; sourceTree = "<group>"; };
 		B82D8D1DAB96AA60492CBA9F /* Products.storekit */ = {isa = PBXFileReference; path = Products.storekit; sourceTree = "<group>"; };
 		B9D115AD309AD047B010FC72 /* content-pack-v1.schema.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "content-pack-v1.schema.json"; sourceTree = "<group>"; };
+		BE1B3FC5DF4E9232A5F52A8F /* FinanceDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceDomain.swift; sourceTree = "<group>"; };
+		C0AF3A517EE5497C021BEED2 /* FinanceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceRepository.swift; sourceTree = "<group>"; };
 		C44B15B95B7DC8960BC27B65 /* MarketingScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketingScreenshotTests.swift; sourceTree = "<group>"; };
 		C74984B6C93887A8F2505E7E /* TrainingGoal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingGoal.swift; sourceTree = "<group>"; };
 		CBAC47A9E9EA348A7ACB4626 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CEB1C8297C7387C0B240611E /* Phase16FinanceFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase16FinanceFlowTests.swift; sourceTree = "<group>"; };
 		CF01272775A61269969E91D9 /* ReportRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRepository.swift; sourceTree = "<group>"; };
 		CF580128DB016449D6010C4E /* PeopleUseCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleUseCases.swift; sourceTree = "<group>"; };
 		D075FDD1F407DC8A2FFBCB85 /* Phase3CatalogFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase3CatalogFlowTests.swift; sourceTree = "<group>"; };
@@ -258,6 +270,14 @@
 				59B84BDAE678862742001133 /* AppDependencies.swift */,
 			);
 			path = Dependencies;
+			sourceTree = "<group>";
+		};
+		11E1DB57989A72F58737CAB5 /* Phase16 */ = {
+			isa = PBXGroup;
+			children = (
+				291FAA251BC951BF45326C26 /* FinancePhase16Tests.swift */,
+			);
+			path = Phase16;
 			sourceTree = "<group>";
 		};
 		15696CC308304FBCA775D7FA /* StoreKit */ = {
@@ -366,6 +386,14 @@
 			path = Phase15;
 			sourceTree = "<group>";
 		};
+		2AC219CCA0E83A4533143932 /* Export */ = {
+			isa = PBXGroup;
+			children = (
+				36776CF6BF94DBFCB5CFDCBE /* FinanceCSVExporter.swift */,
+			);
+			path = Export;
+			sourceTree = "<group>";
+		};
 		2BB2C3C8B555716B69F9F79D /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -418,6 +446,7 @@
 				6A1A7794643AE8925D331F52 /* Commerce */,
 				FF5BBE1905D4691028AA70B2 /* ContentPacks */,
 				9497774EBD9452622AF3CEC0 /* DataControl */,
+				C72888461DF697EAA9491E43 /* Finance */,
 				FCE31405A5A9A6F8E32A7B36 /* Intake */,
 				E5527896051B106B04928C72 /* Notifications */,
 				75B7D7DBF1F1C57DC2F1EC3E /* Packages */,
@@ -466,6 +495,14 @@
 			isa = PBXGroup;
 			children = (
 				9BF2E0298B952F1616B6DBAF /* PackagesRootView.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		4B61F5D566A9ED5590F608D8 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				B4603C185B083499A48DFEF2 /* FinanceRootView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -661,6 +698,14 @@
 			path = Diagnostics;
 			sourceTree = "<group>";
 		};
+		989D817C8081C3039260491E /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				BE1B3FC5DF4E9232A5F52A8F /* FinanceDomain.swift */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
 		9AF02E6ECE59424ECD043F30 /* ContentPacks */ = {
 			isa = PBXGroup;
 			children = (
@@ -753,6 +798,7 @@
 				1ED9C07817EFA8823C1BD65E /* Phase13 */,
 				214CA38C4C21CA5000D3A50E /* Phase14 */,
 				29972CE493F99A58AE1D819C /* Phase15 */,
+				11E1DB57989A72F58737CAB5 /* Phase16 */,
 			);
 			path = DogCoachStudioTests;
 			sourceTree = "<group>";
@@ -824,12 +870,31 @@
 			path = People;
 			sourceTree = "<group>";
 		};
+		C72888461DF697EAA9491E43 /* Finance */ = {
+			isa = PBXGroup;
+			children = (
+				D2806073F2BEFD74BEF6363C /* Data */,
+				989D817C8081C3039260491E /* Domain */,
+				2AC219CCA0E83A4533143932 /* Export */,
+				4B61F5D566A9ED5590F608D8 /* UI */,
+			);
+			path = Finance;
+			sourceTree = "<group>";
+		};
 		CB2E889B1029509FAA1659E0 /* UI */ = {
 			isa = PBXGroup;
 			children = (
 				E410FE3E2CC625AD2242CCEA /* PaywallView.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		D2806073F2BEFD74BEF6363C /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				C0AF3A517EE5497C021BEED2 /* FinanceRepository.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 		D4F8488CFDD7BD679B13D7C8 /* DogCoachStudioUITests */ = {
@@ -843,6 +908,7 @@
 				8CF096E3A67C2F20A61033E1 /* Phase6DataControlTests.swift */,
 				F9C562BF994ACBA03D25EF75 /* Phase7PaywallTests.swift */,
 				DC2D5DDE16955067BA67031B /* Phase13SystemFlowTests.swift */,
+				CEB1C8297C7387C0B240611E /* Phase16FinanceFlowTests.swift */,
 			);
 			path = DogCoachStudioUITests;
 			sourceTree = "<group>";
@@ -1143,6 +1209,10 @@
 				4F763CF87738D87CE65FF6A3 /* EntitlementDomain.swift in Sources */,
 				A456471931B895AD07D29DA5 /* ExerciseMediaLibrary.swift in Sources */,
 				ACCE6628673B8EFD868032D7 /* ExerciseRepository.swift in Sources */,
+				80E8B6F52A3C432AD7AA33D7 /* FinanceCSVExporter.swift in Sources */,
+				ED8E0BB204D438380EC620FF /* FinanceDomain.swift in Sources */,
+				99E253163C4CEB66B46702CC /* FinanceRepository.swift in Sources */,
+				F195FFB2804C282E96AF21A7 /* FinanceRootView.swift in Sources */,
 				D1ED9AEDAE4BC7114E199FFC /* IntakeDraft.swift in Sources */,
 				6797CB573184F2F1140DB97B /* IntakeDraftAutosave.swift in Sources */,
 				65C9A2D68DC8F76FF7A3D452 /* IntakePDFExporter.swift in Sources */,
@@ -1190,6 +1260,7 @@
 			files = (
 				0740D4D889634086C2E93A02 /* MarketingScreenshotTests.swift in Sources */,
 				40C7E7554CA0174181968A72 /* Phase13SystemFlowTests.swift in Sources */,
+				4452B80743766D66AA472A4F /* Phase16FinanceFlowTests.swift in Sources */,
 				F955346A4E191EB70F3C8A12 /* Phase2PeopleFlowTests.swift in Sources */,
 				1E4CCEA3972E393A8114AA30 /* Phase3CatalogFlowTests.swift in Sources */,
 				A1EE960466C582460A1EA927 /* Phase4SessionFlowTests.swift in Sources */,
@@ -1213,6 +1284,7 @@
 				64774025D1F2F70B8078D2FF /* DiagnosticExportTests.swift in Sources */,
 				68EC44231A54C3A01E9FD573 /* DogPhotoStoreTests.swift in Sources */,
 				240A0884A6B02A2245AB840F /* ExerciseMediaAndContentTests.swift in Sources */,
+				784DEF5FDC81317895542E33 /* FinancePhase16Tests.swift in Sources */,
 				97C9A4079F5E991C5C71A63D /* IntakeDraftTests.swift in Sources */,
 				ED61A7F8E6A78ACCA9143963 /* NotificationPlannerTests.swift in Sources */,
 				E5D3CC15AE6CE987B0179E51 /* PackageAndReportTests.swift in Sources */,
@@ -1272,6 +1344,8 @@
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Choose a profile photo for a dog.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1366,6 +1440,8 @@
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Choose a profile photo for a dog.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

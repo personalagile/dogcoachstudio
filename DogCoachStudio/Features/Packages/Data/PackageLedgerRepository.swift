@@ -123,7 +123,10 @@ final class PackageLedgerRepository {
         guard original.kindRawValue != PackageLedgerKind.reversal.rawValue else { throw PackageDomainError.reversalRequired }
         guard !entries.contains(where: { $0.reversesEntryID == entryID }) else { throw PackageDomainError.entryAlreadyReversed }
         let id = try append(packageID: original.packageID, kind: .reversal, units: -original.unitDelta, reason: reason)
-        let reversal = try context.fetch(FetchDescriptor<PackageLedgerEntryRecord>()).first { $0.id == id }!; reversal.reversesEntryID = original.id; reversal.reversesEntry = original; try context.save(); return id
+        let reversal = try context.fetch(FetchDescriptor<PackageLedgerEntryRecord>()).first { $0.id == id }!
+        reversal.reversesEntryID = original.id; reversal.reversesEntry = original
+        reversal.moneyDelta = original.moneyDelta.map { -$0 }; reversal.currencyCode = original.currencyCode
+        try context.save(); return id
     }
 
     func issueCoupon(_ draft: CouponDraft) throws -> UUID {

@@ -28,6 +28,8 @@ targets:
         INFOPLIST_KEY_CFBundleDisplayName: DogCoach Studio
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
         INFOPLIST_KEY_NSFaceIDUsageDescription: "Unlock DogCoach Studio and protect private training data."
         INFOPLIST_KEY_NSCameraUsageDescription: "Take a profile photo for a dog."
         INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "Choose a profile photo for a dog."
