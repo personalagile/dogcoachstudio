@@ -22,7 +22,7 @@ struct PackedExercise: Decodable, Sendable {
     let id: UUID; let version: Int; let metadata: Metadata; let localizations: [String: ExerciseLocalizationDraft]
 
     private struct LocalizationPayload: Decodable {
-        let title: String; let goal: String; let setup: String; let steps: [String]; let successCriteria: [String]; let commonErrors: [String]
+        let title: String; let goal: String; let setup: String; let steps: [String]; let successCriteria: [String]; let commonErrors: [String]; let correctiveMeasures: [String]?
         let regression: String; let progression: String; let homework: String; let safetyNotes: String; let reviewStatus: ContentReviewStatus
     }
 
@@ -32,7 +32,7 @@ struct PackedExercise: Decodable, Sendable {
         id = try values.decode(UUID.self, forKey: .id); version = try values.decode(Int.self, forKey: .version); metadata = try values.decode(Metadata.self, forKey: .metadata)
         let payloads = try values.decode([String: LocalizationPayload].self, forKey: .localizations)
         let drafts = payloads.mapValues { value in
-            ExerciseLocalizationDraft(localeIdentifier: "", title: value.title, goal: value.goal, setup: value.setup, steps: value.steps, successCriteria: value.successCriteria, commonErrors: value.commonErrors, regression: value.regression, progression: value.progression, homework: value.homework, safetyNotes: value.safetyNotes, reviewStatus: value.reviewStatus)
+            ExerciseLocalizationDraft(localeIdentifier: "", title: value.title, goal: value.goal, setup: value.setup, steps: value.steps, successCriteria: value.successCriteria, commonErrors: value.commonErrors, correctiveMeasures: value.correctiveMeasures ?? [], regression: value.regression, progression: value.progression, homework: value.homework, safetyNotes: value.safetyNotes, reviewStatus: value.reviewStatus)
         }
         localizations = Dictionary(uniqueKeysWithValues: drafts.map { key, value in
             var localized = value; localized.localeIdentifier = key; return (key, localized)

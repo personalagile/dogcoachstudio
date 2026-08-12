@@ -89,7 +89,9 @@ final class SwiftDataExerciseRepository: ExerciseRepository {
         version.localizations = draft.localizations.map { item in
             let record = ExerciseLocalizationRecord(id: uuid.makeUUID(), exerciseVersionID: version.id, localeIdentifier: item.localeIdentifier)
             record.title = item.title; record.goal = item.goal; record.setup = item.setup; record.steps = item.steps
-            record.successCriteria = item.successCriteria; record.commonErrors = item.commonErrors; record.regression = item.regression
+            record.successCriteria = item.successCriteria
+            record.commonErrors = ExerciseSupplementCodec.encode(problems: item.commonErrors, measures: item.correctiveMeasures)
+            record.regression = item.regression
             record.progression = item.progression; record.homework = item.homework; record.safetyNotes = item.safetyNotes
             record.reviewStatusRawValue = item.reviewStatus.rawValue; record.exerciseVersion = version; context.insert(record); return record
         }
@@ -98,6 +100,9 @@ final class SwiftDataExerciseRepository: ExerciseRepository {
     private func requireVersion(_ id: UUID) throws -> ExerciseVersionRecord { guard let value = try context.fetch(FetchDescriptor<ExerciseVersionRecord>()).first(where: { $0.id == id }) else { throw CatalogError.versionNotFound }; return value }
     private func currentVersion(_ exercise: ExerciseRecord) -> ExerciseVersionRecord? { (exercise.versions ?? []).first { $0.id == exercise.currentVersionID } }
     private func clone(_ source: ExerciseLocalizationRecord, versionID: UUID) -> ExerciseLocalizationRecord { let value = ExerciseLocalizationRecord(id: uuid.makeUUID(), exerciseVersionID: versionID, localeIdentifier: source.localeIdentifier); value.title = source.title; value.goal = source.goal; value.setup = source.setup; value.steps = source.steps; value.successCriteria = source.successCriteria; value.commonErrors = source.commonErrors; value.regression = source.regression; value.progression = source.progression; value.homework = source.homework; value.safetyNotes = source.safetyNotes; value.reviewStatusRawValue = ContentReviewStatus.draft.rawValue; return value }
-    private static func localization(_ value: ExerciseLocalizationRecord) -> ExerciseLocalizationDraft { ExerciseLocalizationDraft(localeIdentifier: value.localeIdentifier, title: value.title, goal: value.goal, setup: value.setup, steps: value.steps, successCriteria: value.successCriteria, commonErrors: value.commonErrors, regression: value.regression, progression: value.progression, homework: value.homework, safetyNotes: value.safetyNotes, reviewStatus: ContentReviewStatus(rawValue: value.reviewStatusRawValue) ?? .draft) }
+    private static func localization(_ value: ExerciseLocalizationRecord) -> ExerciseLocalizationDraft {
+        let issues = ExerciseSupplementCodec.decode(value.commonErrors)
+        return ExerciseLocalizationDraft(localeIdentifier: value.localeIdentifier, title: value.title, goal: value.goal, setup: value.setup, steps: value.steps, successCriteria: value.successCriteria, commonErrors: issues.problems, correctiveMeasures: issues.measures, regression: value.regression, progression: value.progression, homework: value.homework, safetyNotes: value.safetyNotes, reviewStatus: ContentReviewStatus(rawValue: value.reviewStatusRawValue) ?? .draft)
+    }
     private func save() throws { if context.hasChanges { try context.save() } }
 }

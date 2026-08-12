@@ -19,6 +19,7 @@
 		22531DCD926CAE9F159B6C96 /* AppLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854F441BF295995B1CB13D4C /* AppLock.swift */; };
 		228B93EFB64B3C7897D81556 /* PeopleModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68807CFA3BCBC0A7995189C9 /* PeopleModels.swift */; };
 		2345A297F92747C6D69C0855 /* PeopleDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A793B74C08366A563A5A48 /* PeopleDetails.swift */; };
+		240A0884A6B02A2245AB840F /* ExerciseMediaAndContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280B5D554BC181B7463FAFC3 /* ExerciseMediaAndContentTests.swift */; };
 		29D9C2B57AB2801D0A9F4DFC /* content-pack-v1.schema.json in Resources */ = {isa = PBXBuildFile; fileRef = B9D115AD309AD047B010FC72 /* content-pack-v1.schema.json */; };
 		37999A4EDC52C5AEC1653907 /* SessionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F345F01DCF6A2FC855C82450 /* SessionModels.swift */; };
 		38F72C392A824AD5DC15B739 /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B84BDAE678862742001133 /* AppDependencies.swift */; };
@@ -58,6 +59,7 @@
 		A1CE1DFFADED43921874453D /* PackageDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B119A839899F85C9C3E4E09 /* PackageDomain.swift */; };
 		A1EE960466C582460A1EA927 /* Phase4SessionFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661DD9DC202312325EF5DCD /* Phase4SessionFlowTests.swift */; };
 		A3AD33E2D7E227B8DB121D3C /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E410FE3E2CC625AD2242CCEA /* PaywallView.swift */; };
+		A456471931B895AD07D29DA5 /* ExerciseMediaLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC6EC2BE18EDE0F515B87BE /* ExerciseMediaLibrary.swift */; };
 		A5C19F14540A09A60137507D /* Phase7PaywallTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C562BF994ACBA03D25EF75 /* Phase7PaywallTests.swift */; };
 		A7C243B40470C03AF7A5B06C /* DogCoachSchemaV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCC0585D803FA3679B46029 /* DogCoachSchemaV1.swift */; };
 		ACCE6628673B8EFD868032D7 /* ExerciseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C901A5538C35DA2C365E7E1 /* ExerciseRepository.swift */; };
@@ -134,6 +136,7 @@
 		1DDD604D4BBA62EDDB6D68F9 /* DogCoachStudio.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DogCoachStudio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22405B0B6CA30BC50C1FC22B /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		2480331F3109B8047FABFF0F /* ContentPackDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPackDocument.swift; sourceTree = "<group>"; };
+		280B5D554BC181B7463FAFC3 /* ExerciseMediaAndContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMediaAndContentTests.swift; sourceTree = "<group>"; };
 		2CE3F04F8860040A25A34C2B /* SessionCompletionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCompletionService.swift; sourceTree = "<group>"; };
 		2D7F1E52AB4B3EF7D08D45D4 /* NotificationPlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPlanner.swift; sourceTree = "<group>"; };
 		2E05E60F99DCB117FE88AE75 /* EntitlementDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitlementDomain.swift; sourceTree = "<group>"; };
@@ -144,6 +147,7 @@
 		42DEE172E7B34964FA6AB6AB /* TrainingGoalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingGoalTests.swift; sourceTree = "<group>"; };
 		48318355356265F4E2260B19 /* DogCoachStudioUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = DogCoachStudioUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A04F252E27E28DF01552C53 /* ContentPackImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPackImporter.swift; sourceTree = "<group>"; };
+		4FC6EC2BE18EDE0F515B87BE /* ExerciseMediaLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMediaLibrary.swift; sourceTree = "<group>"; };
 		501C67F09D7EA87D4544CBF5 /* DogCoachStudioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogCoachStudioApp.swift; sourceTree = "<group>"; };
 		522EA1A0C1F422E495B721D3 /* PeopleEditors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleEditors.swift; sourceTree = "<group>"; };
 		53EC89F2A479121E85A9BB52 /* IntakePDFExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntakePDFExporter.swift; sourceTree = "<group>"; };
@@ -352,6 +356,14 @@
 				00CD3E1668B7F48304B3EA21 /* UI */,
 			);
 			path = Sessions;
+			sourceTree = "<group>";
+		};
+		29972CE493F99A58AE1D819C /* Phase15 */ = {
+			isa = PBXGroup;
+			children = (
+				280B5D554BC181B7463FAFC3 /* ExerciseMediaAndContentTests.swift */,
+			);
+			path = Phase15;
 			sourceTree = "<group>";
 		};
 		2BB2C3C8B555716B69F9F79D /* App */ = {
@@ -712,6 +724,7 @@
 		AEBD51B233FA1A732CBA5BB1 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				4FC6EC2BE18EDE0F515B87BE /* ExerciseMediaLibrary.swift */,
 				7C901A5538C35DA2C365E7E1 /* ExerciseRepository.swift */,
 			);
 			path = Data;
@@ -739,6 +752,7 @@
 				1EC1B5BEF41202060820B008 /* Phase12 */,
 				1ED9C07817EFA8823C1BD65E /* Phase13 */,
 				214CA38C4C21CA5000D3A50E /* Phase14 */,
+				29972CE493F99A58AE1D819C /* Phase15 */,
 			);
 			path = DogCoachStudioTests;
 			sourceTree = "<group>";
@@ -1127,6 +1141,7 @@
 				BBD555FC70A7825E1F4C7D6A /* DogCoachStudioApp.swift in Sources */,
 				F31CBA4EF166D3113AD89082 /* DogPhotoSupport.swift in Sources */,
 				4F763CF87738D87CE65FF6A3 /* EntitlementDomain.swift in Sources */,
+				A456471931B895AD07D29DA5 /* ExerciseMediaLibrary.swift in Sources */,
 				ACCE6628673B8EFD868032D7 /* ExerciseRepository.swift in Sources */,
 				D1ED9AEDAE4BC7114E199FFC /* IntakeDraft.swift in Sources */,
 				6797CB573184F2F1140DB97B /* IntakeDraftAutosave.swift in Sources */,
@@ -1197,6 +1212,7 @@
 				5A92D6DD1AA625219F6363D2 /* DataControlTests.swift in Sources */,
 				64774025D1F2F70B8078D2FF /* DiagnosticExportTests.swift in Sources */,
 				68EC44231A54C3A01E9FD573 /* DogPhotoStoreTests.swift in Sources */,
+				240A0884A6B02A2245AB840F /* ExerciseMediaAndContentTests.swift in Sources */,
 				97C9A4079F5E991C5C71A63D /* IntakeDraftTests.swift in Sources */,
 				ED61A7F8E6A78ACCA9143963 /* NotificationPlannerTests.swift in Sources */,
 				E5D3CC15AE6CE987B0179E51 /* PackageAndReportTests.swift in Sources */,

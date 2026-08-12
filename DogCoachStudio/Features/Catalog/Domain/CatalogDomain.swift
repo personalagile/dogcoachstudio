@@ -12,11 +12,53 @@ struct ExerciseLocalizationDraft: Equatable, Codable, Sendable {
     var steps: [String] = []
     var successCriteria: [String] = []
     var commonErrors: [String] = []
+    var correctiveMeasures: [String] = []
     var regression = ""
     var progression = ""
     var homework = ""
     var safetyNotes = ""
     var reviewStatus: ContentReviewStatus = .draft
+}
+
+struct ExerciseProblemMeasure: Identifiable, Equatable, Codable, Sendable {
+    var id: UUID
+    var problem: String
+    var measure: String
+
+    init(id: UUID = UUID(), problem: String = "", measure: String = "") {
+        self.id = id
+        self.problem = problem
+        self.measure = measure
+    }
+}
+
+enum ExerciseMediaKind: String, Codable, Sendable { case photo, video }
+
+struct ExerciseMediaAsset: Identifiable, Equatable, Codable, Sendable {
+    let id: UUID
+    let exerciseID: UUID
+    let kind: ExerciseMediaKind
+    let fileName: String
+    let createdAt: Date
+}
+
+enum ExerciseSupplementCodec {
+    private static let marker = "\u{241E}DCS-MEASURE\u{241F}"
+
+    static func encode(problems: [String], measures: [String]) -> [String] {
+        problems.enumerated().map { index, problem in
+            let measure = measures.indices.contains(index) ? measures[index] : ""
+            return measure.isEmpty ? problem : problem + marker + measure
+        }
+    }
+
+    static func decode(_ values: [String]) -> (problems: [String], measures: [String]) {
+        let pairs = values.map { value -> (String, String) in
+            guard let range = value.range(of: marker) else { return (value, "") }
+            return (String(value[..<range.lowerBound]), String(value[range.upperBound...]))
+        }
+        return (pairs.map(\.0), pairs.map(\.1))
+    }
 }
 
 struct ExerciseDraft: Equatable, Sendable {

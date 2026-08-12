@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "packID": "8f794466-5f2f-4fd1-9ad2-185513737b9f",
   "packSlug": "foundation.de-en",
-  "packVersion": "1.0.0",
+  "packVersion": "1.1.0",
   "title": "DogCoach Foundation",
   "author": "DogCoach Studio",
   "license": "Copyright DogCoach Studio. All rights reserved.",
@@ -12,7 +12,7 @@
   "exercises": [
     {
       "id": "1da3ac99-f1d0-48f5-aedf-83e0f37e9e81",
-      "version": 1,
+      "version": 2,
       "metadata": {
         "categories": ["orientation", "foundation"],
         "difficulty": "foundation",
@@ -35,6 +35,7 @@
             "Die Leine bleibt überwiegend locker."
           ],
           "commonErrors": ["Den Hund dauerhaft ansprechen", "Orientierung über die Leine heranziehen"],
+          "correctiveMeasures": ["Still werden, warten und bereits kleine freiwillige Wendungen markieren.", "Leine entlasten, Abstand vergrößern und die Orientierung als freie Entscheidung neu anbieten."],
           "regression": "Abstand zu Ablenkungen vergrößern und die Einheit verkürzen.",
           "progression": "Kurze Wiederholungen an einem leicht belebteren Ort durchführen.",
           "homework": "Einmal täglich eine ruhige Minute beobachten und freiwillige Orientierung belohnen.",
@@ -55,6 +56,7 @@
             "The lead remains mostly loose."
           ],
           "commonErrors": ["Calling the dog continuously", "Pulling orientation through the lead"],
+          "correctiveMeasures": ["Become still, wait, and mark even small voluntary turns.", "Release lead pressure, increase distance, and offer orientation again as a free choice."],
           "regression": "Increase distance from distractions and shorten the session.",
           "progression": "Repeat briefly in a slightly busier setting.",
           "homework": "Once daily, observe quietly for one minute and reward voluntary orientation.",
@@ -65,7 +67,7 @@
     },
     {
       "id": "14792a9d-f257-4758-bf3c-b2feb2053d95",
-      "version": 1,
+      "version": 2,
       "metadata": {
         "categories": ["marker", "foundation"],
         "difficulty": "foundation",
@@ -81,6 +83,7 @@
           "steps": ["Markersignal einmal geben.", "Unmittelbar danach eine Belohnung reichen.", "Nach kurzer Pause wiederholen, ohne vorher Verhalten zu verlangen."],
           "successCriteria": ["Signal und Belohnung folgen in gleichbleibender Reihenfolge.", "Der Hund bleibt während der kurzen Einheit entspannt."],
           "commonErrors": ["Das Signal mehrfach wiederholen", "Vor der Belohnung zusätzlich Verhalten verlangen"],
+          "correctiveMeasures": ["Pro Wiederholung genau ein kurzes Signal geben und danach pausieren.", "Signal unmittelbar belohnen und erst nach stabiler Verknüpfung mit Verhalten kombinieren."],
           "regression": "Weniger Wiederholungen an einem ruhigeren Ort durchführen.",
           "progression": "Das Signal später unmittelbar bei einem einfachen freiwilligen Verhalten einsetzen.",
           "homework": "Eine kurze Serie von fünf Wiederholungen durchführen.",
@@ -94,6 +97,7 @@
           "steps": ["Give the marker cue once.", "Immediately deliver one reward.", "Pause briefly and repeat without first requesting a behaviour."],
           "successCriteria": ["Cue and reward occur in a consistent order.", "The dog remains comfortable during the short session."],
           "commonErrors": ["Repeating the cue several times", "Requesting extra behaviour before the reward"],
+          "correctiveMeasures": ["Use exactly one short cue per repetition, then pause.", "Reward the cue immediately and only combine it with behaviour after the association is reliable."],
           "regression": "Use fewer repetitions in a quieter location.",
           "progression": "Later apply the cue immediately after a simple voluntary behaviour.",
           "homework": "Complete one short set of five repetitions.",
@@ -104,7 +108,7 @@
     },
     {
       "id": "3924b70c-e805-4792-ab47-34666c7b878c",
-      "version": 1,
+      "version": 2,
       "metadata": {
         "categories": ["station", "calmness"],
         "difficulty": "foundation",
@@ -120,6 +124,7 @@
           "steps": ["Jede freiwillige Annäherung an die Matte markieren und belohnen.", "Belohnungen auf oder dicht über der Matte geben.", "Bei sicherem Betreten kurze ruhige Pausen vor der nächsten Belohnung einbauen."],
           "successCriteria": ["Der Hund betritt die Matte freiwillig mit allen Pfoten.", "Der Hund kann mindestens fünf Sekunden entspannt auf der Matte bleiben."],
           "commonErrors": ["Den Hund auf die Matte ziehen", "Die Verweildauer zu schnell verlängern"],
+          "correctiveMeasures": ["Leine und Körperdruck lösen und schon freiwillige Annäherungen belohnen.", "Zur letzten entspannten Dauer zurückkehren und nur in kleinen Schritten steigern."],
           "regression": "Größere Matte verwenden und bereits Annäherungen belohnen.",
           "progression": "Abstand zur Matte oder Verweildauer jeweils nur geringfügig erhöhen.",
           "homework": "Die Matte einmal täglich für eine zweiminütige ruhige Einheit auslegen.",
@@ -133,6 +138,7 @@
           "steps": ["Mark and reward each voluntary approach to the mat.", "Deliver rewards on or directly above the mat.", "Once stepping on is reliable, add brief calm pauses before the next reward."],
           "successCriteria": ["The dog voluntarily places all paws on the mat.", "The dog can remain comfortable on the mat for at least five seconds."],
           "commonErrors": ["Pulling the dog onto the mat", "Increasing duration too quickly"],
+          "correctiveMeasures": ["Remove lead and body pressure and reward voluntary approaches again.", "Return to the last comfortable duration and increase only in small steps."],
           "regression": "Use a larger mat and reward approaches again.",
           "progression": "Increase either distance or duration in small increments.",
           "homework": "Set out the mat once daily for a calm two-minute session.",
@@ -143,7 +149,7 @@
     },
     {
       "id": "dd31e7b2-716e-48f8-a6d6-b2d531504832",
-      "version": 1,
+      "version": 2,
       "metadata": {
         "categories": ["handling", "cooperation"],
         "difficulty": "foundation",
@@ -159,6 +165,7 @@
           "steps": ["Offene Hand kurz in Nasenhöhe anbieten.", "Freiwillige Annäherung oder Berührung markieren.", "Belohnen, Hand zurücknehmen und nach einer Pause erneut anbieten."],
           "successCriteria": ["Der Hund berührt die Hand in vier von fünf Angeboten freiwillig.", "Der Hund kann sich jederzeit von der Hand entfernen."],
           "commonErrors": ["Die Hand zur Nase bewegen", "Die Hand dauerhaft vorhalten"],
+          "correctiveMeasures": ["Hand ruhig halten und mehr Abstand anbieten, sodass der Hund selbst entscheiden kann.", "Hand nach jedem Angebot zurücknehmen und eine kurze Pause einbauen."],
           "regression": "Mehr Abstand halten und bereits einen Blick zur Hand belohnen.",
           "progression": "Handposition oder Abstand schrittweise verändern.",
           "homework": "Fünf ruhige Wiederholungen in vertrauter Umgebung durchführen.",
@@ -172,6 +179,7 @@
           "steps": ["Briefly present an open hand at nose height.", "Mark a voluntary approach or touch.", "Reward, remove the hand, pause, and offer it again."],
           "successCriteria": ["The dog voluntarily touches the hand on four of five offers.", "The dog remains free to move away from the hand."],
           "commonErrors": ["Moving the hand into the dog's nose", "Holding the hand in place continuously"],
+          "correctiveMeasures": ["Keep the hand still and offer more distance so the dog can choose.", "Remove the hand after each offer and add a brief pause."],
           "regression": "Offer more distance and reward a glance toward the hand.",
           "progression": "Gradually vary hand position or distance.",
           "homework": "Complete five calm repetitions in a familiar environment.",
@@ -182,7 +190,7 @@
     },
     {
       "id": "54eb2105-a06d-44e6-84a2-fde7e064f598",
-      "version": 1,
+      "version": 2,
       "metadata": {
         "categories": ["movement", "lead-skills"],
         "difficulty": "foundation",
@@ -198,6 +206,7 @@
           "steps": ["Einige ruhige Schritte gemeinsam gehen.", "Den Richtungswechsel früh mit Körperbewegung und einem gleichbleibenden Signal ankündigen.", "Mitgehende Orientierung markieren und nach dem Wechsel belohnen."],
           "successCriteria": ["Drei angekündigte Richtungswechsel gelingen ohne Zug auf der Leine.", "Das Tempo bleibt für beide Seiten kontrollierbar."],
           "commonErrors": ["Abrupt über die Leine wenden", "Zu schnell oder zu eng drehen"],
+          "correctiveMeasures": ["Wendung früher über Körperbewegung ankündigen und die Leine locker lassen.", "Tempo reduzieren und einen deutlich größeren Bogen wählen."],
           "regression": "Größeren Bogen und weniger Ablenkung wählen.",
           "progression": "Richtungswechsel in unterschiedlichen, weiterhin ruhigen Laufwegen einbauen.",
           "homework": "Auf einem kurzen Spaziergang drei großzügige angekündigte Bögen gehen.",
@@ -211,6 +220,7 @@
           "steps": ["Walk a few calm steps together.", "Signal the turn early with body movement and one consistent cue.", "Mark orientation that follows the turn and reward after changing direction."],
           "successCriteria": ["Three announced turns are completed without tension on the lead.", "The pace remains manageable for both dog and handler."],
           "commonErrors": ["Turning abruptly through the lead", "Turning too quickly or tightly"],
+          "correctiveMeasures": ["Announce the turn earlier through body movement and keep the lead loose.", "Reduce speed and choose a much wider curve."],
           "regression": "Use a wider curve and fewer distractions.",
           "progression": "Add turns to different but still calm walking patterns.",
           "homework": "Walk three wide, announced curves during a short walk.",
@@ -223,7 +233,7 @@
   "templates": [
     {
       "id": "c41723c0-c88c-4a50-a08d-8b86aba58d8d",
-      "version": 1,
+      "version": 2,
       "title": "Foundation – Orientierung und Zusammenarbeit",
       "audience": "Alltagstraining in ruhiger Kleingruppe",
       "targetDurationMinutes": 35,
@@ -239,7 +249,7 @@
     },
     {
       "id": "41348ee0-cefa-47a2-a3c3-05840661e896",
-      "version": 1,
+      "version": 2,
       "title": "Foundation – Kurze Einzelstunde",
       "audience": "Einzeltraining mit niedriger Ablenkung",
       "targetDurationMinutes": 25,
@@ -252,5 +262,5 @@
       "reviewStatus": "approved"
     }
   ],
-  "checksum": "5a571157cf44bf543ff5a159067b5186890dd22af9be4c97353d0f67865db6a5"
+  "checksum": "0fc831f858f6d78b2836d7bd2bcf40a6127c8e29eb10e864c77b0ca926e338b6"
 }
