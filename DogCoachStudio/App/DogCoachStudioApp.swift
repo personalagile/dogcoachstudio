@@ -39,11 +39,14 @@ private struct AppRootView: View {
             CatalogRootView(environment: environment)
         } else if ProcessInfo.processInfo.arguments.contains("--phase4-uitesting") {
             SessionsRootView(environment: environment, seedDemo: true)
+        } else if ProcessInfo.processInfo.arguments.contains("--phase5-uitesting") {
+            PackagesRootView(environment: environment, seedDemo: true)
         } else {
             TabView {
                 Tab("People", systemImage: "person.2") { PeopleRootView(environment: environment) }
                 Tab("Catalog", systemImage: "books.vertical") { CatalogRootView(environment: environment) }
                 Tab("Sessions", systemImage: "calendar") { SessionsRootView(environment: environment) }
+                Tab("Packages", systemImage: "ticket") { PackagesRootView(environment: environment) }
                 Tab("Completion demo", systemImage: "checkmark.circle") { SessionCompletionView() }
             }
             .accessibilityIdentifier("appRootTabs")
