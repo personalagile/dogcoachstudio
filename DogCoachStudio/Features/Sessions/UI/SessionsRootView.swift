@@ -60,6 +60,26 @@ final class SessionsFeatureModel {
         }
     }
 
+    var monthDays: [Date?] {
+        let calendar = Calendar.autoupdatingCurrent
+        guard let interval = calendar.dateInterval(of: .month, for: focusedDate),
+              let dayRange = calendar.range(of: .day, in: .month, for: focusedDate) else { return [] }
+        let weekday = calendar.component(.weekday, from: interval.start)
+        let leading = (weekday - calendar.firstWeekday + 7) % 7
+        return Array(repeating: nil, count: leading) + dayRange.compactMap {
+            calendar.date(byAdding: .day, value: $0 - 1, to: interval.start)
+        }
+    }
+
+    func sessions(on day: Date) -> [ScheduledSessionSummary] {
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        return sessions.filter { session in
+            Calendar.autoupdatingCurrent.isDate(session.startAt, inSameDayAs: day)
+                && (query.isEmpty || session.title.localizedStandardContains(query)
+                    || session.participantNames.contains { $0.localizedStandardContains(query) })
+        }
+    }
+
     func movePeriod(_ value: Int) {
         let component: Calendar.Component = switch scope { case .day: .day; case .week: .weekOfYear; case .month: .month }
         focusedDate = Calendar.autoupdatingCurrent.date(byAdding: component, value: value, to: focusedDate) ?? focusedDate
@@ -164,17 +184,13 @@ struct SessionsRootView: View {
                     Button("Next", systemImage: "chevron.right") { model.movePeriod(1) }.labelStyle(.iconOnly)
                 }
                 .padding(.horizontal)
+                if model.scope == .month {
+                    MonthCalendarView(model: model)
+                        .padding(.horizontal)
+                        .padding(.top, 8)
+                }
                 List(model.visibleSessions) { session in
-                    Button { model.select(session.id) } label: {
-                        VStack(alignment: .leading, spacing: 4) {
-                            HStack { Text(session.startAt, format: .dateTime.weekday(.abbreviated).hour().minute()).font(.subheadline); Spacer(); Text(session.status.rawValue.capitalized).font(.caption) }
-                            Text(session.title).font(.headline)
-                            if !session.participantNames.isEmpty { Text(session.participantNames.joined(separator: ", ")).font(.subheadline).foregroundStyle(.secondary) }
-                            Text("\(session.bookingCount) bookings · \(session.durationMinutes) min")
-                            if session.hasOverlap { Label("Overlaps another session", systemImage: "exclamationmark.triangle").foregroundStyle(.orange) }
-                        }
-                    }
-                    .accessibilityIdentifier("scheduledSessionRow")
+                    SessionOverviewRow(session: session) { model.select(session.id) }
                 }
                 .overlay {
                     if model.visibleSessions.isEmpty {
@@ -212,7 +228,12 @@ private struct SessionEditorView: View {
         NavigationStack {
             Form {
                 TextField("Title", text: $title).accessibilityIdentifier("sessionTitleField")
-                DatePicker("Starts", selection: $startAt)
+                Section("Schedule") {
+                    DatePicker("Date", selection: $startAt, displayedComponents: .date)
+                        .accessibilityIdentifier("sessionDatePicker")
+                    DatePicker("Time", selection: $startAt, displayedComponents: .hourAndMinute)
+                        .accessibilityIdentifier("sessionTimePicker")
+                }
                 Stepper("Duration: \(duration) min", value: $duration, in: 5...240, step: 5)
                 Picker("Kind", selection: $kind) { ForEach(ScheduledSessionKind.allCases, id: \.self) { Text($0.rawValue.capitalized).tag($0) } }
                 Picker("Template", selection: $templateVersionID) { Text("No template").tag(UUID?.none); ForEach(model.templates) { Text($0.title).tag(Optional($0.versionID)) } }
@@ -224,6 +245,91 @@ private struct SessionEditorView: View {
                 ToolbarItem(placement: .confirmationAction) { Button("Save") { if model.create(title: title, startAt: startAt, duration: duration, kind: kind, templateVersionID: templateVersionID, dogIDs: Array(dogIDs)) { dismiss() } }.disabled(title.isEmpty).accessibilityIdentifier("sessionSaveButton") }
             }
         }
+    }
+}
+
+private struct SessionOverviewRow: View {
+    let session: ScheduledSessionSummary
+    let select: () -> Void
+
+    var body: some View {
+        Button(action: select) {
+            HStack(alignment: .top, spacing: 10) {
+                RoundedRectangle(cornerRadius: 3)
+                    .fill(session.isEvaluated ? Color.green : Color.orange)
+                    .frame(width: 6)
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack {
+                        Text(session.startAt, format: .dateTime.weekday(.abbreviated).hour().minute()).font(.subheadline)
+                        Spacer()
+                        Label(session.isEvaluated ? "Evaluated" : "Evaluation pending", systemImage: session.isEvaluated ? "checkmark.circle.fill" : "clock.badge.exclamationmark")
+                            .font(.caption)
+                            .foregroundStyle(session.isEvaluated ? .green : .orange)
+                    }
+                    Text(session.title).font(.headline)
+                    if !session.participantNames.isEmpty { Text(session.participantNames.joined(separator: ", ")).font(.subheadline).foregroundStyle(.secondary) }
+                    Text("\(session.bookingCount) bookings · \(session.durationMinutes) min")
+                    if session.hasOverlap { Label("Overlaps another session", systemImage: "exclamationmark.triangle").foregroundStyle(.orange) }
+                }
+            }
+        }
+        .accessibilityIdentifier("scheduledSessionRow")
+    }
+}
+
+private struct MonthCalendarView: View {
+    let model: SessionsFeatureModel
+    private let columns = Array(repeating: GridItem(.flexible(), spacing: 4), count: 7)
+
+    var body: some View {
+        VStack(spacing: 6) {
+            LazyVGrid(columns: columns, spacing: 4) {
+                ForEach(weekdaySymbols, id: \.self) { Text($0).font(.caption2).foregroundStyle(.secondary) }
+                ForEach(Array(model.monthDays.enumerated()), id: \.offset) { _, day in
+                    if let day { CalendarDayCell(day: day, sessions: model.sessions(on: day)) }
+                    else { Color.clear.frame(minHeight: 42) }
+                }
+            }
+            HStack(spacing: 16) {
+                Label("Evaluation pending", systemImage: "circle.fill").foregroundStyle(.orange)
+                Label("Evaluated", systemImage: "circle.fill").foregroundStyle(.green)
+            }
+            .font(.caption)
+            .accessibilityIdentifier("sessionEvaluationLegend")
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("monthCalendar")
+    }
+
+    private var weekdaySymbols: [String] {
+        let calendar = Calendar.autoupdatingCurrent
+        let symbols = calendar.veryShortStandaloneWeekdaySymbols
+        let offset = calendar.firstWeekday - 1
+        return Array(symbols[offset...] + symbols[..<offset])
+    }
+}
+
+private struct CalendarDayCell: View {
+    let day: Date
+    let sessions: [ScheduledSessionSummary]
+
+    var body: some View {
+        VStack(spacing: 3) {
+            Text(day, format: .dateTime.day())
+                .font(.callout)
+            HStack(spacing: 2) {
+                ForEach(Array(sessions.prefix(4).enumerated()), id: \.offset) { _, session in
+                    Circle().fill(session.isEvaluated ? Color.green : Color.orange).frame(width: 6, height: 6)
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, minHeight: 42)
+        .background(Calendar.autoupdatingCurrent.isDateInToday(day) ? Color.accentColor.opacity(0.12) : Color.clear)
+        .clipShape(.rect(cornerRadius: 8))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(day.formatted(date: .long, time: .omitted))
+        .accessibilityValue("\(sessions.count) sessions, \(sessions.filter(\.isEvaluated).count) evaluated")
     }
 }
 

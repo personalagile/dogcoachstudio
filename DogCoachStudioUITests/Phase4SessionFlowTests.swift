@@ -12,6 +12,9 @@ final class Phase4SessionFlowTests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any)["sessionsRoot"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["Week"].waitForExistence(timeout: 3))
         app.buttons["Week"].tap()
+        app.buttons["Month"].tap()
+        XCTAssertTrue(app.staticTexts["Evaluation pending"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["Evaluated"].exists)
         app.buttons["Today"].tap()
         let row = app.buttons["scheduledSessionRow"].firstMatch
         XCTAssertTrue(row.waitForExistence(timeout: 3)); row.tap()

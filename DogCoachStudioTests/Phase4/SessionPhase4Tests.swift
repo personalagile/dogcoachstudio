@@ -67,6 +67,15 @@ struct SessionPhase4Tests {
         #expect(result.reportCount == 2)
         #expect(result.redemptionCount == 2)
         #expect(try fixture.context.fetchCount(FetchDescriptor<ExerciseSnapshotRecord>()) == 5)
+        #expect(try fixture.sessions.list().first?.isEvaluated == true)
+    }
+
+    @Test("Scheduled sessions remain visibly pending until completion") @MainActor
+    func evaluationStatus() throws {
+        let fixture = try Phase4Fixture(dogCount: 1)
+        #expect(try fixture.sessions.list().first?.isEvaluated == false)
+        _ = try fixture.completion.complete(try fixture.request())
+        #expect(try fixture.sessions.list().first?.isEvaluated == true)
     }
 
     @Test("One thousand token replays create no duplicate") @MainActor

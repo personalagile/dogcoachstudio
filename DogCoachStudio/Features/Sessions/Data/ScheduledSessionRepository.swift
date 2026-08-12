@@ -52,6 +52,9 @@ final class SwiftDataScheduledSessionRepository {
 
     func list() throws -> [ScheduledSessionSummary] {
         let sessions = try context.fetch(FetchDescriptor<ScheduledSessionRecord>())
+        let evaluatedSessionIDs = Set(try context.fetch(FetchDescriptor<CompletedSessionRecord>())
+            .filter(\.isActiveRevision)
+            .map(\.sessionID))
         return sessions.map { record in
             let start = record.startAt
             let end = start.addingTimeInterval(TimeInterval(record.durationMinutes * 60))
@@ -77,6 +80,7 @@ final class SwiftDataScheduledSessionRepository {
                         .compactMap { $0.client?.displayName }
                     return ([dog.name] + owners).joined(separator: " · ")
                 }.sorted(),
+                isEvaluated: evaluatedSessionIDs.contains(record.id),
                 hasOverlap: overlaps
             )
         }.sorted { $0.startAt < $1.startAt }

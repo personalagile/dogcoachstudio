@@ -39,6 +39,7 @@ struct ScheduledSessionSummary: Identifiable, Hashable, Sendable {
     let templateVersionID: UUID?
     let bookingCount: Int
     let participantNames: [String]
+    let isEvaluated: Bool
     let hasOverlap: Bool
 }
 
