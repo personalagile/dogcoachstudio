@@ -1,0 +1,32 @@
+name: Build and test
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: dogcoach-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: macos-15
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate project
+        run: xcodegen generate
+      - name: Verify no generated project drift
+        run: git diff --exit-code -- DogCoachStudio.xcodeproj
+      - name: Build and test
+        run: >-
+          xcodebuild test
+          -project DogCoachStudio.xcodeproj
+          -scheme DogCoachStudio
+          -destination 'platform=iOS Simulator,name=iPhone 16'
+          CODE_SIGNING_ALLOWED=NO

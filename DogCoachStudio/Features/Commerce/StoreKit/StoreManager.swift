@@ -6,13 +6,11 @@ final class StoreManager {
     private(set) var products: [Product] = []
     private(set) var entitlements = EntitlementSnapshot()
     private(set) var state: PurchaseState = .idle
-    private nonisolated var listener: Task<Void, Never>?
+    @ObservationIgnored private var listener: Task<Void, Never>?
 
     init(startListener: Bool = true) {
         if startListener { listener = listenForTransactions() }
     }
-
-    deinit { listener?.cancel() }
 
     func start() async {
         state = .loading
