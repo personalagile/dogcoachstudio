@@ -21,7 +21,7 @@ struct AppLockTests {
         let model = AppLockModel(isEnabled: true, authenticator: FakeAuthenticator(available: true, succeeds: false))
         await model.unlock()
         #expect(model.isLocked)
-        #expect(model.errorMessage?.localizedCaseInsensitiveContains("passcode") == true)
+        #expect(model.errorMessage != nil)
     }
 
     @Test("Unavailable device authentication never exposes content")

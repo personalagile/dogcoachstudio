@@ -4,7 +4,7 @@ final class Phase6DataControlTests: XCTestCase {
     @MainActor
     func testExportAndPrivacyControlsAtAccessibilitySize() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["--uitesting", "--phase6-uitesting", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityExtraExtraExtraLarge"]
+        app.launchArguments = ["--uitesting", "--phase6-uitesting", "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityExtraExtraExtraLarge"]
         app.launch()
         XCTAssertTrue(app.descendants(matching: .any)["dataControlRoot"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.switches["appLockToggle"].exists)
@@ -16,7 +16,7 @@ final class Phase6DataControlTests: XCTestCase {
     @MainActor
     func testEnabledLockHidesApplicationContent() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["--uitesting", "--phase6-uitesting", "--lock-enabled"]
+        app.launchArguments = ["--uitesting", "--phase6-uitesting", "--lock-enabled", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
         XCTAssertFalse(app.buttons["dataExportButton"].waitForExistence(timeout: 3))
     }

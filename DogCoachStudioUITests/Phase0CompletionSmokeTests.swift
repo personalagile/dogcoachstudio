@@ -8,7 +8,7 @@ final class Phase0CompletionSmokeTests: XCTestCase {
     @MainActor
     func testDemoSessionCompletesAndShowsExpectedCounts() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["--phase0-demo", "--uitesting"]
+        app.launchArguments = ["--phase0-demo", "--uitesting", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         XCTAssertTrue(app.descendants(matching: .any)["sessionCompletionFlow"].waitForExistence(timeout: 5))

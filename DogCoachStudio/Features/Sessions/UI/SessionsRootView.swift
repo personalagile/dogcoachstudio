@@ -21,6 +21,7 @@ final class SessionsFeatureModel {
     var scope: SessionCalendarScope = .day
     var focusedDate: Date
     var searchText = ""
+    var selectedMonthDay: Date?
 
     init(environment: AppEnvironment, seedDemo: Bool = false) {
         context = environment.persistence.mainContext
@@ -80,9 +81,15 @@ final class SessionsFeatureModel {
         }
     }
 
+    var displayedSessions: [ScheduledSessionSummary] {
+        guard scope == .month, let selectedMonthDay else { return visibleSessions }
+        return sessions(on: selectedMonthDay)
+    }
+
     func movePeriod(_ value: Int) {
         let component: Calendar.Component = switch scope { case .day: .day; case .week: .weekOfYear; case .month: .month }
         focusedDate = Calendar.autoupdatingCurrent.date(byAdding: component, value: value, to: focusedDate) ?? focusedDate
+        if scope == .month { selectedMonthDay = nil }
     }
 
     func reload() {
@@ -189,7 +196,7 @@ struct SessionsRootView: View {
                         .padding(.horizontal)
                         .padding(.top, 8)
                 }
-                List(model.visibleSessions) { session in
+                List(model.displayedSessions) { session in
                     SessionOverviewRow(session: session) { model.select(session.id) }
                 }
                 .overlay {
@@ -286,8 +293,14 @@ private struct MonthCalendarView: View {
         VStack(spacing: 6) {
             LazyVGrid(columns: columns, spacing: 4) {
                 ForEach(weekdaySymbols, id: \.self) { Text($0).font(.caption2).foregroundStyle(.secondary) }
-                ForEach(Array(model.monthDays.enumerated()), id: \.offset) { _, day in
-                    if let day { CalendarDayCell(day: day, sessions: model.sessions(on: day)) }
+                ForEach(monthSlots) { slot in
+                    if let day = slot.day {
+                        CalendarDayCell(
+                            day: day,
+                            sessions: model.sessions(on: day),
+                            isSelected: model.selectedMonthDay.map { Calendar.autoupdatingCurrent.isDate($0, inSameDayAs: day) } ?? false
+                        ) { model.selectedMonthDay = day }
+                    }
                     else { Color.clear.frame(minHeight: 42) }
                 }
             }
@@ -308,14 +321,26 @@ private struct MonthCalendarView: View {
         let offset = calendar.firstWeekday - 1
         return Array(symbols[offset...] + symbols[..<offset])
     }
+
+    private var monthSlots: [MonthDaySlot] {
+        model.monthDays.enumerated().map { MonthDaySlot(position: $0.offset, day: $0.element) }
+    }
+}
+
+private struct MonthDaySlot: Identifiable {
+    let position: Int
+    let day: Date?
+    var id: Int { position }
 }
 
 private struct CalendarDayCell: View {
     let day: Date
     let sessions: [ScheduledSessionSummary]
+    let isSelected: Bool
+    let select: () -> Void
 
     var body: some View {
-        VStack(spacing: 3) {
+        Button(action: select) { VStack(spacing: 3) {
             Text(day, format: .dateTime.day())
                 .font(.callout)
             HStack(spacing: 2) {
@@ -323,13 +348,15 @@ private struct CalendarDayCell: View {
                     Circle().fill(session.isEvaluated ? Color.green : Color.orange).frame(width: 6, height: 6)
                 }
             }
-        }
+        } }
+        .buttonStyle(.plain)
         .frame(maxWidth: .infinity, minHeight: 42)
-        .background(Calendar.autoupdatingCurrent.isDateInToday(day) ? Color.accentColor.opacity(0.12) : Color.clear)
+        .background(isSelected ? Color.accentColor.opacity(0.28) : (Calendar.autoupdatingCurrent.isDateInToday(day) ? Color.accentColor.opacity(0.12) : Color.clear))
         .clipShape(.rect(cornerRadius: 8))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(day.formatted(date: .long, time: .omitted))
         .accessibilityValue("\(sessions.count) sessions, \(sessions.filter(\.isEvaluated).count) evaluated")
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 

@@ -145,7 +145,12 @@ struct DogEditorView: View {
                     TextField("Name", text: $draft.name)
                         .accessibilityIdentifier("dogNameField")
                     TextField("Breed", text: optionalBinding(\.breedText))
-                    TextField("Sex", text: optionalBinding(\.sexRawValue))
+                    Picker("Sex", selection: optionalBinding(\.sexRawValue)) {
+                        Text("Unknown").tag("")
+                        Text("Male").tag("male")
+                        Text("Female").tag("female")
+                    }
+                    .accessibilityIdentifier("dogSexPicker")
                     Toggle("Birth date known", isOn: $hasBirthDate)
                     if hasBirthDate {
                         DatePicker("Birth date", selection: birthDateBinding, displayedComponents: .date)

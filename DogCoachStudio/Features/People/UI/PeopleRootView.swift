@@ -9,6 +9,7 @@ struct PeopleRootView: View {
         case addRole(DogSummary)
         case intake(DogSummary)
         case goal(DogSummary)
+        case editGoal(DogSummary, TrainingGoal)
 
         var id: String {
             switch self {
@@ -19,6 +20,7 @@ struct PeopleRootView: View {
             case .addRole(let dog): "add-role-\(dog.id)"
             case .intake(let dog): "intake-\(dog.id)"
             case .goal(let dog): "goal-\(dog.id)"
+            case .editGoal(let dog, let goal): "edit-goal-\(dog.id)-\(goal.id)"
             }
         }
     }
@@ -96,7 +98,9 @@ struct PeopleRootView: View {
                     uuidGenerator: model.uuidGenerator
                 ))
             case .goal(let dog):
-                GoalEditorView(model: model, dog: dog)
+                GoalEditorView(model: model, dog: dog, goal: nil)
+            case .editGoal(let dog, let goal):
+                GoalEditorView(model: model, dog: dog, goal: goal)
             }
         }
         .alert("Could not load data", isPresented: errorPresented) {

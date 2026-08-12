@@ -159,6 +159,19 @@ final class PeopleFeatureModel {
         contentRevision += 1
     }
 
+    func deleteGoal(id: UUID) throws {
+        try goalRepository.delete(id: id)
+        contentRevision += 1
+    }
+
+    func advanceGoal(_ goal: TrainingGoal) throws {
+        let statuses = TrainingGoalStatus.allCases
+        guard let index = statuses.firstIndex(of: goal.status), index < statuses.index(before: statuses.endIndex) else { return }
+        var updated = goal
+        updated.transition(to: statuses[statuses.index(after: index)], at: clock.now())
+        try saveGoal(updated)
+    }
+
     func refreshDetailContent() { contentRevision += 1 }
 
     @discardableResult

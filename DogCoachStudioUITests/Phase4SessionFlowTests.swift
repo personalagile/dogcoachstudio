@@ -6,7 +6,7 @@ final class Phase4SessionFlowTests: XCTestCase {
     @MainActor
     func testSessionPreviewCompletionAndCorrection() {
         let app = XCUIApplication()
-        app.launchArguments = ["--uitesting", "--phase4-uitesting"]
+        app.launchArguments = ["--uitesting", "--phase4-uitesting", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         XCTAssertTrue(app.descendants(matching: .any)["sessionsRoot"].waitForExistence(timeout: 5))

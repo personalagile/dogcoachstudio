@@ -128,14 +128,18 @@ struct DogFileView: View {
         Section("Contacts") {
             if dog.roles.isEmpty { Text("No contact assigned").foregroundStyle(.secondary) }
             ForEach(dog.roles) { role in
-                HStack {
+                Button {
+                    if let client = model.clients.first(where: { $0.id == role.clientID }) { present(.editClient(client)) }
+                } label: { HStack {
                     VStack(alignment: .leading) {
                         Text(role.clientName)
                         Text(role.kind.displayName).font(.caption).foregroundStyle(.secondary)
                     }
                     Spacer()
                     if role.isPrimaryContact { Label("Primary", systemImage: "star.fill").labelStyle(.titleAndIcon) }
-                }
+                } }
+                .buttonStyle(.plain)
+                .accessibilityHint("Opens the client editor")
                 .swipeActions {
                     if !role.isPrimaryContact {
                         Button("Make primary") {
@@ -168,7 +172,20 @@ struct DogFileView: View {
             let goals = model.goals(dogID: dog.id)
             if goals.isEmpty { Text("No goals yet").foregroundStyle(.secondary) }
             ForEach(goals) { goal in
-                VStack(alignment: .leading) { Text(goal.title); Text(goal.status.displayName).font(.caption).foregroundStyle(.secondary) }
+                Button { present(.editGoal(dog, goal)) } label: {
+                    VStack(alignment: .leading) { Text(goal.title); Text(goal.status.displayName).font(.caption).foregroundStyle(.secondary) }
+                }
+                .buttonStyle(.plain)
+                .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                    Button("Next status") {
+                        model.perform({ try model.advanceGoal(goal) }, operation: "goal.advance")
+                    }.tint(.green)
+                }
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    Button("Delete", role: .destructive) {
+                        model.perform({ try model.deleteGoal(id: goal.id) }, operation: "goal.delete")
+                    }
+                }
             }
             Button("Add goal") { present(.goal(dog)) }.accessibilityIdentifier("dogGoalButton")
         }

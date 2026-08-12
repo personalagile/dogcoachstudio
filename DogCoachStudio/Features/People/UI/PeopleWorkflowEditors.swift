@@ -87,10 +87,18 @@ struct GoalEditorView: View {
     @Environment(\.dismiss) private var dismiss
     let model: PeopleFeatureModel
     let dog: DogSummary
-    @State private var title = ""
-    @State private var details = ""
-    @State private var status: TrainingGoalStatus = .planned
+    let goal: TrainingGoal?
+    @State private var title: String
+    @State private var details: String
+    @State private var status: TrainingGoalStatus
     @State private var error: AppError?
+
+    init(model: PeopleFeatureModel, dog: DogSummary, goal: TrainingGoal?) {
+        self.model = model; self.dog = dog; self.goal = goal
+        _title = State(initialValue: goal?.title ?? "")
+        _details = State(initialValue: goal?.targetDescription ?? "")
+        _status = State(initialValue: goal?.status ?? .planned)
+    }
 
     var body: some View {
         NavigationStack {
@@ -104,7 +112,8 @@ struct GoalEditorView: View {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        var goal = TrainingGoal(id: model.uuidGenerator.makeUUID(), dogID: dog.id, title: title, targetDescription: details, startedAt: model.clock.now())
+                        var goal = goal ?? TrainingGoal(id: model.uuidGenerator.makeUUID(), dogID: dog.id, title: title, targetDescription: details, startedAt: model.clock.now())
+                        goal.title = title; goal.targetDescription = details
                         goal.transition(to: status, at: model.clock.now())
                         do {
                             try model.saveGoal(goal)

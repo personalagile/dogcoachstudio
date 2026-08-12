@@ -8,7 +8,7 @@ final class Phase2PeopleFlowTests: XCTestCase {
     @MainActor
     func testAdaptivePeopleFlowCreatesClientDogIntakeAndGoal() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["--uitesting"]
+        app.launchArguments = ["--uitesting", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         XCTAssertTrue(app.descendants(matching: .any)["appRootTabs"].waitForExistence(timeout: 5))
