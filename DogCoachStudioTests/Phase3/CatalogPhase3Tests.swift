@@ -27,6 +27,14 @@ struct CatalogPhase3Tests {
         #expect(resolved.isFallback)
     }
 
+    @Test("Regional locale resolves its language without a fallback warning")
+    func regionalLocaleIsNotFallback() throws {
+        let de = ExerciseLocalizationDraft(localeIdentifier: "de", title: "Deutsch")
+        let resolved = try #require(ExerciseLocaleResolver.resolve([de], requestedLocale: "de-DE"))
+        #expect(resolved.resolvedLocale == "de")
+        #expect(!resolved.isFallback)
+    }
+
     @Test("Template order, duration and immutable version are preserved") @MainActor
     func templateVersioning() throws {
         let fixture = try Fixture()

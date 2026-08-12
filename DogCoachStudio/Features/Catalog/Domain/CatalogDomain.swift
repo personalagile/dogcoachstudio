@@ -72,7 +72,13 @@ enum ExerciseLocaleResolver {
         let language = localizations.first { Locale(identifier: $0.localeIdentifier).language.languageCode?.identifier == requested }
         let fallbackMatch = localizations.first { Locale(identifier: $0.localeIdentifier).language.languageCode?.identifier == fallback }
         guard let value = exact ?? language ?? fallbackMatch ?? localizations.sorted(by: { $0.localeIdentifier < $1.localeIdentifier }).first else { return nil }
-        return LocalizedExerciseContent(content: value, requestedLocale: requestedLocale, resolvedLocale: value.localeIdentifier, isFallback: value.localeIdentifier != requestedLocale)
+        let resolvedLanguage = Locale(identifier: value.localeIdentifier).language.languageCode?.identifier ?? value.localeIdentifier
+        return LocalizedExerciseContent(
+            content: value,
+            requestedLocale: requestedLocale,
+            resolvedLocale: value.localeIdentifier,
+            isFallback: resolvedLanguage != requested
+        )
     }
 }
 

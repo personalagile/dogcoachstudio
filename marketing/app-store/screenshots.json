@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "approvedStorySource": "PLAN.md section 19 and Phase 9 authorization",
+  "captureSourceCommit": "333de62",
+  "renderer": "app-store-screenshot-production/render.py",
+  "appleSpecificationCheckedAt": "2026-08-12",
+  "targets": {
+    "iphone-6.9": { "width": 1320, "height": 2868 },
+    "ipad-13": { "width": 2064, "height": 2752 }
+  },
+  "background": "#183D3D",
+  "foreground": "#FFFFFF",
+  "scenes": [
+    { "id": "01-plan", "en": "Plan once. Reuse often.", "de": "Einmal planen. Oft nutzen." },
+    { "id": "02-attendance", "en": "Group check-in in seconds.", "de": "Anwesenheit in Sekunden." },
+    { "id": "03-exceptions", "en": "Record only exceptions.", "de": "Nur Abweichungen erfassen." },
+    { "id": "04-dog-history", "en": "Every dog's progress together.", "de": "Jeden Hundeverlauf im Blick." },
+    { "id": "05-package", "en": "Transparent package usage.", "de": "Paketverbrauch klar im Blick." },
+    { "id": "06-report", "en": "Homework without client accounts.", "de": "Hausaufgaben ohne Kundenkonto." }
+  ],
+  "privacy": "All captures use deterministic synthetic demo data. No real people, pets, contacts, health data, accounts, or purchases."
+}
