@@ -71,6 +71,10 @@ final class CompletedSessionRecord {
     var completedAt: Date = Date()
     var completionToken: UUID = UUID()
     var revision: Int = 1
+    var requestFingerprint: String = ""
+    var supersedesCompletedSessionID: UUID?
+    var correctionReason: String?
+    var isActiveRevision: Bool = true
     var generalNotes: String?
     var defaultOutcomeRawValue: String = "independent"
     var session: ScheduledSessionRecord?
@@ -153,6 +157,8 @@ final class ClientReportRecord {
     var completedSessionID: UUID = UUID()
     var localeIdentifier: String = "en"
     var statusRawValue: String = "draft"
+    var revision: Int = 1
+    var supersedesReportID: UUID?
     var body: String = ""
     var generatedAt: Date = Date()
     var approvedAt: Date?

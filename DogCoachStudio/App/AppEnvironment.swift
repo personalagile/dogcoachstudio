@@ -42,4 +42,21 @@ struct AppEnvironment {
         )
         return environment
     }
+
+    static func uiTesting() throws -> AppEnvironment {
+        let container = try ModelContainerFactory.makeInMemory()
+        let environment = AppEnvironment(
+            persistence: PersistenceProvider(container: container),
+            clock: SystemAppClock(),
+            uuidGenerator: SystemUUIDGenerator(),
+            dataExporter: UnavailableDataExporter(),
+            diagnostics: DiagnosticRecorder()
+        )
+        try DemoDataSeeder.seedIfNeeded(
+            context: container.mainContext,
+            clock: environment.clock,
+            uuidGenerator: environment.uuidGenerator
+        )
+        return environment
+    }
 }

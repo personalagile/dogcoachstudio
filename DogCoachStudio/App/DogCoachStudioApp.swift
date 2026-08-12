@@ -7,7 +7,7 @@ struct DogCoachStudioApp: App {
 
     init() {
         do {
-            bootstrap = .success(try AppEnvironment.live())
+            bootstrap = .success(try ProcessInfo.processInfo.arguments.contains("--uitesting") ? AppEnvironment.uiTesting() : AppEnvironment.live())
         } catch {
             bootstrap = .failure(AppErrorMapper.map(error, operation: "bootstrap"))
         }
@@ -37,10 +37,13 @@ private struct AppRootView: View {
             SessionCompletionView()
         } else if ProcessInfo.processInfo.arguments.contains("--phase3-uitesting") {
             CatalogRootView(environment: environment)
+        } else if ProcessInfo.processInfo.arguments.contains("--phase4-uitesting") {
+            SessionsRootView(environment: environment, seedDemo: true)
         } else {
             TabView {
                 Tab("People", systemImage: "person.2") { PeopleRootView(environment: environment) }
                 Tab("Catalog", systemImage: "books.vertical") { CatalogRootView(environment: environment) }
+                Tab("Sessions", systemImage: "calendar") { SessionsRootView(environment: environment) }
                 Tab("Completion demo", systemImage: "checkmark.circle") { SessionCompletionView() }
             }
             .accessibilityIdentifier("appRootTabs")
