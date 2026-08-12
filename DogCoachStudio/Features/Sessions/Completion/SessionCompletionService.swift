@@ -24,14 +24,16 @@ final class SessionCompletionService {
             resultCount: source.attended.count * source.exercises.count,
             reportCount: source.attended.count,
             packages: source.bookings.map { booking in
+                let units = source.session.packageUnitsPerAttendee
                 guard request.attendanceByBookingID[booking.id] == .attended else {
                     return PackagePreview(bookingID: booking.id, packageID: booking.expectedPackageID, balanceBefore: nil, policy: .skip)
                 }
                 guard let package = booking.expectedPackage else {
                     return PackagePreview(bookingID: booking.id, packageID: nil, balanceBefore: nil, policy: .skip)
                 }
+                guard units > 0 else { return PackagePreview(bookingID: booking.id, packageID: package.id, balanceBefore: nil, policy: .skip) }
                 let balance = package.initialUnits + (package.ledgerEntries ?? []).reduce(Decimal.zero) { $0 + $1.unitDelta }
-                return PackagePreview(bookingID: booking.id, packageID: package.id, balanceBefore: balance, policy: balance > 0 ? .redeem : .insufficientBalance)
+                return PackagePreview(bookingID: booking.id, packageID: package.id, balanceBefore: balance, policy: balance >= units ? .redeem : .insufficientBalance)
             }
         )
     }
@@ -151,7 +153,7 @@ final class SessionCompletionService {
                 let attendanceRecord = AttendanceRecord(id: uuid.makeUUID(), bookingID: booking.id, statusRawValue: status.rawValue, checkedAt: now)
                 attendanceRecord.completionRevision = revision
                 attendanceRecord.booking = booking
-                attendanceRecord.packagePolicyRawValue = packagePolicy(for: booking, status: status).rawValue
+                attendanceRecord.packagePolicyRawValue = packagePolicy(for: booking, status: status, units: source.session.packageUnitsPerAttendee).rawValue
                 context.insert(attendanceRecord)
                 attendanceRecords.append(attendanceRecord)
                 guard status == .attended else { continue }
@@ -166,8 +168,8 @@ final class SessionCompletionService {
                 }
                 attendanceRecord.results = results
 
-                if let package = booking.expectedPackage {
-                    let redeem = PackageLedgerEntryRecord(id: uuid.makeUUID(), packageID: package.id, kindRawValue: "redeem", unitDelta: -1, createdAt: now)
+                if let package = booking.expectedPackage, source.session.packageUnitsPerAttendee > 0 {
+                    let redeem = PackageLedgerEntryRecord(id: uuid.makeUUID(), packageID: package.id, kindRawValue: "redeem", unitDelta: -source.session.packageUnitsPerAttendee, createdAt: now)
                     redeem.attendanceID = attendanceRecord.id
                     redeem.attendance = attendanceRecord
                     redeem.package = package
@@ -241,10 +243,10 @@ final class SessionCompletionService {
         return values.first { $0.localeIdentifier == requested } ?? values.first { $0.localeIdentifier == "en" } ?? values.sorted { $0.localeIdentifier < $1.localeIdentifier }.first
     }
 
-    private func packagePolicy(for booking: BookingRecord, status: SessionAttendanceStatus) -> SessionPackagePolicy {
-        guard status == .attended, let package = booking.expectedPackage else { return .skip }
+    private func packagePolicy(for booking: BookingRecord, status: SessionAttendanceStatus, units: Decimal) -> SessionPackagePolicy {
+        guard status == .attended, units > 0, let package = booking.expectedPackage else { return .skip }
         let balance = package.initialUnits + (package.ledgerEntries ?? []).reduce(Decimal.zero) { $0 + $1.unitDelta }
-        return balance > 0 ? .redeem : .insufficientBalance
+        return balance >= units ? .redeem : .insufficientBalance
     }
 
     private func bookings(sessionID: UUID) throws -> [BookingRecord] {

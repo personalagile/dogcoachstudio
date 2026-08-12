@@ -200,8 +200,14 @@ final class PeopleFeatureModel {
     }
 
     func packages(clientID: UUID) -> [TrainingPackageSummary] {
-        let dogIDs = Set(dogs.filter { dog in dog.roles.contains { $0.clientID == clientID } }.map(\.id))
-        return ((try? packageRepository.summaries()) ?? []).filter { dogIDs.contains($0.dogID) }
+        ((try? packageRepository.summaries()) ?? []).filter { $0.clientID == clientID }
+    }
+
+    func packageTemplates() -> [PackageTemplateSummary] { (try? packageRepository.templates()) ?? [] }
+
+    func createPackage(clientID: UUID, template: PackageTemplateSummary) throws {
+        _ = try packageRepository.createPackage(.init(dogID: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!, name: template.name, unitType: template.unitType, initialUnits: template.units, purchasedAt: clock.now(), expiresAt: nil, paymentStatus: .paid, price: template.price, currencyCode: template.currencyCode, clientID: clientID, packageTemplateID: template.id))
+        contentRevision += 1
     }
 
     func completedTrainings(dogID: UUID) -> [DogTrainingSummary] {

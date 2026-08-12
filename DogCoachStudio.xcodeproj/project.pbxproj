@@ -65,11 +65,13 @@
 		AD9F6A8BC760ADFD1BB50428 /* ClientDogRoleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F00FA3709706DB4E6707603 /* ClientDogRoleTests.swift */; };
 		ADA11D189DD10120A408ACAF /* PeopleUseCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF580128DB016449D6010C4E /* PeopleUseCases.swift */; };
 		AF2FCBE353819619C92CB40E /* SessionCompletionPoCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3345D1B6756305731642469A /* SessionCompletionPoCTests.swift */; };
+		B115C8A0906B4092AF19053B /* PackageOwnershipAndSessionLabelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52A21F16C3D2229C0A3B674 /* PackageOwnershipAndSessionLabelsTests.swift */; };
 		B69EE2CFAA5F78385AF52EA7 /* CatalogDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1124B1F7C9C94CA962239A24 /* CatalogDomain.swift */; };
 		B7074C55E58BB90CD9A8FC87 /* SchemaV1Validators.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B1E0CBBD7C80F073FC452A /* SchemaV1Validators.swift */; };
 		B8005EB287D53974B6925E5F /* PackagesRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF2E0298B952F1616B6DBAF /* PackagesRootView.swift */; };
 		BB960F7EFBDA60B453465C1C /* schema-v1.json in Resources */ = {isa = PBXBuildFile; fileRef = E1D10E56401779098C96C477 /* schema-v1.json */; };
 		BBD555FC70A7825E1F4C7D6A /* DogCoachStudioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 501C67F09D7EA87D4544CBF5 /* DogCoachStudioApp.swift */; };
+		BFAF8764FA3D7A6E2345F3FB /* DogCoachSchemaV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BF767A6169B5722C088ED4 /* DogCoachSchemaV2.swift */; };
 		C13517CBA8083C23CB039D6C /* ScheduledSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7965E8E638072CE47C4B4C /* ScheduledSessionRepository.swift */; };
 		C2F8FE5341CBB7676F835905 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBAC47A9E9EA348A7ACB4626 /* Assets.xcassets */; };
 		C3D1797C7033E3F6BFDC7B50 /* CatalogRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E57391333BF794993FE8ED7 /* CatalogRootView.swift */; };
@@ -128,6 +130,7 @@
 		0A31DE12E8E2ACE69F8B2BD6 /* DiagnosticExportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticExportTests.swift; sourceTree = "<group>"; };
 		0E9A4E5A4FAB3B238274462A /* SchemaV1ValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaV1ValidatorTests.swift; sourceTree = "<group>"; };
 		1124B1F7C9C94CA962239A24 /* CatalogDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogDomain.swift; sourceTree = "<group>"; };
+		12BF767A6169B5722C088ED4 /* DogCoachSchemaV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogCoachSchemaV2.swift; sourceTree = "<group>"; };
 		1767F8DF4D6AE2B4F76A2C47 /* DogPhotoStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogPhotoStoreTests.swift; sourceTree = "<group>"; };
 		1DDD604D4BBA62EDDB6D68F9 /* DogCoachStudio.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DogCoachStudio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22405B0B6CA30BC50C1FC22B /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -186,6 +189,7 @@
 		AAA7538FCAFEB74706A704C6 /* Diagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diagnostics.swift; sourceTree = "<group>"; };
 		B31E5FDE27DCA7DE5DE7E3D9 /* SchemaV1PersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaV1PersistenceTests.swift; sourceTree = "<group>"; };
 		B4D876647427A02F3F5CE167 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		B52A21F16C3D2229C0A3B674 /* PackageOwnershipAndSessionLabelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageOwnershipAndSessionLabelsTests.swift; sourceTree = "<group>"; };
 		B82D8D1DAB96AA60492CBA9F /* Products.storekit */ = {isa = PBXFileReference; path = Products.storekit; sourceTree = "<group>"; };
 		B9D115AD309AD047B010FC72 /* content-pack-v1.schema.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "content-pack-v1.schema.json"; sourceTree = "<group>"; };
 		C44B15B95B7DC8960BC27B65 /* MarketingScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketingScreenshotTests.swift; sourceTree = "<group>"; };
@@ -274,6 +278,14 @@
 				E4D2695A66FAAB833E501D5E /* SwiftDataPeopleRepository.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		1EC1B5BEF41202060820B008 /* Phase12 */ = {
+			isa = PBXGroup;
+			children = (
+				B52A21F16C3D2229C0A3B674 /* PackageOwnershipAndSessionLabelsTests.swift */,
+			);
+			path = Phase12;
 			sourceTree = "<group>";
 		};
 		20C3791209D2F94FFA56EF8C /* Phase2 */ = {
@@ -664,6 +676,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		AE76978BF27368A97006076E /* SchemaV2 */ = {
+			isa = PBXGroup;
+			children = (
+				12BF767A6169B5722C088ED4 /* DogCoachSchemaV2.swift */,
+			);
+			path = SchemaV2;
+			sourceTree = "<group>";
+		};
 		AEBD51B233FA1A732CBA5BB1 /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -692,6 +712,7 @@
 				60407C349B9AF29183A470B0 /* Phase6 */,
 				9402E40FF4F064FF94901E3A /* Phase7 */,
 				D61AB799D093DA0CD2136147 /* Phase8 */,
+				1EC1B5BEF41202060820B008 /* Phase12 */,
 			);
 			path = DogCoachStudioTests;
 			sourceTree = "<group>";
@@ -730,6 +751,7 @@
 				941F2295C323003B049EF37C /* PersistenceProvider.swift */,
 				22405B0B6CA30BC50C1FC22B /* Repository.swift */,
 				269F58A508EC7746D30EB71F /* SchemaV1 */,
+				AE76978BF27368A97006076E /* SchemaV2 */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -1085,6 +1107,7 @@
 				2686DBBE4757BC2A91A7F420 /* DemoScenario.swift in Sources */,
 				FF8A9740F2AAD7791BD7F898 /* Diagnostics.swift in Sources */,
 				A7C243B40470C03AF7A5B06C /* DogCoachSchemaV1.swift in Sources */,
+				BFAF8764FA3D7A6E2345F3FB /* DogCoachSchemaV2.swift in Sources */,
 				BBD555FC70A7825E1F4C7D6A /* DogCoachStudioApp.swift in Sources */,
 				F31CBA4EF166D3113AD89082 /* DogPhotoSupport.swift in Sources */,
 				4F763CF87738D87CE65FF6A3 /* EntitlementDomain.swift in Sources */,
@@ -1161,6 +1184,7 @@
 				68EC44231A54C3A01E9FD573 /* DogPhotoStoreTests.swift in Sources */,
 				97C9A4079F5E991C5C71A63D /* IntakeDraftTests.swift in Sources */,
 				E5D3CC15AE6CE987B0179E51 /* PackageAndReportTests.swift in Sources */,
+				B115C8A0906B4092AF19053B /* PackageOwnershipAndSessionLabelsTests.swift in Sources */,
 				F93A01BF348570A62059959F /* PeopleUseCasesTests.swift in Sources */,
 				FDFC79EAC68EE5B9B285E39E /* SchemaV1PersistenceTests.swift in Sources */,
 				E43B17DE455751EB66104A6D /* SchemaV1ValidatorTests.swift in Sources */,

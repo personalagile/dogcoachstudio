@@ -10,6 +10,7 @@ struct PeopleRootView: View {
         case intake(DogSummary)
         case goal(DogSummary)
         case editGoal(DogSummary, TrainingGoal)
+        case package(ClientSummary)
 
         var id: String {
             switch self {
@@ -21,6 +22,7 @@ struct PeopleRootView: View {
             case .intake(let dog): "intake-\(dog.id)"
             case .goal(let dog): "goal-\(dog.id)"
             case .editGoal(let dog, let goal): "edit-goal-\(dog.id)-\(goal.id)"
+            case .package(let client): "package-\(client.id)"
             }
         }
     }
@@ -101,6 +103,8 @@ struct PeopleRootView: View {
                 GoalEditorView(model: model, dog: dog, goal: nil)
             case .editGoal(let dog, let goal):
                 GoalEditorView(model: model, dog: dog, goal: goal)
+            case .package(let client):
+                ClientPackageEditorView(model: model, client: client)
             }
         }
         .alert("Could not load data", isPresented: errorPresented) {

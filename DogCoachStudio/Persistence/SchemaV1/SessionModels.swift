@@ -12,6 +12,12 @@ final class ScheduledSessionRecord {
     var statusRawValue: String = "draft"
     var templateVersionID: UUID?
     var calendarEventIdentifier: String?
+    var labelsData: Data = Data()
+    @Transient var labels: [String] {
+        get { CodableAttribute.decode([String].self, from: labelsData) ?? [] }
+        set { labelsData = CodableAttribute.encode(newValue) }
+    }
+    var packageUnitsPerAttendee: Decimal = 1
     var templateVersion: TemplateVersionRecord?
     var bookings: [BookingRecord]?
     var completedSession: CompletedSessionRecord?

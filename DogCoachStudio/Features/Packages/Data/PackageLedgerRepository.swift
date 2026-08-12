@@ -9,15 +9,25 @@ final class PackageLedgerRepository {
 
     init(context: ModelContext, uuid: any UUIDGenerating, clock: any AppClock) {
         self.context = context; self.uuid = uuid; self.clock = clock
+        try? backfillLegacyOwners()
     }
 
     func createPackage(_ draft: TrainingPackageDraft) throws -> UUID {
-        guard let dog = try context.fetch(FetchDescriptor<DogRecord>()).first(where: { $0.id == draft.dogID }) else { throw PackageDomainError.dogNotFound }
+        let dog = try context.fetch(FetchDescriptor<DogRecord>()).first(where: { $0.id == draft.dogID })
+        if draft.clientID == nil, dog == nil { throw PackageDomainError.dogNotFound }
+        let inferredClient = (dog?.clientRoles ?? []).first(where: \.isPrimaryContact)?.client ?? (dog?.clientRoles ?? []).first?.client
+        let client = try draft.clientID.flatMap { id in try context.fetch(FetchDescriptor<ClientRecord>()).first { $0.id == id } } ?? inferredClient
+        if draft.clientID != nil, client == nil { throw PackageDomainError.clientNotFound }
+        let template = try draft.packageTemplateID.flatMap { id in try context.fetch(FetchDescriptor<PackageTemplateRecord>()).first { $0.id == id } }
+        if draft.packageTemplateID != nil, template == nil { throw PackageDomainError.templateNotFound }
         guard !draft.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { throw PackageDomainError.invalidName }
         guard draft.initialUnits > 0 else { throw PackageDomainError.invalidUnits }
-        let package = TrainingPackageRecord(id: uuid.makeUUID(), dogID: dog.id, name: draft.name, initialUnits: draft.initialUnits, purchasedAt: draft.purchasedAt)
+        let package = TrainingPackageRecord(id: uuid.makeUUID(), dogID: dog?.id ?? draft.dogID, name: draft.name, initialUnits: draft.initialUnits, purchasedAt: draft.purchasedAt)
+        package.clientID = client?.id; package.client = client; package.packageTemplateID = template?.id; package.packageTemplate = template
         package.unitTypeRawValue = draft.unitType.rawValue; package.expiresAt = draft.expiresAt; package.paymentStatusRawValue = draft.paymentStatus.rawValue; package.priceSnapshot = draft.price; package.currencyCode = draft.currencyCode; package.dog = dog
         context.insert(package)
+        if let client { client.packages = (client.packages ?? []) + [package] }
+        if let template { template.packages = (template.packages ?? []) + [package] }
         let purchase = PackageLedgerEntryRecord(id: uuid.makeUUID(), packageID: package.id, kindRawValue: PackageLedgerKind.purchase.rawValue, unitDelta: 0, createdAt: draft.purchasedAt)
         purchase.moneyDelta = draft.price; purchase.currencyCode = draft.currencyCode; purchase.package = package
         context.insert(purchase); package.ledgerEntries = [purchase]
@@ -29,8 +39,67 @@ final class PackageLedgerRepository {
         return try context.fetch(FetchDescriptor<TrainingPackageRecord>()).map { package in
             let balance = self.balance(package)
             let status: PackageLifecycleStatus = package.isClosed ? .closed : ((package.expiresAt.map { $0 < now } ?? false) ? .expired : (balance <= 0 ? .exhausted : .active))
-            return .init(id: package.id, dogID: package.dogID, dogName: package.dog?.name ?? "", name: package.name, balance: balance, initialUnits: package.initialUnits, expiresAt: package.expiresAt, paymentStatus: PackagePaymentStatus(rawValue: package.paymentStatusRawValue) ?? .unknown, status: status)
-        }.sorted { $0.dogName.localizedStandardCompare($1.dogName) == .orderedAscending }
+            return .init(id: package.id, dogID: package.dogID, dogName: package.dog?.name ?? "", name: package.name, balance: balance, initialUnits: package.initialUnits, expiresAt: package.expiresAt, paymentStatus: PackagePaymentStatus(rawValue: package.paymentStatusRawValue) ?? .unknown, status: status, clientID: package.clientID, clientName: package.client?.displayName ?? "", price: package.priceSnapshot, currencyCode: package.currencyCode, packageTemplateID: package.packageTemplateID)
+        }.sorted { $0.clientName.localizedStandardCompare($1.clientName) == .orderedAscending }
+    }
+
+    func updatePackage(id: UUID, draft: TrainingPackageDraft) throws {
+        guard let package = try package(id) else { throw PackageDomainError.packageNotFound }
+        guard !draft.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { throw PackageDomainError.invalidName }
+        guard draft.initialUnits > 0 else { throw PackageDomainError.invalidUnits }
+        guard let clientID = draft.clientID,
+              let client = try context.fetch(FetchDescriptor<ClientRecord>()).first(where: { $0.id == clientID }) else { throw PackageDomainError.clientNotFound }
+        let template = try draft.packageTemplateID.flatMap { id in try context.fetch(FetchDescriptor<PackageTemplateRecord>()).first { $0.id == id } }
+        if draft.packageTemplateID != nil, template == nil { throw PackageDomainError.templateNotFound }
+        package.name = draft.name
+        package.unitTypeRawValue = draft.unitType.rawValue
+        package.initialUnits = draft.initialUnits
+        package.expiresAt = draft.expiresAt
+        package.paymentStatusRawValue = draft.paymentStatus.rawValue
+        package.priceSnapshot = draft.price
+        package.currencyCode = draft.currencyCode
+        package.clientID = client.id
+        package.client = client
+        package.packageTemplateID = template?.id
+        package.packageTemplate = template
+        try context.save()
+    }
+
+    func deletePackage(id: UUID) throws {
+        guard let package = try package(id) else { throw PackageDomainError.packageNotFound }
+        let entries = package.ledgerEntries ?? []
+        guard !entries.contains(where: { $0.kindRawValue != PackageLedgerKind.purchase.rawValue }) else { throw PackageDomainError.packageHasHistory }
+        for entry in entries { context.delete(entry) }
+        context.delete(package)
+        try context.save()
+    }
+
+    func createTemplate(_ draft: PackageTemplateDraft) throws -> UUID {
+        guard !draft.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { throw PackageDomainError.invalidName }
+        guard draft.units > 0 else { throw PackageDomainError.invalidUnits }
+        guard draft.price >= 0 else { throw PackageDomainError.invalidAmount }
+        let record = PackageTemplateRecord(id: uuid.makeUUID(), name: draft.name, units: draft.units, price: draft.price, currencyCode: draft.currencyCode, createdAt: clock.now())
+        record.unitTypeRawValue = draft.unitType.rawValue; context.insert(record); try context.save(); return record.id
+    }
+
+    func templates() throws -> [PackageTemplateSummary] {
+        try context.fetch(FetchDescriptor<PackageTemplateRecord>()).filter { !$0.isArchived }.map {
+            PackageTemplateSummary(id: $0.id, name: $0.name, unitType: PackageUnitType(rawValue: $0.unitTypeRawValue) ?? .session, units: $0.units, price: $0.price, currencyCode: $0.currencyCode, salesCount: ($0.packages ?? []).count)
+        }.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+    }
+
+    func archiveTemplate(id: UUID) throws {
+        guard let value = try context.fetch(FetchDescriptor<PackageTemplateRecord>()).first(where: { $0.id == id }) else { throw PackageDomainError.templateNotFound }
+        value.isArchived = true; try context.save()
+    }
+
+    func updateTemplate(id: UUID, draft: PackageTemplateDraft) throws {
+        guard let value = try context.fetch(FetchDescriptor<PackageTemplateRecord>()).first(where: { $0.id == id }) else { throw PackageDomainError.templateNotFound }
+        guard !draft.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { throw PackageDomainError.invalidName }
+        guard draft.units > 0 else { throw PackageDomainError.invalidUnits }
+        guard draft.price >= 0 else { throw PackageDomainError.invalidAmount }
+        value.name = draft.name; value.unitTypeRawValue = draft.unitType.rawValue; value.units = draft.units; value.price = draft.price; value.currencyCode = draft.currencyCode
+        try context.save()
     }
 
     func balance(packageID: UUID) throws -> Decimal { guard let package = try package(packageID) else { throw PackageDomainError.packageNotFound }; return balance(package) }
@@ -94,4 +163,11 @@ final class PackageLedgerRepository {
         let entry = PackageLedgerEntryRecord(id: uuid.makeUUID(), packageID: packageID, kindRawValue: kind.rawValue, unitDelta: units, createdAt: clock.now()); entry.reason = reason; entry.package = package; context.insert(entry); package.ledgerEntries = (package.ledgerEntries ?? []) + [entry]; try context.save(); return entry.id
     }
     private func csvEscape(_ value: String) -> String { "\"\(value.replacingOccurrences(of: "\"", with: "\"\""))\"" }
+    private func backfillLegacyOwners() throws {
+        for package in try context.fetch(FetchDescriptor<TrainingPackageRecord>()) where package.clientID == nil {
+            let client = (package.dog?.clientRoles ?? []).first(where: \.isPrimaryContact)?.client ?? (package.dog?.clientRoles ?? []).first?.client
+            package.clientID = client?.id; package.client = client
+        }
+        if context.hasChanges { try context.save() }
+    }
 }

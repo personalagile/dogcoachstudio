@@ -5334,6 +5334,125 @@
         }
       }
     },
+    "%@ units · %@": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "%1$@ Einheiten · %2$@" } },
+        "es": { "stringUnit": { "state": "translated", "value": "%1$@ unidades · %2$@" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "%1$@ unités · %2$@" } }
+      }
+    },
+    "%lld sales": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "%lld Verkäufe" } },
+        "es": { "stringUnit": { "state": "translated", "value": "%lld ventas" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "%lld ventes" } }
+      }
+    },
+    "Booked packages": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Gebuchte Pakete" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Paquetes contratados" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Forfaits réservés" } }
+      }
+    },
+    "Could not save package": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Paket konnte nicht gespeichert werden" } },
+        "es": { "stringUnit": { "state": "translated", "value": "No se pudo guardar el paquete" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Impossible d’enregistrer le forfait" } }
+      }
+    },
+    "Could not update packages": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Pakete konnten nicht aktualisiert werden" } },
+        "es": { "stringUnit": { "state": "translated", "value": "No se pudieron actualizar los paquetes" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Impossible de mettre à jour les forfaits" } }
+      }
+    },
+    "Edit package": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Paket bearbeiten" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Editar paquete" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Modifier le forfait" } }
+      }
+    },
+    "Edit package template": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Paketvorlage bearbeiten" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Editar plantilla de paquete" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Modifier le modèle de forfait" } }
+      }
+    },
+    "Labels, comma separated": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Labels, durch Kommas getrennt" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Etiquetas, separadas por comas" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Étiquettes, séparées par des virgules" } }
+      }
+    },
+    "New package template": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Neue Paketvorlage" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Nueva plantilla de paquete" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Nouveau modèle de forfait" } }
+      }
+    },
+    "Package template": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Paketvorlage" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Plantilla de paquete" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Modèle de forfait" } }
+      }
+    },
+    "Package templates": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Paketvorlagen" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Plantillas de paquetes" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Modèles de forfaits" } }
+      }
+    },
+    "Package units per attendee": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Paketeinheiten pro Teilnehmer" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Unidades de paquete por participante" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Unités du forfait par participant" } }
+      }
+    },
+    "Price": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Preis" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Precio" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Prix" } }
+      }
+    },
+    "Revenue": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Umsatz" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Ingresos" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Chiffre d’affaires" } }
+      }
+    },
+    "Sell package": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Paket verkaufen" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Vender paquete" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Vendre un forfait" } }
+      }
+    },
+    "Sold packages": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Verkaufte Pakete" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Paquetes vendidos" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Forfaits vendus" } }
+      }
+    },
+    "Units": {
+      "localizations": {
+        "de": { "stringUnit": { "state": "translated", "value": "Einheiten" } },
+        "es": { "stringUnit": { "state": "translated", "value": "Unidades" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Unités" } }
+      }
+    },
     "Your data": {
       "localizations": {
         "de": {

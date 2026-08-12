@@ -27,6 +27,8 @@ struct ScheduledSessionDraft: Sendable {
     var kind: ScheduledSessionKind
     var templateVersionID: UUID?
     var dogIDs: [UUID]
+    var labels: [String] = []
+    var packageUnitsPerAttendee: Decimal = 1
 }
 
 struct ScheduledSessionSummary: Identifiable, Hashable, Sendable {
@@ -41,6 +43,8 @@ struct ScheduledSessionSummary: Identifiable, Hashable, Sendable {
     let participantNames: [String]
     let isEvaluated: Bool
     let hasOverlap: Bool
+    let labels: [String]
+    let packageUnitsPerAttendee: Decimal
 }
 
 enum SessionCalendarScope: String, CaseIterable, Sendable {

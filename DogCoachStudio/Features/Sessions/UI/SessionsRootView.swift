@@ -46,6 +46,7 @@ final class SessionsFeatureModel {
             let isInPeriod = interval?.contains(session.startAt) ?? true
             let matches = query.isEmpty || session.title.localizedStandardContains(query)
                 || session.participantNames.contains { $0.localizedStandardContains(query) }
+                || session.labels.contains { $0.localizedStandardContains(query) }
             return isInPeriod && matches
         }
     }
@@ -75,9 +76,10 @@ final class SessionsFeatureModel {
     func sessions(on day: Date) -> [ScheduledSessionSummary] {
         let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         return sessions.filter { session in
-            Calendar.autoupdatingCurrent.isDate(session.startAt, inSameDayAs: day)
-                && (query.isEmpty || session.title.localizedStandardContains(query)
-                    || session.participantNames.contains { $0.localizedStandardContains(query) })
+            let matches = query.isEmpty || session.title.localizedStandardContains(query)
+                || session.participantNames.contains { $0.localizedStandardContains(query) }
+                || session.labels.contains { $0.localizedStandardContains(query) }
+            return Calendar.autoupdatingCurrent.isDate(session.startAt, inSameDayAs: day) && matches
         }
     }
 
@@ -100,9 +102,9 @@ final class SessionsFeatureModel {
         } catch { self.error = AppErrorMapper.map(error, operation: "sessions.reload") }
     }
 
-    func create(title: String, startAt: Date, duration: Int, kind: ScheduledSessionKind, templateVersionID: UUID?, dogIDs: [UUID]) -> Bool {
+    func create(title: String, startAt: Date, duration: Int, kind: ScheduledSessionKind, templateVersionID: UUID?, dogIDs: [UUID], labels: [String] = [], packageUnits: Decimal = 1) -> Bool {
         do {
-            _ = try repository.create(.init(title: title, startAt: startAt, durationMinutes: duration, locationText: nil, kind: kind, templateVersionID: templateVersionID, dogIDs: dogIDs))
+            _ = try repository.create(.init(title: title, startAt: startAt, durationMinutes: duration, locationText: nil, kind: kind, templateVersionID: templateVersionID, dogIDs: dogIDs, labels: labels, packageUnitsPerAttendee: packageUnits))
             reload(); return true
         } catch { self.error = AppErrorMapper.map(error, operation: "session.create"); return false }
     }
@@ -236,6 +238,8 @@ private struct SessionEditorView: View {
     @State private var kind = ScheduledSessionKind.group
     @State private var templateVersionID: UUID?
     @State private var dogIDs: Set<UUID> = []
+    @State private var labelsText = ""
+    @State private var packageUnits: Decimal = 1
 
     var body: some View {
         NavigationStack {
@@ -250,12 +254,14 @@ private struct SessionEditorView: View {
                 Stepper("Duration: \(duration) min", value: $duration, in: 5...240, step: 5)
                 Picker("Kind", selection: $kind) { ForEach(ScheduledSessionKind.allCases, id: \.self) { Text($0.rawValue.capitalized).tag($0) } }
                 Picker("Template", selection: $templateVersionID) { Text("No template").tag(UUID?.none); ForEach(model.templates) { Text($0.title).tag(Optional($0.versionID)) } }
+                TextField("Labels, comma separated", text: $labelsText).accessibilityIdentifier("sessionLabelsField")
+                TextField("Package units per attendee", value: $packageUnits, format: .number).keyboardType(.decimalPad).accessibilityIdentifier("sessionPackageUnitsField")
                 Section("Dogs") { ForEach(model.dogs, id: \.id) { dog in Toggle(dog.name, isOn: Binding(get: { dogIDs.contains(dog.id) }, set: { if $0 { dogIDs.insert(dog.id) } else { dogIDs.remove(dog.id) } })) } }
             }
             .navigationTitle("New session")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel", action: dismiss) }
-                ToolbarItem(placement: .confirmationAction) { Button("Save") { if model.create(title: title, startAt: startAt, duration: duration, kind: kind, templateVersionID: templateVersionID, dogIDs: Array(dogIDs)) { dismiss() } }.disabled(title.isEmpty).accessibilityIdentifier("sessionSaveButton") }
+                ToolbarItem(placement: .confirmationAction) { Button("Save") { if model.create(title: title, startAt: startAt, duration: duration, kind: kind, templateVersionID: templateVersionID, dogIDs: Array(dogIDs), labels: labelsText.split(separator: ",").map(String.init), packageUnits: packageUnits) { dismiss() } }.disabled(title.isEmpty || packageUnits < 0).accessibilityIdentifier("sessionSaveButton") }
             }
         }
     }
@@ -283,6 +289,7 @@ private struct SessionOverviewRow: View {
                     Text(session.title).font(.headline)
                     if !session.participantNames.isEmpty { Text(session.participantNames.joined(separator: ", ")).font(.subheadline).foregroundStyle(.secondary) }
                     Text("\(session.bookingCount) bookings · \(session.durationMinutes) min")
+                    if !session.labels.isEmpty { Text(session.labels.map { "#\($0)" }.joined(separator: " ")).font(.caption).foregroundStyle(.secondary) }
                     if session.hasOverlap { Label("Overlaps another session", systemImage: "exclamationmark.triangle").foregroundStyle(.orange) }
                 }
             }

@@ -33,6 +33,6 @@ enum DogCoachSchemaV1: VersionedSchema {
 }
 
 enum DogCoachMigrationPlan: SchemaMigrationPlan {
-    static var schemas: [any VersionedSchema.Type] { [DogCoachSchemaV1.self] }
+    static var schemas: [any VersionedSchema.Type] { [DogCoachSchemaV2.self] }
     static var stages: [MigrationStage] { [] }
 }

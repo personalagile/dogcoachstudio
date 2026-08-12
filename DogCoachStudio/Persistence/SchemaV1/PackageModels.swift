@@ -5,6 +5,8 @@ import SwiftData
 final class TrainingPackageRecord {
     var id: UUID = UUID()
     var dogID: UUID = UUID()
+    var clientID: UUID?
+    var packageTemplateID: UUID?
     var name: String = ""
     var unitTypeRawValue: String = "session"
     var initialUnits: Decimal = 0
@@ -15,6 +17,8 @@ final class TrainingPackageRecord {
     var currencyCode: String?
     var isClosed: Bool = false
     var dog: DogRecord?
+    var client: ClientRecord?
+    var packageTemplate: PackageTemplateRecord?
     var ledgerEntries: [PackageLedgerEntryRecord]?
 
     init(id: UUID = UUID(), dogID: UUID, name: String, initialUnits: Decimal, purchasedAt: Date = .now) {
@@ -23,6 +27,23 @@ final class TrainingPackageRecord {
         self.name = name
         self.initialUnits = initialUnits
         self.purchasedAt = purchasedAt
+    }
+}
+
+@Model
+final class PackageTemplateRecord {
+    var id: UUID = UUID()
+    var name: String = ""
+    var unitTypeRawValue: String = "session"
+    var units: Decimal = 0
+    var price: Decimal = 0
+    var currencyCode: String = "EUR"
+    var isArchived: Bool = false
+    var createdAt: Date = Date()
+    var packages: [TrainingPackageRecord]?
+
+    init(id: UUID = UUID(), name: String, units: Decimal, price: Decimal, currencyCode: String = "EUR", createdAt: Date = .now) {
+        self.id = id; self.name = name; self.units = units; self.price = price; self.currencyCode = currencyCode; self.createdAt = createdAt
     }
 }
 

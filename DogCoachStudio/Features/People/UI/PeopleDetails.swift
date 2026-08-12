@@ -31,9 +31,13 @@ struct ClientDetailView: View {
                 }
             }
             Section("Packages") {
+                let _ = model.contentRevision
                 let packages = model.packages(clientID: client.id)
                 if packages.isEmpty {
                     Text("No packages").foregroundStyle(.secondary)
+                } else {
+                    LabeledContent("Booked packages", value: packages.count.formatted())
+                    LabeledContent("Revenue", value: packages.compactMap(\.price).reduce(Decimal.zero, +).formatted(.currency(code: "EUR")))
                 }
                 ForEach(packages) { package in
                     VStack(alignment: .leading, spacing: 4) {
@@ -42,12 +46,14 @@ struct ClientDetailView: View {
                             Spacer()
                             Text(package.status.displayName).font(.caption).foregroundStyle(package.status.tint)
                         }
-                        Text(package.dogName).font(.subheadline).foregroundStyle(.secondary)
+                        if !package.dogName.isEmpty { Text(package.dogName).font(.subheadline).foregroundStyle(.secondary) }
+                        if let price = package.price { Text(price, format: .currency(code: "EUR")) }
                         LabeledContent("Balance", value: NSDecimalNumber(decimal: package.balance).stringValue)
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityIdentifier("clientPackageRow")
                 }
+                Button("Sell package") { present(.package(client)) }.accessibilityIdentifier("clientAddPackageButton")
             }
             if let notes = client.privateNotes, !notes.isEmpty {
                 Section("Private trainer notes") { Text(notes) }

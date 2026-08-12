@@ -17,7 +17,7 @@ enum ModelContainerFactory {
     static func makeInMemory() throws -> ModelContainer {
         let configuration = ModelConfiguration(
             "DogCoachStudio-InMemory",
-            schema: Schema(versionedSchema: DogCoachSchemaV1.self),
+            schema: Schema(versionedSchema: DogCoachSchemaV2.self),
             isStoredInMemoryOnly: true,
             cloudKitDatabase: .none
         )
@@ -27,7 +27,7 @@ enum ModelContainerFactory {
     static func makeFileBacked(storeURL: URL) throws -> ModelContainer {
         let configuration = ModelConfiguration(
             "DogCoachStudio-Local",
-            schema: Schema(versionedSchema: DogCoachSchemaV1.self),
+            schema: Schema(versionedSchema: DogCoachSchemaV2.self),
             url: storeURL,
             allowsSave: true,
             cloudKitDatabase: .none
@@ -37,7 +37,7 @@ enum ModelContainerFactory {
 
     private static func makeContainer(configuration: ModelConfiguration) throws -> ModelContainer {
         try ModelContainer(
-            for: Schema(versionedSchema: DogCoachSchemaV1.self),
+            for: Schema(versionedSchema: DogCoachSchemaV2.self),
             migrationPlan: DogCoachMigrationPlan.self,
             configurations: configuration
         )

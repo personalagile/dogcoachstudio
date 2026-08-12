@@ -160,7 +160,7 @@ struct SessionPhase4Tests {
 }
 
 @MainActor
-private final class Phase4Fixture {
+final class Phase4Fixture {
     let container: ModelContainer
     let context: ModelContext
     let sessions: SwiftDataScheduledSessionRepository

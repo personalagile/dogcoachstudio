@@ -34,6 +34,9 @@ final class SwiftDataScheduledSessionRepository {
         record.statusRawValue = ScheduledSessionStatus.draft.rawValue
         record.templateVersionID = draft.templateVersionID
         record.templateVersion = template
+        record.labels = Array(Set(draft.labels.map { $0.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }.filter { !$0.isEmpty })).sorted()
+        guard draft.packageUnitsPerAttendee >= 0 else { throw SessionSchedulingError.invalidDuration }
+        record.packageUnitsPerAttendee = draft.packageUnitsPerAttendee
         context.insert(record)
 
         let packages = try context.fetch(FetchDescriptor<TrainingPackageRecord>())
@@ -41,7 +44,8 @@ final class SwiftDataScheduledSessionRepository {
             let booking = BookingRecord(id: uuid.makeUUID(), sessionID: record.id, dogID: dogID)
             booking.session = record
             booking.dog = dogs.first { $0.id == dogID }
-            booking.expectedPackage = packages.first { $0.dogID == dogID && !$0.isClosed }
+            let clientIDs = Set((booking.dog?.clientRoles ?? []).map(\.clientID))
+            booking.expectedPackage = packages.first { package in !package.isClosed && (package.clientID.map(clientIDs.contains) ?? (package.dogID == dogID)) }
             booking.expectedPackageID = booking.expectedPackage?.id
             context.insert(booking)
             return booking
@@ -82,6 +86,8 @@ final class SwiftDataScheduledSessionRepository {
                 }.sorted(),
                 isEvaluated: evaluatedSessionIDs.contains(record.id),
                 hasOverlap: overlaps
+                , labels: record.labels
+                , packageUnitsPerAttendee: record.packageUnitsPerAttendee
             )
         }.sorted { $0.startAt < $1.startAt }
     }

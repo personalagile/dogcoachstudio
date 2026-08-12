@@ -17,6 +17,8 @@ struct TrainingPackageDraft: Sendable {
     let paymentStatus: PackagePaymentStatus
     let price: Decimal?
     let currencyCode: String?
+    var clientID: UUID? = nil
+    var packageTemplateID: UUID? = nil
 }
 
 struct TrainingPackageSummary: Identifiable, Hashable, Sendable {
@@ -29,6 +31,29 @@ struct TrainingPackageSummary: Identifiable, Hashable, Sendable {
     let expiresAt: Date?
     let paymentStatus: PackagePaymentStatus
     let status: PackageLifecycleStatus
+    let clientID: UUID?
+    let clientName: String
+    let price: Decimal?
+    let currencyCode: String?
+    let packageTemplateID: UUID?
+}
+
+struct PackageTemplateDraft: Sendable {
+    let name: String
+    let unitType: PackageUnitType
+    let units: Decimal
+    let price: Decimal
+    let currencyCode: String
+}
+
+struct PackageTemplateSummary: Identifiable, Hashable, Sendable {
+    let id: UUID
+    let name: String
+    let unitType: PackageUnitType
+    let units: Decimal
+    let price: Decimal
+    let currencyCode: String
+    let salesCount: Int
 }
 
 struct CouponDraft: Sendable {
@@ -42,6 +67,8 @@ struct CouponDraft: Sendable {
 
 enum PackageDomainError: Error, Equatable, Sendable {
     case dogNotFound
+    case clientNotFound
+    case templateNotFound
     case packageNotFound
     case invalidName
     case invalidUnits
@@ -54,6 +81,7 @@ enum PackageDomainError: Error, Equatable, Sendable {
     case reversalRequired
     case entryNotFound
     case entryAlreadyReversed
+    case packageHasHistory
 }
 
 struct LedgerCSV: Sendable { let filename: String; let data: Data }

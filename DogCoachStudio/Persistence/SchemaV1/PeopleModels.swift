@@ -16,6 +16,7 @@ final class ClientRecord {
     var createdAt: Date = Date()
     var updatedAt: Date = Date()
     var dogRoles: [ClientDogRoleRecord]?
+    var packages: [TrainingPackageRecord]?
 
     init(id: UUID = UUID(), displayName: String, createdAt: Date = .now) {
         self.id = id

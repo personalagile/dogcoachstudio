@@ -36,6 +36,37 @@ struct RoleEditorView: View {
     }
 }
 
+struct ClientPackageEditorView: View {
+    @Environment(\.dismiss) private var dismiss
+    let model: PeopleFeatureModel
+    let client: ClientSummary
+    @State private var templateID: UUID?
+    @State private var error: AppError?
+
+    var body: some View {
+        let templates = model.packageTemplates()
+        NavigationStack {
+            Form {
+                LabeledContent("Client", value: client.displayName)
+                Picker("Package template", selection: $templateID) {
+                    Text("Select").tag(UUID?.none)
+                    ForEach(templates) { Text("\($0.name) · \($0.price.formatted(.currency(code: $0.currencyCode)))").tag(Optional($0.id)) }
+                }
+            }
+            .navigationTitle("Sell package")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                ToolbarItem(placement: .confirmationAction) { Button("Save") {
+                    guard let template = templates.first(where: { $0.id == templateID }) else { return }
+                    do { try model.createPackage(clientID: client.id, template: template); dismiss() }
+                    catch { self.error = AppErrorMapper.map(error, operation: "client.package.create") }
+                }.disabled(templateID == nil).accessibilityIdentifier("clientPackageSaveButton") }
+            }
+            .alert("Could not save package", isPresented: Binding(get: { error != nil }, set: { if !$0 { error = nil } })) { Button("OK") {} } message: { Text(error?.userMessage ?? "") }
+        }
+    }
+}
+
 @MainActor @Observable
 final class IntakeEditorModel {
     var draft: IntakeDraft
