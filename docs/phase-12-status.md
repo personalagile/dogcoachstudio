@@ -12,6 +12,7 @@ Status: implemented.
 - Session completion previews and ledger redemptions use the configured unit amount exactly once.
 - Backup exports include package ownership, template references, prices, package templates, session labels, and configured consumption.
 - New UI text is localized in German, Spanish, and French.
+- Package sale and template forms use persistent field labels, examples, explanatory help text, explicit currency and payment status, validation, and a preview before saving. The client-detail sale flow explains what a template contributes.
 
 ## Persistence
 

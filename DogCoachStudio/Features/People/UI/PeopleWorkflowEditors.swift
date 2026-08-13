@@ -47,10 +47,28 @@ struct ClientPackageEditorView: View {
         let templates = model.packageTemplates()
         NavigationStack {
             Form {
-                LabeledContent("Client", value: client.displayName)
-                Picker("Package template", selection: $templateID) {
-                    Text("Select").tag(UUID?.none)
-                    ForEach(templates) { Text("\($0.name) · \($0.price.formatted(.currency(code: $0.currencyCode)))").tag(Optional($0.id)) }
+                Section {
+                    Text("Select the offer this client is buying. The template supplies the package name, starting credits, price, and currency.")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                Section {
+                    LabeledContent("Client", value: client.displayName)
+                    Picker("Package template", selection: $templateID) {
+                        Text("Select a package template").tag(UUID?.none)
+                        ForEach(templates) { Text("\($0.name) · \($0.price.formatted(.currency(code: $0.currencyCode)))").tag(Optional($0.id)) }
+                    }
+                } header: {
+                    Text("Assignment")
+                } footer: {
+                    Text("You can create and edit reusable offers in the Packages tab.")
+                }
+                if let template = templates.first(where: { $0.id == templateID }) {
+                    Section("Sale preview") {
+                        LabeledContent("Package", value: template.name)
+                        LabeledContent("Starting balance") { Text(template.units, format: .number) }
+                        LabeledContent("Price") { Text(template.price, format: .currency(code: template.currencyCode)) }
+                    }
                 }
             }
             .navigationTitle("Sell package")
