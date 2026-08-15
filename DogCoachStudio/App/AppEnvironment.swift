@@ -38,13 +38,21 @@ struct AppEnvironment {
 
     static func live() throws -> AppEnvironment {
         let container = try ModelContainerFactory.makeDefault()
-        return AppEnvironment(
+        let environment = AppEnvironment(
             persistence: PersistenceProvider(container: container),
             clock: SystemAppClock(),
             uuidGenerator: SystemUUIDGenerator(),
             dataExporter: UnavailableDataExporter(),
             diagnostics: DiagnosticRecorder()
         )
+#if DEBUG
+        try DemoDataSeeder.seedIfNeeded(
+            context: container.mainContext,
+            clock: environment.clock,
+            uuidGenerator: environment.uuidGenerator
+        )
+#endif
+        return environment
     }
 
     static func preview() throws -> AppEnvironment {
@@ -57,11 +65,13 @@ struct AppEnvironment {
             dataExporter: UnavailableDataExporter(),
             diagnostics: DiagnosticRecorder(clock: clock)
         )
+#if DEBUG
         try DemoDataSeeder.seedIfNeeded(
             context: container.mainContext,
             clock: environment.clock,
             uuidGenerator: environment.uuidGenerator
         )
+#endif
         return environment
     }
 
@@ -74,13 +84,24 @@ struct AppEnvironment {
             dataExporter: UnavailableDataExporter(),
             diagnostics: DiagnosticRecorder()
         )
+#if DEBUG
         if !ProcessInfo.processInfo.arguments.contains("--phase17-uitesting") {
-            try DemoDataSeeder.seedIfNeeded(
-                context: container.mainContext,
-                clock: environment.clock,
-                uuidGenerator: environment.uuidGenerator
-            )
+            let arguments = ProcessInfo.processInfo.arguments
+            if arguments.contains("--phase4-uitesting") || arguments.contains("--phase5-uitesting") {
+                try DemoDataSeeder.seedMinimalPeopleIfNeeded(
+                    context: container.mainContext,
+                    clock: environment.clock,
+                    uuidGenerator: environment.uuidGenerator
+                )
+            } else {
+                try DemoDataSeeder.seedIfNeeded(
+                    context: container.mainContext,
+                    clock: environment.clock,
+                    uuidGenerator: environment.uuidGenerator
+                )
+            }
         }
+#endif
         return environment
     }
 }

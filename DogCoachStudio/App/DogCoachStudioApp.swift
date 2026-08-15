@@ -78,6 +78,7 @@ private struct ProductionBootstrapRoot: View {
     var body: some View {
         if shouldShowOnboarding {
             ProductionOnboardingView { includeSampleData in
+#if DEBUG
                 if includeSampleData {
                     try DemoDataSeeder.seedIfNeeded(
                         context: environment.persistence.mainContext,
@@ -86,6 +87,9 @@ private struct ProductionBootstrapRoot: View {
                     )
                     environment.dataChanges.notify()
                 }
+#else
+                _ = includeSampleData
+#endif
                 if !isUITestOnboarding {
                     onboardingCompleted = true
                 }
@@ -112,19 +116,23 @@ private struct ProductionOnboardingView: View {
                 Text("Welcome to DogCoach Studio")
                     .font(.largeTitle.bold())
                     .multilineTextAlignment(.center)
+#if DEBUG
                 Text("Start with an empty workspace for real client data, or add clearly marked sample records to explore the app.")
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
+#endif
             }
             VStack(spacing: 12) {
                 Button("Start with an empty workspace") { finish(includeSampleData: false) }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
                     .accessibilityIdentifier("onboardingStartEmptyButton")
+#if DEBUG
                 Button("Explore with sample data") { finish(includeSampleData: true) }
                     .buttonStyle(.bordered)
                     .controlSize(.large)
                     .accessibilityIdentifier("onboardingLoadSampleButton")
+#endif
             }
             if let errorMessage {
                 Text(errorMessage)
@@ -133,10 +141,12 @@ private struct ProductionOnboardingView: View {
                     .accessibilityIdentifier("onboardingError")
             }
             Spacer()
+#if DEBUG
             Text("Sample data is optional and remains on this device until you delete it.")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
+#endif
         }
         .padding(32)
         .frame(maxWidth: 620, maxHeight: .infinity)

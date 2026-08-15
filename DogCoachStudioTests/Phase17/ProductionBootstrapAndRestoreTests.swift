@@ -5,12 +5,16 @@ import Testing
 
 @Suite("Phase 17 production bootstrap and restore")
 struct ProductionBootstrapAndRestoreTests {
-    @Test("Live environment does not create sample people")
+    @Test("Live environment seeds sample people only in Debug builds")
     @MainActor
     func liveBootstrapHasNoSeederCallContract() throws {
         let source = try String(contentsOf: projectFile("DogCoachStudio/App/AppEnvironment.swift"), encoding: .utf8)
         let liveBody = try #require(source.components(separatedBy: "static func preview()").first)
-        #expect(!liveBody.contains("DemoDataSeeder.seedIfNeeded"))
+        let debugStart = try #require(liveBody.range(of: "#if DEBUG"))
+        let debugEnd = try #require(liveBody.range(of: "#endif", range: debugStart.lowerBound..<liveBody.endIndex))
+        #expect(liveBody[debugStart.lowerBound..<debugEnd.upperBound].contains("DemoDataSeeder.seedIfNeeded"))
+        #expect(!liveBody[liveBody.startIndex..<debugStart.lowerBound].contains("DemoDataSeeder.seedIfNeeded"))
+        #expect(!liveBody[debugEnd.upperBound..<liveBody.endIndex].contains("DemoDataSeeder.seedIfNeeded"))
     }
 
     @Test("Backup restores records, relationships, private fields, and media")
