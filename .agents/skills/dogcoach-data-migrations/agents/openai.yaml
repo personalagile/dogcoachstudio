@@ -1,0 +1,4 @@
+interface:
+  display_name: "DogCoach Data Migrations"
+  short_description: "Safely evolve DogCoach customer data schemas"
+  default_prompt: "Use $dogcoach-data-migrations to plan and verify this persisted schema change without customer data loss."
