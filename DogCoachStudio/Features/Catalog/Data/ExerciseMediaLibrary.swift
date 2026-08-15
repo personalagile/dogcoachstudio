@@ -23,17 +23,21 @@ actor ExerciseMediaLibrary {
         if let rootDirectory {
             self.rootDirectory = rootDirectory
         } else {
-            let support = try fileManager.url(
-                for: .applicationSupportDirectory,
-                in: .userDomainMask,
-                appropriateFor: nil,
-                create: true
-            )
-            self.rootDirectory = support
-                .appending(path: "DogCoachStudio", directoryHint: .isDirectory)
-                .appending(path: "ExerciseMedia", directoryHint: .isDirectory)
+            self.rootDirectory = try Self.defaultRootDirectory(fileManager: fileManager)
         }
         try fileManager.createDirectory(at: self.rootDirectory, withIntermediateDirectories: true)
+    }
+
+    nonisolated static func defaultRootDirectory(fileManager: FileManager = .default) throws -> URL {
+        let support = try fileManager.url(
+            for: .applicationSupportDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true
+        )
+        return support
+            .appending(path: "DogCoachStudio", directoryHint: .isDirectory)
+            .appending(path: "ExerciseMedia", directoryHint: .isDirectory)
     }
 
     func assets(exerciseID: UUID) throws -> [ExerciseMediaAsset] {

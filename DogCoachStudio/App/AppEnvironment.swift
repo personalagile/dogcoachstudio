@@ -38,19 +38,13 @@ struct AppEnvironment {
 
     static func live() throws -> AppEnvironment {
         let container = try ModelContainerFactory.makeDefault()
-        let environment = AppEnvironment(
+        return AppEnvironment(
             persistence: PersistenceProvider(container: container),
             clock: SystemAppClock(),
             uuidGenerator: SystemUUIDGenerator(),
             dataExporter: UnavailableDataExporter(),
             diagnostics: DiagnosticRecorder()
         )
-        try DemoDataSeeder.seedIfNeeded(
-            context: container.mainContext,
-            clock: environment.clock,
-            uuidGenerator: environment.uuidGenerator
-        )
-        return environment
     }
 
     static func preview() throws -> AppEnvironment {
@@ -80,11 +74,13 @@ struct AppEnvironment {
             dataExporter: UnavailableDataExporter(),
             diagnostics: DiagnosticRecorder()
         )
-        try DemoDataSeeder.seedIfNeeded(
-            context: container.mainContext,
-            clock: environment.clock,
-            uuidGenerator: environment.uuidGenerator
-        )
+        if !ProcessInfo.processInfo.arguments.contains("--phase17-uitesting") {
+            try DemoDataSeeder.seedIfNeeded(
+                context: container.mainContext,
+                clock: environment.clock,
+                uuidGenerator: environment.uuidGenerator
+            )
+        }
         return environment
     }
 }

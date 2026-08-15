@@ -20,43 +20,109 @@ struct BackupManifest: Codable, Hashable, Sendable {
     let schemaVersion: Int
     let recordCount: Int
     let backupSHA256: String
+    let assetCount: Int
+    let assetsSHA256: String
+
+    init(format: String, schemaVersion: Int, recordCount: Int, backupSHA256: String, assetCount: Int = 0, assetsSHA256: String = "") {
+        self.format = format
+        self.schemaVersion = schemaVersion
+        self.recordCount = recordCount
+        self.backupSHA256 = backupSHA256
+        self.assetCount = assetCount
+        self.assetsSHA256 = assetsSHA256
+    }
+
+    private enum CodingKeys: String, CodingKey { case format, schemaVersion, recordCount, backupSHA256, assetCount, assetsSHA256 }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        format = try values.decode(String.self, forKey: .format)
+        schemaVersion = try values.decode(Int.self, forKey: .schemaVersion)
+        recordCount = try values.decode(Int.self, forKey: .recordCount)
+        backupSHA256 = try values.decode(String.self, forKey: .backupSHA256)
+        assetCount = try values.decodeIfPresent(Int.self, forKey: .assetCount) ?? 0
+        assetsSHA256 = try values.decodeIfPresent(String.self, forKey: .assetsSHA256) ?? ""
+    }
+}
+
+enum BackupAssetKind: String, Codable, Hashable, Sendable { case dogPhoto, exerciseMedia }
+
+struct BackupAsset: Codable, Hashable, Sendable {
+    let kind: BackupAssetKind
+    let relativePath: String
+    let data: Data
+    let sha256: String
+}
+
+struct BackupMediaDirectories: Sendable {
+    let dogPhotos: URL
+    let exerciseMedia: URL
+
+    static func live() throws -> BackupMediaDirectories {
+        BackupMediaDirectories(dogPhotos: DogPhotoStore.directory, exerciseMedia: try ExerciseMediaLibrary.defaultRootDirectory())
+    }
 }
 
 struct BackupPackage: Codable, Hashable, Sendable {
     let manifest: BackupManifest
     let backup: BackupDocument
     let csvFiles: [String: String]
+    let assets: [BackupAsset]
+
+    init(manifest: BackupManifest, backup: BackupDocument, csvFiles: [String: String], assets: [BackupAsset] = []) {
+        self.manifest = manifest
+        self.backup = backup
+        self.csvFiles = csvFiles
+        self.assets = assets
+    }
+
+    private enum CodingKeys: String, CodingKey { case manifest, backup, csvFiles, assets }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        manifest = try values.decode(BackupManifest.self, forKey: .manifest)
+        backup = try values.decode(BackupDocument.self, forKey: .backup)
+        csvFiles = try values.decode([String: String].self, forKey: .csvFiles)
+        assets = try values.decodeIfPresent([BackupAsset].self, forKey: .assets) ?? []
+    }
 }
 
 enum DataBackupError: Error, Equatable, Sendable {
     case unknownVersion(Int)
     case checksumMismatch
     case damagedDocument
+    case unsafeAssetPath
 }
 
 @MainActor
 struct DataBackupService {
     private let context: ModelContext
     private let now: @Sendable () -> Date
+    private let mediaDirectories: BackupMediaDirectories?
 
-    init(context: ModelContext, now: @escaping @Sendable () -> Date = { .now }) {
+    init(context: ModelContext, now: @escaping @Sendable () -> Date = { .now }, mediaDirectories: BackupMediaDirectories? = try? .live()) {
         self.context = context
         self.now = now
+        self.mediaDirectories = mediaDirectories
     }
 
     func exportPackage() throws -> BackupPackage {
         let records = try allRecords().sorted { ($0.entity, $0.id.uuidString) < ($1.entity, $1.id.uuidString) }
         let backup = BackupDocument(schemaVersion: BackupDocument.currentVersion, exportedAt: now(), records: records)
         let checksum = try Self.checksum(for: backup)
+        let assets = try allAssets()
         return BackupPackage(
             manifest: BackupManifest(
                 format: "dogcoachstudio-backup",
                 schemaVersion: backup.schemaVersion,
                 recordCount: records.count,
-                backupSHA256: checksum
+                backupSHA256: checksum,
+                assetCount: assets.count,
+                assetsSHA256: Self.assetChecksum(assets)
             ),
             backup: backup,
-            csvFiles: Self.makeCSVFiles(records: records)
+            csvFiles: Self.makeCSVFiles(records: records),
+            assets: assets
         )
     }
 
@@ -74,10 +140,32 @@ struct DataBackupService {
         }
         guard package.manifest.format == "dogcoachstudio-backup",
               package.manifest.recordCount == package.backup.records.count,
-              package.manifest.backupSHA256 == (try checksum(for: package.backup)) else {
+              package.manifest.backupSHA256 == (try checksum(for: package.backup)),
+              package.manifest.assetCount == package.assets.count,
+              package.manifest.assetsSHA256 == assetChecksum(package.assets),
+              package.assets.allSatisfy({ isSafe(relativePath: $0.relativePath) && $0.sha256 == hash($0.data) }) else {
             throw DataBackupError.checksumMismatch
         }
         return package
+    }
+
+    private func allAssets() throws -> [BackupAsset] {
+        guard let mediaDirectories else { return [] }
+        return try assets(in: mediaDirectories.dogPhotos, kind: .dogPhoto)
+            + assets(in: mediaDirectories.exerciseMedia, kind: .exerciseMedia)
+    }
+
+    private func assets(in directory: URL, kind: BackupAssetKind) throws -> [BackupAsset] {
+        guard FileManager.default.fileExists(atPath: directory.path) else { return [] }
+        let keys: [URLResourceKey] = [.isRegularFileKey]
+        guard let enumerator = FileManager.default.enumerator(at: directory, includingPropertiesForKeys: keys) else { return [] }
+        return try enumerator.compactMap { item in
+            guard let url = item as? URL, try url.resourceValues(forKeys: Set(keys)).isRegularFile == true else { return nil }
+            let relativePath = String(url.path.dropFirst(directory.path.count)).trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+            guard Self.isSafe(relativePath: relativePath) else { throw DataBackupError.unsafeAssetPath }
+            let data = try Data(contentsOf: url)
+            return BackupAsset(kind: kind, relativePath: relativePath, data: data, sha256: Self.hash(data))
+        }.sorted { ($0.kind.rawValue, $0.relativePath) < ($1.kind.rawValue, $1.relativePath) }
     }
 
     private func allRecords() throws -> [BackupRecord] {
@@ -137,6 +225,22 @@ struct DataBackupService {
 
     private static func checksum(for backup: BackupDocument) throws -> String {
         SHA256.hash(data: try encoder.encode(backup)).map { String(format: "%02x", $0) }.joined()
+    }
+
+    static func hash(_ data: Data) -> String {
+        SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+    }
+
+    static func assetChecksum(_ assets: [BackupAsset]) -> String {
+        guard !assets.isEmpty else { return "" }
+        let canonical = assets.sorted { ($0.kind.rawValue, $0.relativePath) < ($1.kind.rawValue, $1.relativePath) }
+            .map { "\($0.kind.rawValue)\u{0}\($0.relativePath)\u{0}\($0.sha256)" }
+            .joined(separator: "\u{1e}")
+        return hash(Data(canonical.utf8))
+    }
+
+    static func isSafe(relativePath: String) -> Bool {
+        !relativePath.isEmpty && !relativePath.hasPrefix("/") && !relativePath.split(separator: "/").contains("..")
     }
 
     private static func makeCSVFiles(records: [BackupRecord]) -> [String: String] {

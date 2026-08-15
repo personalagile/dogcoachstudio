@@ -10,6 +10,7 @@
 		0091AF0456D228842D186C2C /* SessionCompletionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE3F04F8860040A25A34C2B /* SessionCompletionService.swift */; };
 		05080A031D41209288FEE148 /* ContentPackImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A04F252E27E28DF01552C53 /* ContentPackImporter.swift */; };
 		0534CECAC47EA9D08150CA8C /* ReportExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00776E81B6CB9F167AFFAA6D /* ReportExporter.swift */; };
+		0698190C03363EE6D55590A8 /* ProductionBootstrapAndRestoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B12ED689AE0418787074BEC /* ProductionBootstrapAndRestoreTests.swift */; };
 		0740D4D889634086C2E93A02 /* MarketingScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44B15B95B7DC8960BC27B65 /* MarketingScreenshotTests.swift */; };
 		1A4254C45A09AFC83C4FCFB6 /* TrainingGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74984B6C93887A8F2505E7E /* TrainingGoal.swift */; };
 		1C1505CA08A3D30F24E60CEF /* LocalNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BD2593EF592EDA533EC3D3 /* LocalNotificationService.swift */; };
@@ -43,6 +44,7 @@
 		65C9A2D68DC8F76FF7A3D452 /* IntakePDFExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EC89F2A479121E85A9BB52 /* IntakePDFExporter.swift */; };
 		6797CB573184F2F1140DB97B /* IntakeDraftAutosave.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5B02FA83EDC16C2F4A8DB9 /* IntakeDraftAutosave.swift */; };
 		68EC44231A54C3A01E9FD573 /* DogPhotoStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1767F8DF4D6AE2B4F76A2C47 /* DogPhotoStoreTests.swift */; };
+		6ABCD1355F902888C768991F /* Phase17ProductionBootstrapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3982722C7DC71420C8A028 /* Phase17ProductionBootstrapTests.swift */; };
 		784DEF5FDC81317895542E33 /* FinancePhase16Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291FAA251BC951BF45326C26 /* FinancePhase16Tests.swift */; };
 		8017E1694EC7A2648397ED43 /* AppLockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0B045ED6B71FCB5D458A42 /* AppLockTests.swift */; };
 		8068D705E16004C8D6776D66 /* ContentModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9AE1A2A6ED7E39291C6195 /* ContentModels.swift */; };
@@ -79,6 +81,7 @@
 		BFAF8764FA3D7A6E2345F3FB /* DogCoachSchemaV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BF767A6169B5722C088ED4 /* DogCoachSchemaV2.swift */; };
 		C13517CBA8083C23CB039D6C /* ScheduledSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7965E8E638072CE47C4B4C /* ScheduledSessionRepository.swift */; };
 		C2F8FE5341CBB7676F835905 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBAC47A9E9EA348A7ACB4626 /* Assets.xcassets */; };
+		C328E984EC95172E06027146 /* DataBackupRestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1F77AD99B8A9B980F439BC /* DataBackupRestoreService.swift */; };
 		C3D1797C7033E3F6BFDC7B50 /* CatalogRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E57391333BF794993FE8ED7 /* CatalogRootView.swift */; };
 		C6ADBA0307CD74EB67307ED1 /* AppEnvironmentInjectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7FE855C3ADC67B97A3092D /* AppEnvironmentInjectionTests.swift */; };
 		C759F59766D2126E4A0B4F00 /* PeopleWorkflowEditors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E54DE900716BE1B81A64A /* PeopleWorkflowEditors.swift */; };
@@ -139,6 +142,7 @@
 		12BF767A6169B5722C088ED4 /* DogCoachSchemaV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogCoachSchemaV2.swift; sourceTree = "<group>"; };
 		14CF1800FC2956050FAE0B1E /* AppleContactsIntegration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleContactsIntegration.swift; sourceTree = "<group>"; };
 		1767F8DF4D6AE2B4F76A2C47 /* DogPhotoStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogPhotoStoreTests.swift; sourceTree = "<group>"; };
+		1B12ED689AE0418787074BEC /* ProductionBootstrapAndRestoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductionBootstrapAndRestoreTests.swift; sourceTree = "<group>"; };
 		1DDD604D4BBA62EDDB6D68F9 /* DogCoachStudio.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DogCoachStudio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22405B0B6CA30BC50C1FC22B /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		2480331F3109B8047FABFF0F /* ContentPackDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPackDocument.swift; sourceTree = "<group>"; };
@@ -163,6 +167,7 @@
 		56DC916DF8F1E2E6DDB9C97F /* CatalogPhase3Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogPhase3Tests.swift; sourceTree = "<group>"; };
 		59B84BDAE678862742001133 /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
 		5BAE9A941C537C272B0DE6B6 /* IntakeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntakeRepository.swift; sourceTree = "<group>"; };
+		5D3982722C7DC71420C8A028 /* Phase17ProductionBootstrapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase17ProductionBootstrapTests.swift; sourceTree = "<group>"; };
 		65BD2593EF592EDA533EC3D3 /* LocalNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotificationService.swift; sourceTree = "<group>"; };
 		68807CFA3BCBC0A7995189C9 /* PeopleModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleModels.swift; sourceTree = "<group>"; };
 		71242865871BEA355BF0262F /* ModelContainerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContainerFactory.swift; sourceTree = "<group>"; };
@@ -200,6 +205,7 @@
 		A661DD9DC202312325EF5DCD /* Phase4SessionFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase4SessionFlowTests.swift; sourceTree = "<group>"; };
 		A9E094C938FFF8B798A42694 /* DataControlRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataControlRootView.swift; sourceTree = "<group>"; };
 		AAA7538FCAFEB74706A704C6 /* Diagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diagnostics.swift; sourceTree = "<group>"; };
+		AF1F77AD99B8A9B980F439BC /* DataBackupRestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBackupRestoreService.swift; sourceTree = "<group>"; };
 		B31E5FDE27DCA7DE5DE7E3D9 /* SchemaV1PersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaV1PersistenceTests.swift; sourceTree = "<group>"; };
 		B4603C185B083499A48DFEF2 /* FinanceRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceRootView.swift; sourceTree = "<group>"; };
 		B4D876647427A02F3F5CE167 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -507,6 +513,14 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
+		55E0D1E69B747BB85362F191 /* Phase17 */ = {
+			isa = PBXGroup;
+			children = (
+				1B12ED689AE0418787074BEC /* ProductionBootstrapAndRestoreTests.swift */,
+			);
+			path = Phase17;
+			sourceTree = "<group>";
+		};
 		569322EF8983E028584FB977 /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
@@ -718,6 +732,7 @@
 		9B2F106D8BEF501C119427FD /* Export */ = {
 			isa = PBXGroup;
 			children = (
+				AF1F77AD99B8A9B980F439BC /* DataBackupRestoreService.swift */,
 				81AE119904176185BB13C2ED /* DataBackupService.swift */,
 			);
 			path = Export;
@@ -799,6 +814,7 @@
 				214CA38C4C21CA5000D3A50E /* Phase14 */,
 				29972CE493F99A58AE1D819C /* Phase15 */,
 				11E1DB57989A72F58737CAB5 /* Phase16 */,
+				55E0D1E69B747BB85362F191 /* Phase17 */,
 			);
 			path = DogCoachStudioTests;
 			sourceTree = "<group>";
@@ -909,6 +925,7 @@
 				F9C562BF994ACBA03D25EF75 /* Phase7PaywallTests.swift */,
 				DC2D5DDE16955067BA67031B /* Phase13SystemFlowTests.swift */,
 				CEB1C8297C7387C0B240611E /* Phase16FinanceFlowTests.swift */,
+				5D3982722C7DC71420C8A028 /* Phase17ProductionBootstrapTests.swift */,
 			);
 			path = DogCoachStudioUITests;
 			sourceTree = "<group>";
@@ -1197,6 +1214,7 @@
 				8068D705E16004C8D6776D66 /* ContentModels.swift in Sources */,
 				44F8B6D6B75FDA022E1077B7 /* ContentPackDocument.swift in Sources */,
 				05080A031D41209288FEE148 /* ContentPackImporter.swift in Sources */,
+				C328E984EC95172E06027146 /* DataBackupRestoreService.swift in Sources */,
 				6267DC3DADEA876F2DDD00F3 /* DataBackupService.swift in Sources */,
 				8A7F8896AFDB395CDA76B7CC /* DataControlRootView.swift in Sources */,
 				E7DFE5473FA0F1F463BA412D /* DataLifecycleService.swift in Sources */,
@@ -1261,6 +1279,7 @@
 				0740D4D889634086C2E93A02 /* MarketingScreenshotTests.swift in Sources */,
 				40C7E7554CA0174181968A72 /* Phase13SystemFlowTests.swift in Sources */,
 				4452B80743766D66AA472A4F /* Phase16FinanceFlowTests.swift in Sources */,
+				6ABCD1355F902888C768991F /* Phase17ProductionBootstrapTests.swift in Sources */,
 				F955346A4E191EB70F3C8A12 /* Phase2PeopleFlowTests.swift in Sources */,
 				1E4CCEA3972E393A8114AA30 /* Phase3CatalogFlowTests.swift in Sources */,
 				A1EE960466C582460A1EA927 /* Phase4SessionFlowTests.swift in Sources */,
@@ -1290,6 +1309,7 @@
 				E5D3CC15AE6CE987B0179E51 /* PackageAndReportTests.swift in Sources */,
 				B115C8A0906B4092AF19053B /* PackageOwnershipAndSessionLabelsTests.swift in Sources */,
 				F93A01BF348570A62059959F /* PeopleUseCasesTests.swift in Sources */,
+				0698190C03363EE6D55590A8 /* ProductionBootstrapAndRestoreTests.swift in Sources */,
 				FDFC79EAC68EE5B9B285E39E /* SchemaV1PersistenceTests.swift in Sources */,
 				E43B17DE455751EB66104A6D /* SchemaV1ValidatorTests.swift in Sources */,
 				9E029F0EA2E54C4B9D5351C4 /* SessionPhase4Tests.swift in Sources */,

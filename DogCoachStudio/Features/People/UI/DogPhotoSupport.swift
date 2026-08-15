@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 
 enum DogPhotoStore {
-    private static let directory: URL = {
+    static let directory: URL = {
         let base = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         return base.appending(path: "DogPhotos", directoryHint: .isDirectory)
     }()

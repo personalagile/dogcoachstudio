@@ -1,5 +1,6 @@
 import SwiftData
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct DataControlRootView: View {
     let environment: AppEnvironment
@@ -7,6 +8,11 @@ struct DataControlRootView: View {
     @State private var exportStatus: String?
     @State private var isExporting = false
     @State private var backupURL: URL?
+    @State private var isChoosingBackup = false
+    @State private var pendingRestore: BackupPackage?
+    @State private var restoreSummary: DataRestoreSummary?
+    @State private var isRestoring = false
+    @State private var showRestoreConfirmation = false
     @AppStorage("notifications.sessions") private var sessionReminders = false
     @AppStorage("notifications.birthdays") private var birthdayReminders = false
     @AppStorage("notifications.evaluations") private var evaluationReminders = false
@@ -23,6 +29,14 @@ struct DataControlRootView: View {
                     }
                     .disabled(isExporting)
                     .accessibilityIdentifier("dataExportButton")
+
+                    Button {
+                        isChoosingBackup = true
+                    } label: {
+                        Label("Restore from backup", systemImage: "square.and.arrow.down")
+                    }
+                    .disabled(isExporting || isRestoring)
+                    .accessibilityIdentifier("dataRestoreButton")
 
                     if let backupURL {
                         ShareLink(item: backupURL) {
@@ -42,6 +56,10 @@ struct DataControlRootView: View {
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .accessibilityIdentifier("deletionPolicySummary")
+
+                    Text("A backup can be restored only into an empty workspace. Records, relationships, dog photos, and exercise media are integrity-checked before import.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
                 }
 
                 Section("Privacy") {
@@ -80,6 +98,53 @@ struct DataControlRootView: View {
             .navigationTitle("Data & Privacy")
             .accessibilityIdentifier("dataControlRoot")
             .task { await rescheduleNotifications(requestPermission: false) }
+            .fileImporter(isPresented: $isChoosingBackup, allowedContentTypes: [.json]) { result in
+                Task { await prepareRestore(result) }
+            }
+            .confirmationDialog("Restore this backup?", isPresented: $showRestoreConfirmation, titleVisibility: .visible) {
+                Button("Restore backup") { Task { await restoreBackup() } }
+                Button("Cancel", role: .cancel) { pendingRestore = nil; restoreSummary = nil }
+            } message: {
+                if let restoreSummary {
+                    Text("This will import \(restoreSummary.recordCount) records and \(restoreSummary.assetCount) media files. Existing workspaces are never overwritten.")
+                }
+            }
+        }
+    }
+
+    @MainActor
+    private func prepareRestore(_ result: Result<URL, Error>) async {
+        do {
+            let url = try result.get()
+            let access = url.startAccessingSecurityScopedResource()
+            defer { if access { url.stopAccessingSecurityScopedResource() } }
+            let package = try DataBackupService.decodeAndValidate(Data(contentsOf: url))
+            let service = DataBackupRestoreService(context: environment.persistence.mainContext)
+            pendingRestore = package
+            restoreSummary = service.preview(package)
+            showRestoreConfirmation = true
+        } catch {
+            pendingRestore = nil
+            restoreSummary = nil
+            exportStatus = String(localized: "The backup is damaged, incompatible, or failed its integrity check.")
+        }
+    }
+
+    @MainActor
+    private func restoreBackup() async {
+        guard let pendingRestore else { return }
+        isRestoring = true
+        defer { isRestoring = false }
+        do {
+            let summary = try DataBackupRestoreService(context: environment.persistence.mainContext).restore(pendingRestore)
+            self.pendingRestore = nil
+            restoreSummary = nil
+            environment.dataChanges.notify()
+            exportStatus = String(localized: "Backup restored: \(summary.recordCount) records and \(summary.assetCount) media files.")
+        } catch DataRestoreError.storeNotEmpty {
+            exportStatus = String(localized: "Restore stopped because this workspace already contains data. No records were changed.")
+        } catch {
+            exportStatus = String(localized: "The backup could not be restored. No records were changed.")
         }
     }
 

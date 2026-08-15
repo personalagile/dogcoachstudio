@@ -46,18 +46,109 @@ private struct ConfiguredAppRoot: View {
     let environment: AppEnvironment
 
     var body: some View {
-                    AppRootView(environment: environment)
-                        .modelContainer(environment.persistence.container)
-                        .task {
-                            await environment.diagnostics.record(category: .app, code: .appLaunched)
-                        }
-                        .task(id: environment.dataChanges.revision) {
-                            try? await LocalNotificationService().reschedule(
-                                context: environment.persistence.mainContext,
-                                preferences: .stored(),
-                                now: environment.clock.now()
-                            )
-                        }
+        ProductionBootstrapRoot(environment: environment)
+            .modelContainer(environment.persistence.container)
+            .task {
+                await environment.diagnostics.record(category: .app, code: .appLaunched)
+            }
+            .task(id: environment.dataChanges.revision) {
+                try? await LocalNotificationService().reschedule(
+                    context: environment.persistence.mainContext,
+                    preferences: .stored(),
+                    now: environment.clock.now()
+                )
+            }
+    }
+}
+
+private struct ProductionBootstrapRoot: View {
+    let environment: AppEnvironment
+    @Query private var clients: [ClientRecord]
+    @AppStorage("productionOnboardingCompleted") private var onboardingCompleted = false
+    @State private var completedThisLaunch = false
+
+    private var isUITestOnboarding: Bool {
+        ProcessInfo.processInfo.arguments.contains("--phase17-uitesting")
+    }
+
+    private var shouldShowOnboarding: Bool {
+        !completedThisLaunch && (isUITestOnboarding || (!onboardingCompleted && clients.isEmpty))
+    }
+
+    var body: some View {
+        if shouldShowOnboarding {
+            ProductionOnboardingView { includeSampleData in
+                if includeSampleData {
+                    try DemoDataSeeder.seedIfNeeded(
+                        context: environment.persistence.mainContext,
+                        clock: environment.clock,
+                        uuidGenerator: environment.uuidGenerator
+                    )
+                    environment.dataChanges.notify()
+                }
+                if !isUITestOnboarding {
+                    onboardingCompleted = true
+                }
+                completedThisLaunch = true
+            }
+        } else {
+            AppRootView(environment: environment)
+        }
+    }
+}
+
+private struct ProductionOnboardingView: View {
+    let complete: (Bool) throws -> Void
+    @State private var errorMessage: String?
+
+    var body: some View {
+        VStack(spacing: 24) {
+            Spacer()
+            Image(systemName: "pawprint.circle.fill")
+                .font(.system(size: 72))
+                .foregroundStyle(.tint)
+                .accessibilityHidden(true)
+            VStack(spacing: 8) {
+                Text("Welcome to DogCoach Studio")
+                    .font(.largeTitle.bold())
+                    .multilineTextAlignment(.center)
+                Text("Start with an empty workspace for real client data, or add clearly marked sample records to explore the app.")
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+            VStack(spacing: 12) {
+                Button("Start with an empty workspace") { finish(includeSampleData: false) }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                    .accessibilityIdentifier("onboardingStartEmptyButton")
+                Button("Explore with sample data") { finish(includeSampleData: true) }
+                    .buttonStyle(.bordered)
+                    .controlSize(.large)
+                    .accessibilityIdentifier("onboardingLoadSampleButton")
+            }
+            if let errorMessage {
+                Text(errorMessage)
+                    .font(.footnote)
+                    .foregroundStyle(.red)
+                    .accessibilityIdentifier("onboardingError")
+            }
+            Spacer()
+            Text("Sample data is optional and remains on this device until you delete it.")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .padding(32)
+        .frame(maxWidth: 620, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
+    }
+
+    private func finish(includeSampleData: Bool) {
+        do {
+            try complete(includeSampleData)
+        } catch {
+            errorMessage = String(localized: "The workspace could not be prepared.")
+        }
     }
 }
 
