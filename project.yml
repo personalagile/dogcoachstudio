@@ -53,7 +53,7 @@ targets:
       - target: DogCoachStudio
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: studio.dogcoach.phase0.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.personalagile.dogcoach.tests
   DogCoachStudioUITests:
     type: bundle.ui-testing
     platform: iOS
@@ -63,4 +63,4 @@ targets:
       - target: DogCoachStudio
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: studio.dogcoach.phase0.uitests
+        PRODUCT_BUNDLE_IDENTIFIER: com.personalagile.dogcoach.uitests

@@ -1360,7 +1360,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = studio.dogcoach.phase0.uitests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.personalagile.dogcoach.uitests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = DogCoachStudio;
@@ -1506,7 +1506,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = studio.dogcoach.phase0.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.personalagile.dogcoach.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DogCoachStudio.app/DogCoachStudio";
@@ -1522,7 +1522,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = studio.dogcoach.phase0.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.personalagile.dogcoach.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DogCoachStudio.app/DogCoachStudio";
@@ -1601,7 +1601,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = studio.dogcoach.phase0.uitests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.personalagile.dogcoach.uitests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = DogCoachStudio;
