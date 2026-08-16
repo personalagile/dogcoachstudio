@@ -12,6 +12,7 @@
 		0534CECAC47EA9D08150CA8C /* ReportExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00776E81B6CB9F167AFFAA6D /* ReportExporter.swift */; };
 		0698190C03363EE6D55590A8 /* ProductionBootstrapAndRestoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B12ED689AE0418787074BEC /* ProductionBootstrapAndRestoreTests.swift */; };
 		0740D4D889634086C2E93A02 /* MarketingScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44B15B95B7DC8960BC27B65 /* MarketingScreenshotTests.swift */; };
+		100303C76B78C595FE6913EC /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 272E51E48F8DBDE0AF4EB27B /* PrivacyInfo.xcprivacy */; };
 		1A4254C45A09AFC83C4FCFB6 /* TrainingGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74984B6C93887A8F2505E7E /* TrainingGoal.swift */; };
 		1C1505CA08A3D30F24E60CEF /* LocalNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BD2593EF592EDA533EC3D3 /* LocalNotificationService.swift */; };
 		1E4CCEA3972E393A8114AA30 /* Phase3CatalogFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D075FDD1F407DC8A2FFBCB85 /* Phase3CatalogFlowTests.swift */; };
@@ -147,6 +148,7 @@
 		1DDD604D4BBA62EDDB6D68F9 /* DogCoachStudio.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DogCoachStudio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22405B0B6CA30BC50C1FC22B /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		2480331F3109B8047FABFF0F /* ContentPackDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPackDocument.swift; sourceTree = "<group>"; };
+		272E51E48F8DBDE0AF4EB27B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		280B5D554BC181B7463FAFC3 /* ExerciseMediaAndContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMediaAndContentTests.swift; sourceTree = "<group>"; };
 		291FAA251BC951BF45326C26 /* FinancePhase16Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinancePhase16Tests.swift; sourceTree = "<group>"; };
 		2CE3F04F8860040A25A34C2B /* SessionCompletionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCompletionService.swift; sourceTree = "<group>"; };
@@ -769,6 +771,7 @@
 			children = (
 				CBAC47A9E9EA348A7ACB4626 /* Assets.xcassets */,
 				B4D876647427A02F3F5CE167 /* Localizable.xcstrings */,
+				272E51E48F8DBDE0AF4EB27B /* PrivacyInfo.xcprivacy */,
 				9AF02E6ECE59424ECD043F30 /* ContentPacks */,
 				8805159DA3129AFE7663E9E4 /* StoreKit */,
 			);
@@ -1201,6 +1204,7 @@
 			files = (
 				C2F8FE5341CBB7676F835905 /* Assets.xcassets in Resources */,
 				9DB7992786859AB78EFAA18C /* Localizable.xcstrings in Resources */,
+				100303C76B78C595FE6913EC /* PrivacyInfo.xcprivacy in Resources */,
 				46B37345AABD161378F26965 /* Products.storekit in Resources */,
 				29D9C2B57AB2801D0A9F4DFC /* content-pack-v1.schema.json in Resources */,
 				F576FE63EDDBBC20DF0BFA3E /* foundation-v1.json in Resources */,
@@ -1369,7 +1373,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_KEY_CFBundleDisplayName = "DogCoach Studio";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Take a profile photo for a dog.";
 				INFOPLIST_KEY_NSContactsUsageDescription = "Import clients from Apple Contacts or save a client to Contacts.";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Unlock DogCoach Studio and protect private training data.";
@@ -1382,10 +1388,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.personalagile.dogcoach;
 				PRODUCT_MODULE_NAME = DogCoachStudio;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
@@ -1465,7 +1473,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_KEY_CFBundleDisplayName = "DogCoach Studio";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Take a profile photo for a dog.";
 				INFOPLIST_KEY_NSContactsUsageDescription = "Import clients from Apple Contacts or save a client to Contacts.";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Unlock DogCoach Studio and protect private training data.";
@@ -1478,10 +1488,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.personalagile.dogcoach;
 				PRODUCT_MODULE_NAME = DogCoachStudio;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
