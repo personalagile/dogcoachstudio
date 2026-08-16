@@ -1,41 +1,6 @@
 import Observation
 import SwiftUI
 
-struct RoleEditorView: View {
-    @Environment(\.dismiss) private var dismiss
-    let model: PeopleFeatureModel
-    let dog: DogSummary
-    @State private var clientID: UUID?
-    @State private var kind: ClientDogRoleKind = .owner
-    @State private var primary = false
-
-    var body: some View {
-        NavigationStack {
-            Form {
-                Picker("Client", selection: $clientID) {
-                    Text("Select a client").tag(UUID?.none)
-                    ForEach(model.clients.filter { !$0.isArchived }) { Text($0.displayName).tag(Optional($0.id)) }
-                }.accessibilityIdentifier("roleClientPicker")
-                Picker("Role", selection: $kind) { ForEach(ClientDogRoleKind.allCases, id: \.self) { Text($0.rawValue.capitalized).tag($0) } }
-                Toggle("Primary contact", isOn: $primary)
-            }
-            .navigationTitle("Add contact")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
-                        guard let clientID else { return }
-                        if model.perform({
-                            try model.assignRole(clientID: clientID, dogID: dog.id, kind: kind, primary: primary)
-                        }, operation: "role.save") { dismiss() }
-                    }
-                        .disabled(clientID == nil).accessibilityIdentifier("roleSaveButton")
-                }
-            }
-        }
-    }
-}
-
 struct ClientPackageEditorView: View {
     @Environment(\.dismiss) private var dismiss
     let model: PeopleFeatureModel

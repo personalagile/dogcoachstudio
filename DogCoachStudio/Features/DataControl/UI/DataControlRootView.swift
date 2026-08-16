@@ -17,6 +17,7 @@ struct DataControlRootView: View {
     @AppStorage("notifications.birthdays") private var birthdayReminders = false
     @AppStorage("notifications.evaluations") private var evaluationReminders = false
     @State private var notificationStatus: String?
+    @State private var diagnosticsURL: URL?
 
     var body: some View {
         NavigationStack {
@@ -90,6 +91,12 @@ struct DataControlRootView: View {
                         Label("Create privacy-safe diagnostics", systemImage: "waveform.path.ecg")
                     }
                     .accessibilityIdentifier("diagnosticsExportButton")
+                    if let diagnosticsURL {
+                        ShareLink(item: diagnosticsURL) {
+                            Label("Share diagnostics", systemImage: "square.and.arrow.up")
+                        }
+                        .accessibilityIdentifier("diagnosticsShareLink")
+                    }
                     Text("Diagnostics contain timestamps and typed event codes only—never names, contact details, notes, or report text.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
@@ -195,6 +202,7 @@ struct DataControlRootView: View {
             let artifact = try await environment.diagnostics.export()
             let url = FileManager.default.temporaryDirectory.appendingPathComponent(artifact.suggestedFilename)
             try ProtectedFileWriter().write(artifact.data, to: url)
+            diagnosticsURL = url
             exportStatus = String(localized: "Privacy-safe diagnostics created.")
         } catch {
             exportStatus = String(localized: "Diagnostics could not be created.")

@@ -125,7 +125,6 @@ struct DogFileView: View {
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
                 Menu("Add", systemImage: "plus") {
-                    Button("Contact role") { present(.addRole(dog)) }
                     Button("Intake") { present(.intake(dog)) }
                     Button("Training goal") { present(.goal(dog)) }
                 }
@@ -143,7 +142,7 @@ struct DogFileView: View {
 
     @ViewBuilder private var safetySection: some View {
         if !dog.safetyFlagRawValues.isEmpty || !(dog.safetyPrivateNote ?? "").isEmpty {
-            Section("Safety") {
+            Section("Safety and handling") {
                 ForEach(dog.safetyFlagRawValues, id: \.self) { Label($0, systemImage: "exclamationmark.triangle") }
                 if let note = dog.safetyPrivateNote, !note.isEmpty { Text(note).font(.callout) }
             }
@@ -151,31 +150,29 @@ struct DogFileView: View {
     }
 
     private var rolesSection: some View {
-        Section("Contacts") {
-            if dog.roles.isEmpty { Text("No contact assigned").foregroundStyle(.secondary) }
-            ForEach(dog.roles) { role in
+        Section("Owner") {
+            let ownerRoles = dog.roles.filter { $0.kind == .owner }
+            if ownerRoles.isEmpty {
+                Button("Assign owner") { present(.editDog(dog)) }
+                    .accessibilityIdentifier("dogAssignOwnerButton")
+            }
+            ForEach(ownerRoles) { role in
                 Button {
                     if let client = model.clients.first(where: { $0.id == role.clientID }) { present(.editClient(client)) }
                 } label: { HStack {
                     VStack(alignment: .leading) {
                         Text(role.clientName)
-                        Text(role.kind.displayName).font(.caption).foregroundStyle(.secondary)
+                        Text("Owner").font(.caption).foregroundStyle(.secondary)
                     }
                     Spacer()
                     if role.isPrimaryContact { Label("Primary", systemImage: "star.fill").labelStyle(.titleAndIcon) }
                 } }
                 .buttonStyle(.plain)
                 .accessibilityHint("Opens the client editor")
-                .swipeActions {
-                    if !role.isPrimaryContact {
-                        Button("Make primary") {
-                            model.perform({ try model.setPrimary(roleID: role.id, dogID: dog.id) }, operation: "role.primary")
-                        }
-                    }
-                    Button("Remove", role: .destructive) {
-                        model.perform({ try model.removeRole(id: role.id) }, operation: "role.remove")
-                    }
-                }
+            }
+            if !ownerRoles.isEmpty {
+                Button("Change owner") { present(.editDog(dog)) }
+                    .accessibilityIdentifier("dogChangeOwnerButton")
             }
         }
     }

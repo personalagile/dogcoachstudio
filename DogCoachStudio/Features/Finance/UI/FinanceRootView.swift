@@ -87,6 +87,7 @@ struct FinanceRootView: View {
                             FinanceSummaryGrid(snapshot: snapshot)
                             FinanceTimelineCard(snapshot: snapshot)
                             FinancePackageCard(snapshot: snapshot)
+                            FinanceClientCard(snapshot: snapshot)
                             FinanceTransactionTable(snapshot: snapshot)
                             FinanceExportButton(snapshot: snapshot)
                         }
@@ -122,6 +123,35 @@ struct FinanceRootView: View {
                 .pickerStyle(.menu)
             }
         }
+    }
+}
+
+private struct FinanceClientCard: View {
+    let snapshot: FinanceSnapshot
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Top clients").font(.headline)
+            Grid(alignment: .leading, horizontalSpacing: 16, verticalSpacing: 10) {
+                GridRow {
+                    Text("Client").fontWeight(.semibold)
+                    Text("Sales").fontWeight(.semibold)
+                    Text("Revenue").fontWeight(.semibold)
+                }
+                Divider().gridCellColumns(3)
+                ForEach(snapshot.clients.prefix(10)) { client in
+                    GridRow {
+                        Text(client.name)
+                        Text(client.salesCount, format: .number)
+                        Text(client.revenue, format: .currency(code: snapshot.currencyCode))
+                    }
+                    .accessibilityElement(children: .combine)
+                }
+            }
+        }
+        .padding()
+        .background(Color(uiColor: .secondarySystemBackground), in: .rect(cornerRadius: 14))
+        .accessibilityIdentifier("financeTopClients")
     }
 }
 

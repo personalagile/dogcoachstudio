@@ -26,6 +26,13 @@ struct FinancePackageBreakdown: Identifiable, Equatable, Sendable {
     var id: String { name }
 }
 
+struct FinanceClientBreakdown: Identifiable, Equatable, Sendable {
+    let name: String
+    let revenue: Decimal
+    let salesCount: Int
+    var id: String { name }
+}
+
 struct FinanceSnapshot: Equatable, Sendable {
     let period: FinancePeriod
     let currencyCode: String
@@ -34,6 +41,7 @@ struct FinanceSnapshot: Equatable, Sendable {
     let averageSale: Decimal
     let timeline: [FinanceTimePoint]
     let packages: [FinancePackageBreakdown]
+    let clients: [FinanceClientBreakdown]
     let transactions: [FinanceLedgerEvent]
 }
 
@@ -80,7 +88,17 @@ enum FinanceAnalytics {
         packages.sort { lhs, rhs in
             lhs.revenue == rhs.revenue ? lhs.name.localizedStandardCompare(rhs.name) == .orderedAscending : lhs.revenue > rhs.revenue
         }
-        return FinanceSnapshot(period: period, currencyCode: currencyCode, totalRevenue: total, salesCount: salesCount, averageSale: average, timeline: timeline, packages: packages, transactions: sorted)
+        let clientGroups = Dictionary(grouping: filtered, by: \.clientName)
+        var clients: [FinanceClientBreakdown] = []
+        for (name, values) in clientGroups {
+            let revenue = values.reduce(Decimal.zero) { partial, event in partial + event.amount }
+            let count = values.filter { $0.amount > 0 }.count
+            clients.append(FinanceClientBreakdown(name: name, revenue: revenue, salesCount: count))
+        }
+        clients.sort { lhs, rhs in
+            lhs.revenue == rhs.revenue ? lhs.name.localizedStandardCompare(rhs.name) == .orderedAscending : lhs.revenue > rhs.revenue
+        }
+        return FinanceSnapshot(period: period, currencyCode: currencyCode, totalRevenue: total, salesCount: salesCount, averageSale: average, timeline: timeline, packages: packages, clients: clients, transactions: sorted)
     }
 
     static func interval(for period: FinancePeriod, now: Date, calendar: Calendar) -> DateInterval? {

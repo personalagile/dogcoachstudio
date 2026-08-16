@@ -31,6 +31,7 @@ struct FinancePhase16Tests {
         #expect(month.averageSale == 80)
         #expect(month.transactions.count == 2)
         #expect(month.packages == [.init(name: "Ten sessions", revenue: 80, salesCount: 1)])
+        #expect(month.clients == [.init(name: "Client", revenue: 80, salesCount: 1)])
 
         let quarter = FinanceAnalytics.snapshot(events: events, period: .quarter, currencyCode: "EUR", now: now, calendar: calendar)
         #expect(quarter.totalRevenue == 130)
@@ -40,6 +41,26 @@ struct FinancePhase16Tests {
         let year = FinanceAnalytics.snapshot(events: events, period: .year, currencyCode: "USD", now: now, calendar: calendar)
         #expect(year.totalRevenue == 200)
         #expect(year.transactions.count == 1)
+    }
+
+    @Test("Top clients are ranked by revenue and keep their sale count")
+    func topClients() {
+        let snapshot = FinanceAnalytics.snapshot(
+            events: [
+                event(id: 1, date: .now, client: "Sam", package: "Five", amount: 50, currency: "EUR"),
+                event(id: 2, date: .now, client: "Alex", package: "Ten", amount: 120, currency: "EUR"),
+                event(id: 3, date: .now, client: "Sam", package: "Five", amount: 50, currency: "EUR")
+            ],
+            period: .all,
+            currencyCode: "EUR",
+            now: .now,
+            calendar: calendar
+        )
+
+        #expect(snapshot.clients == [
+            .init(name: "Alex", revenue: 120, salesCount: 1),
+            .init(name: "Sam", revenue: 100, salesCount: 2)
+        ])
     }
 
     @Test("Finance is derived only from purchase ledger entries and their reversals") @MainActor

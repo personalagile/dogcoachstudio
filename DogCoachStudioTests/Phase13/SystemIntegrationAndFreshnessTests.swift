@@ -29,7 +29,7 @@ struct SystemIntegrationAndFreshnessTests {
             dataChanges: changes
         )
 
-        try people.editDog(id: dog.id, draft: DogDraft(name: "New name", photoAssetID: nil, birthDate: nil, breedText: nil, sexRawValue: nil, safetyFlagRawValues: [], safetyPrivateNote: nil))
+        try people.editDog(id: dog.id, draft: DogDraft(name: "New name", photoAssetID: nil, birthDate: nil, breedText: nil, sexRawValue: nil, safetyFlagRawValues: [], safetyPrivateNote: nil), ownerClientID: nil)
 
         #expect(changes.revision == 1)
         sessions.reload()

@@ -9,6 +9,7 @@ import UniformTypeIdentifiers
 
 @MainActor @Observable
 final class CatalogFeatureModel {
+    enum Scope: String, CaseIterable, Sendable { case all, standard, personal }
     private let exercises: SwiftDataExerciseRepository
     private let templates: SwiftDataTrainingTemplateRepository
     private let clock: any AppClock
@@ -17,8 +18,25 @@ final class CatalogFeatureModel {
     var exerciseItems: [ExerciseSummary] = []
     var templateItems: [TrainingTemplateSummary] = []
     var query = ""
+    var scope: Scope = .all
     var localeIdentifier = Locale.current.identifier
     var error: AppError?
+
+    var visibleExercises: [ExerciseSummary] {
+        exerciseItems.filter {
+            switch scope {
+            case .all: true
+            case .standard: $0.isStandardContent
+            case .personal: !$0.isStandardContent
+            }
+        }
+    }
+
+    var visibleTemplates: [TrainingTemplateSummary] {
+        guard scope != .standard else { return [] }
+        let needle = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        return templateItems.filter { needle.isEmpty || $0.title.localizedCaseInsensitiveContains(needle) }
+    }
 
     init(environment: AppEnvironment) {
         let context = environment.persistence.mainContext
@@ -101,8 +119,17 @@ struct CatalogRootView: View {
         @Bindable var model = model
         NavigationStack {
             List {
+                Section {
+                    Picker("Catalog source", selection: $model.scope) {
+                        Text("All").tag(CatalogFeatureModel.Scope.all)
+                        Text("Standard").tag(CatalogFeatureModel.Scope.standard)
+                        Text("Personal").tag(CatalogFeatureModel.Scope.personal)
+                    }
+                    .pickerStyle(.segmented)
+                    .accessibilityIdentifier("catalogScopePicker")
+                }
                 Section("Exercises") {
-                    ForEach(model.exerciseItems) { item in
+                    ForEach(model.visibleExercises) { item in
                         Button { sheet = .exercise(item) } label: { VStack(alignment: .leading, spacing: 4) {
                             HStack { Text(item.title).font(.headline); Spacer(); Text("v\(item.versionNumber)").font(.caption) }
                             Text(item.goal).font(.subheadline).foregroundStyle(.secondary)
@@ -114,13 +141,18 @@ struct CatalogRootView: View {
                     }
                 }
                 Section("Templates") {
-                    ForEach(model.templateItems) { item in
+                    ForEach(model.visibleTemplates) { item in
                         Button { sheet = .template(item) } label: { VStack(alignment: .leading) {
                             Text(item.title).font(.headline)
                             TemplateDurationLabel(item: item)
                         } }.buttonStyle(.plain)
                         .swipeActions { Button("Archive", role: .destructive) { model.archiveTemplate(item) }; if !item.isPublished { Button("Publish") { model.publishTemplate(item) }.tint(.green) } }
                     }
+                }
+            }
+            .overlay {
+                if model.visibleExercises.isEmpty && model.visibleTemplates.isEmpty {
+                    ContentUnavailableView.search(text: model.query)
                 }
             }
             .searchable(text: $model.query, prompt: "Search title, goal, or equipment").onChange(of: model.query) { model.reload() }

@@ -14,6 +14,8 @@ final class Phase16FinanceFlowTests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any)["financeSummary"].exists)
         XCTAssertTrue(app.descendants(matching: .any)["financeRevenueChart"].exists)
         XCTAssertTrue(app.descendants(matching: .any)["financePackageBreakdown"].exists)
+        app.swipeUp()
+        XCTAssertTrue(app.descendants(matching: .any)["financeTopClients"].waitForExistence(timeout: 3))
         XCTAssertTrue(app.descendants(matching: .any)["financeTransactionsTable"].exists)
         XCTAssertTrue(app.buttons["financeExportButton"].waitForExistence(timeout: 3))
     }

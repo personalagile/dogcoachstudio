@@ -36,7 +36,14 @@ struct DogSummary: Identifiable, Hashable, Sendable {
     let roles: [DogRoleSummary]
 
     var primaryOwnerName: String? {
-        roles.first(where: { $0.isPrimaryContact })?.clientName ?? roles.first?.clientName
+        ownerRole?.clientName
+    }
+
+    var ownerClientID: UUID? { ownerRole?.clientID }
+
+    private var ownerRole: DogRoleSummary? {
+        roles.first { $0.kind == .owner && $0.isPrimaryContact }
+            ?? roles.first { $0.kind == .owner }
     }
 }
 
@@ -133,15 +140,17 @@ final class PeopleFeatureModel {
         dataChanges.notify()
     }
 
-    func createDog(_ draft: DogDraft) throws {
+    func createDog(_ draft: DogDraft, ownerClientID: UUID? = nil) throws {
         let dog = try people.createDog(draft)
+        try people.setOwner(dogID: dog.id, clientID: ownerClientID)
         reload()
         selection = .dog(dog.id)
         dataChanges.notify()
     }
 
-    func editDog(id: UUID, draft: DogDraft) throws {
+    func editDog(id: UUID, draft: DogDraft, ownerClientID: UUID? = nil) throws {
         _ = try people.editDog(id: id, draft: draft)
+        try people.setOwner(dogID: id, clientID: ownerClientID)
         reload()
         dataChanges.notify()
     }
@@ -150,24 +159,6 @@ final class PeopleFeatureModel {
         _ = try people.setDogArchived(id: id, archived: archived)
         reload()
         if !includeArchived && archived { selection = nil }
-        dataChanges.notify()
-    }
-
-    func assignRole(clientID: UUID, dogID: UUID, kind: ClientDogRoleKind, primary: Bool) throws {
-        try people.assignRole(clientID: clientID, dogID: dogID, kind: kind, isPrimaryContact: primary)
-        reload()
-        dataChanges.notify()
-    }
-
-    func setPrimary(roleID: UUID, dogID: UUID) throws {
-        try people.setPrimaryContact(roleID: roleID, dogID: dogID)
-        reload()
-        dataChanges.notify()
-    }
-
-    func removeRole(id: UUID) throws {
-        try people.removeRole(id: id)
-        reload()
         dataChanges.notify()
     }
 

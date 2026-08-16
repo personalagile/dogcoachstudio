@@ -6,7 +6,6 @@ struct PeopleRootView: View {
         case editClient(ClientSummary)
         case addDog
         case editDog(DogSummary)
-        case addRole(DogSummary)
         case intake(DogSummary)
         case goal(DogSummary)
         case editGoal(DogSummary, TrainingGoal)
@@ -18,7 +17,6 @@ struct PeopleRootView: View {
             case .editClient(let client): "edit-client-\(client.id)"
             case .addDog: "add-dog"
             case .editDog(let dog): "edit-dog-\(dog.id)"
-            case .addRole(let dog): "add-role-\(dog.id)"
             case .intake(let dog): "intake-\(dog.id)"
             case .goal(let dog): "goal-\(dog.id)"
             case .editGoal(let dog, let goal): "edit-goal-\(dog.id)-\(goal.id)"
@@ -109,8 +107,6 @@ struct PeopleRootView: View {
                 DogEditorView(model: model, dog: nil)
             case .editDog(let dog):
                 DogEditorView(model: model, dog: dog)
-            case .addRole(let dog):
-                RoleEditorView(model: model, dog: dog)
             case .intake(let dog):
                 IntakeEditorView(model: IntakeEditorModel(
                     dogID: dog.id,

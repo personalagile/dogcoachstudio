@@ -13,8 +13,18 @@ struct PaywallView: View {
                     Text("Keep creating sessions, reports, and package records after your trial. Your existing data always remains readable and exportable.")
                         .foregroundStyle(.secondary)
 
-                    if store.products.isEmpty {
+                    if store.state == .loading {
                         ProgressView("Loading prices…")
+                    } else if store.products.isEmpty {
+                        ContentUnavailableView {
+                            Label("Prices currently unavailable", systemImage: "wifi.exclamationmark")
+                        } description: {
+                            Text("The App Store did not return any products. Check your connection and try again. Your existing data remains available.")
+                        } actions: {
+                            Button("Try again") { Task { await store.start() } }
+                                .buttonStyle(.borderedProminent)
+                                .accessibilityIdentifier("retryProductLoadingButton")
+                        }
                     } else {
                         ForEach(store.products, id: \.id) { product in
                             productCard(product)

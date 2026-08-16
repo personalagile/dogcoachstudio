@@ -83,6 +83,27 @@ struct ClientDogRoleTests {
         }
         #expect(try fixture.repository.roles(clientID: nil, dogID: dog.id).count == 2)
     }
+
+    @Test("Selecting an owner replaces the previous owner without exposing role setup")
+    @MainActor
+    func replaceOwner() throws {
+        let fixture = try RoleFixture()
+        let first = try fixture.makeClient("First owner")
+        let second = try fixture.makeClient("Second owner")
+        let dog = try fixture.makeDog("Dog")
+
+        try fixture.useCases.setOwner(dogID: dog.id, clientID: first.id)
+        try fixture.useCases.setOwner(dogID: dog.id, clientID: second.id)
+
+        let roles = try fixture.repository.roles(clientID: nil, dogID: dog.id)
+        #expect(roles.count == 1)
+        #expect(roles.first?.clientID == second.id)
+        #expect(roles.first?.roleRawValue == ClientDogRoleKind.owner.rawValue)
+        #expect(roles.first?.isPrimaryContact == true)
+
+        try fixture.useCases.setOwner(dogID: dog.id, clientID: nil)
+        #expect(try fixture.repository.roles(clientID: nil, dogID: dog.id).isEmpty)
+    }
 }
 
 @MainActor

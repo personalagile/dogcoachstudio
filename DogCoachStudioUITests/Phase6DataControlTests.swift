@@ -12,6 +12,10 @@ final class Phase6DataControlTests: XCTestCase {
         XCTAssertTrue(app.staticTexts["dataExportStatus"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["dataBackupShareLink"].waitForExistence(timeout: 3))
         XCTAssertTrue(app.staticTexts["deletionPolicySummary"].exists)
+        for _ in 0..<3 where !app.buttons["diagnosticsExportButton"].exists { app.swipeUp() }
+        XCTAssertTrue(app.buttons["diagnosticsExportButton"].waitForExistence(timeout: 3))
+        app.buttons["diagnosticsExportButton"].tap()
+        XCTAssertTrue(app.buttons["diagnosticsShareLink"].waitForExistence(timeout: 5))
     }
 
     @MainActor

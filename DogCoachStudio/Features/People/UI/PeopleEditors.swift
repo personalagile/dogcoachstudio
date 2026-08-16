@@ -97,6 +97,7 @@ struct DogEditorView: View {
     @State private var draft: DogDraft
     @State private var safetyFlagsText: String
     @State private var hasBirthDate: Bool
+    @State private var ownerClientID: UUID?
     @State private var error: AppError?
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var showsPhotoPicker = false
@@ -119,6 +120,7 @@ struct DogEditorView: View {
         ))
         _safetyFlagsText = State(initialValue: dog?.safetyFlagRawValues.joined(separator: ", ") ?? "")
         _hasBirthDate = State(initialValue: dog?.birthDate != nil)
+        _ownerClientID = State(initialValue: dog?.ownerClientID)
     }
 
     var body: some View {
@@ -156,13 +158,28 @@ struct DogEditorView: View {
                         DatePicker("Birth date", selection: birthDateBinding, displayedComponents: .date)
                     }
                 }
-                Section("Safety markers") {
-                    TextField("Markers separated by commas", text: $safetyFlagsText, axis: .vertical)
+                Section {
+                    Picker("Owner", selection: $ownerClientID) {
+                        Text("No owner assigned").tag(UUID?.none)
+                        ForEach(model.clients.filter { !$0.isArchived }) { client in
+                            Text(client.displayName).tag(Optional(client.id))
+                        }
+                    }
+                    .accessibilityIdentifier("dogOwnerPicker")
+                } header: {
+                    Text("Owner")
+                } footer: {
+                    Text("Select the client who owns this dog. You can change the owner later by editing the dog.")
+                }
+                Section {
+                    TextField("Warnings separated by commas", text: $safetyFlagsText, axis: .vertical)
+                        .accessibilityIdentifier("dogSafetyWarningsField")
                     TextEditor(text: optionalBinding(\.safetyPrivateNote))
                         .frame(minHeight: 90)
-                    Text("Use factual markers only. The app does not create diagnoses.")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
+                } header: {
+                    Text("Safety and handling")
+                } footer: {
+                    Text("Short, factual reminders for safe handling, for example “keep distance”, “secure harness”, or “no dog contact”. The private note is for the trainer only and is never a diagnosis.")
                 }
             }
             .navigationTitle(dog == nil ? "New dog" : "Edit dog")
@@ -248,8 +265,8 @@ struct DogEditorView: View {
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { !$0.isEmpty }
         do {
-            if let dog { try model.editDog(id: dog.id, draft: draft) }
-            else { try model.createDog(draft) }
+            if let dog { try model.editDog(id: dog.id, draft: draft, ownerClientID: ownerClientID) }
+            else { try model.createDog(draft, ownerClientID: ownerClientID) }
             if let originalPhotoAssetID, originalPhotoAssetID != draft.photoAssetID {
                 DogPhotoStore.remove(originalPhotoAssetID)
             }

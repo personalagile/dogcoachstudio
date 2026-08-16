@@ -3,9 +3,11 @@ import StoreKit
 
 @MainActor @Observable
 final class StoreManager {
+    private enum LoadingError: Error { case noProducts }
     private(set) var products: [Product] = []
     private(set) var entitlements = EntitlementSnapshot()
     private(set) var state: PurchaseState = .idle
+    private var loadAttemptID: UUID?
     @ObservationIgnored private var listener: Task<Void, Never>?
 
     init(startListener: Bool = true) {
@@ -13,13 +15,33 @@ final class StoreManager {
     }
 
     func start() async {
+        let attemptID = UUID()
+        loadAttemptID = attemptID
         state = .loading
+        let timeoutTask = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(12))
+            guard !Task.isCancelled else { return }
+            self?.markLoadingTimedOut(attemptID: attemptID)
+        }
+        defer { timeoutTask.cancel() }
+
         do {
-            products = try await Product.products(for: CommerceProductID.allCases.map(\.rawValue))
+            let loadedProducts = try await Product.products(for: CommerceProductID.allCases.map(\.rawValue))
                 .sorted { $0.price < $1.price }
+            guard loadAttemptID == attemptID else { return }
+            guard !loadedProducts.isEmpty else { throw LoadingError.noProducts }
+            products = loadedProducts
             await refreshEntitlements()
             state = .idle
-        } catch { state = .failed }
+        } catch {
+            guard loadAttemptID == attemptID else { return }
+            state = .failed
+        }
+    }
+
+    private func markLoadingTimedOut(attemptID: UUID) {
+        guard loadAttemptID == attemptID, state == .loading else { return }
+        state = .failed
     }
 
     func purchase(_ product: Product) async {

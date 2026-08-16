@@ -82,6 +82,46 @@ final class PeopleUseCases {
         return dog
     }
 
+    func setOwner(dogID: UUID, clientID: UUID?) throws {
+        guard let dog = try repository.dog(id: dogID) else { throw PeopleDomainError.dogNotFound(dogID) }
+        let roles = try repository.roles(clientID: nil, dogID: dogID)
+        let ownerRoles = roles.filter { $0.roleRawValue == ClientDogRoleKind.owner.rawValue }
+
+        if let clientID {
+            guard let client = try repository.client(id: clientID) else { throw PeopleDomainError.clientNotFound(clientID) }
+            let selected = ownerRoles.first { $0.clientID == clientID }
+            let owner: ClientDogRoleRecord
+            if let selected {
+                owner = selected
+            } else {
+                owner = ClientDogRoleRecord(
+                    id: uuidGenerator.makeUUID(),
+                    clientID: clientID,
+                    dogID: dogID,
+                    roleRawValue: ClientDogRoleKind.owner.rawValue,
+                    isPrimaryContact: true
+                )
+                owner.client = client
+                owner.dog = dog
+                client.dogRoles = (client.dogRoles ?? []) + [owner]
+                dog.clientRoles = (dog.clientRoles ?? []) + [owner]
+                try repository.insert(owner)
+            }
+
+            for role in roles where role.id != owner.id { role.isPrimaryContact = false }
+            owner.isPrimaryContact = true
+            for role in ownerRoles where role.id != owner.id { try detachAndDelete(role) }
+        } else {
+            for role in ownerRoles { try detachAndDelete(role) }
+            let remaining = try repository.roles(clientID: nil, dogID: dogID)
+            if !remaining.isEmpty, !remaining.contains(where: \.isPrimaryContact) {
+                remaining[0].isPrimaryContact = true
+            }
+        }
+        dog.updatedAt = clock.now()
+        try repository.saveChanges()
+    }
+
     func setDogArchived(id: UUID, archived: Bool) throws -> DogRecord {
         guard let dog = try repository.dog(id: id) else { throw PeopleDomainError.dogNotFound(id) }
         dog.isArchived = archived
@@ -158,6 +198,12 @@ final class PeopleUseCases {
         if role.isPrimaryContact && dogRoles.count > 1 {
             throw PeopleDomainError.primaryContactRequired
         }
+        role.client?.dogRoles?.removeAll { $0.id == role.id }
+        role.dog?.clientRoles?.removeAll { $0.id == role.id }
+        try repository.delete(role)
+    }
+
+    private func detachAndDelete(_ role: ClientDogRoleRecord) throws {
         role.client?.dogRoles?.removeAll { $0.id == role.id }
         role.dog?.clientRoles?.removeAll { $0.id == role.id }
         try repository.delete(role)

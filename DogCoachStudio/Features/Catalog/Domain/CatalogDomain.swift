@@ -87,6 +87,7 @@ struct ExerciseSummary: Identifiable, Equatable, Sendable {
     let equipment: [String]
     let isPublished: Bool
     let isArchived: Bool
+    let isStandardContent: Bool
     let localeResolution: LocalizedExerciseContent
 }
 

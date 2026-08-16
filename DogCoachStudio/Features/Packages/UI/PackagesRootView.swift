@@ -12,6 +12,22 @@ final class PackagesFeatureModel {
     var templates: [PackageTemplateSummary] = []
     var clients: [(id: UUID, name: String)] = []
     var error: AppError?
+    var searchText = ""
+
+    var visibleTemplates: [PackageTemplateSummary] {
+        let needle = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        return templates.filter { needle.isEmpty || $0.name.localizedCaseInsensitiveContains(needle) }
+    }
+
+    var visiblePackages: [TrainingPackageSummary] {
+        let needle = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        return packages.filter {
+            needle.isEmpty
+                || $0.name.localizedCaseInsensitiveContains(needle)
+                || $0.clientName.localizedCaseInsensitiveContains(needle)
+                || ($0.packageTemplateName?.localizedCaseInsensitiveContains(needle) ?? false)
+        }
+    }
 
     init(environment: AppEnvironment, seedDemo: Bool = false) {
         context = environment.persistence.mainContext; clock = environment.clock; dataChanges = environment.dataChanges
@@ -60,15 +76,40 @@ struct PackagesRootView: View {
     enum Sheet: Identifiable { case package(TrainingPackageSummary?), template(PackageTemplateSummary?); var id: String { switch self { case .package(let item): "package-\(item?.id.uuidString ?? "new")"; case .template(let item): "template-\(item?.id.uuidString ?? "new")" } } }
     @State private var model: PackagesFeatureModel
     @State private var sheet: Sheet?
+    @State private var expandedTemplateIDs: Set<UUID> = []
     private let environment: AppEnvironment
     init(environment: AppEnvironment, seedDemo: Bool = false) { self.environment = environment; _model = State(initialValue: .init(environment: environment, seedDemo: seedDemo)) }
 
     var body: some View {
         NavigationStack {
             List {
+                Section("Package templates") {
+                    ForEach(model.visibleTemplates) { item in
+                        DisclosureGroup(isExpanded: Binding(
+                            get: { expandedTemplateIDs.contains(item.id) },
+                            set: { expanded in
+                                if expanded { expandedTemplateIDs.insert(item.id) }
+                                else { expandedTemplateIDs.remove(item.id) }
+                            }
+                        )) {
+                            LabeledContent("Included training credits") { Text(item.units, format: .number) }
+                            LabeledContent("Sales") { Text(item.salesCount, format: .number) }
+                            Button("Edit template") { sheet = .template(item) }
+                        } label: {
+                            HStack {
+                                Text(item.name).font(.headline)
+                                Spacer()
+                                Text(item.price, format: .currency(code: item.currencyCode))
+                                    .fontWeight(.semibold)
+                            }
+                        }
+                        .accessibilityIdentifier("packageTemplateRow")
+                        .swipeActions { Button("Archive", role: .destructive) { model.archiveTemplate(item) } }
+                    }
+                }
                 Section("Sold packages") {
-                    if model.packages.isEmpty { ContentUnavailableView("No packages", systemImage: "ticket") }
-                    ForEach(model.packages) { item in
+                    if model.visiblePackages.isEmpty && model.searchText.isEmpty { ContentUnavailableView("No packages", systemImage: "ticket") }
+                    ForEach(model.visiblePackages) { item in
                         Button { sheet = .package(item) } label: { VStack(alignment: .leading, spacing: 4) {
                             HStack { Text(item.name).font(.headline); Spacer(); Text(item.status.title).font(.caption).foregroundStyle(.secondary) }
                             LabeledContent("Client", value: item.clientName.isEmpty ? String(localized: "Unknown client") : item.clientName)
@@ -85,19 +126,8 @@ struct PackagesRootView: View {
                         }
                     }
                 }
-                Section("Package templates") {
-                    ForEach(model.templates) { item in
-                        Button { sheet = .template(item) } label: { VStack(alignment: .leading, spacing: 4) {
-                            Text(item.name).font(.headline)
-                            LabeledContent("Included training credits") { Text(item.units, format: .number) }
-                            LabeledContent("Standard price") { Text(item.price, format: .currency(code: item.currencyCode)) }
-                            Text("\(item.salesCount) sales").font(.caption).foregroundStyle(.secondary)
-                        } }.buttonStyle(.plain)
-                        .accessibilityIdentifier("packageTemplateRow")
-                        .swipeActions { Button("Archive", role: .destructive) { model.archiveTemplate(item) } }
-                    }
-                }
             }
+            .searchable(text: $model.searchText, prompt: "Search packages, templates, or clients")
             .navigationTitle("Packages")
             .toolbar { Menu("Add", systemImage: "plus") { Button("Sell package") { sheet = .package(nil) }; Button("Package template") { sheet = .template(nil) } }.accessibilityIdentifier("packageAddButton") }
             .sheet(item: $sheet) { value in switch value { case .package(let item): PackageEditor(model: model, item: item); case .template(let item): PackageTemplateEditor(model: model, item: item) } }

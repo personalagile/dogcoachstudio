@@ -7,6 +7,7 @@ final class Phase3CatalogFlowTests: XCTestCase {
     func testApprovedPackLoadsAndPrivateExerciseCanBeCreated() {
         let app = XCUIApplication(); app.launchArguments = ["--uitesting", "--phase3-uitesting", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]; app.launch()
         XCTAssertTrue(app.descendants(matching: .any)["catalogRoot"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.descendants(matching: .any)["catalogScopePicker"].exists)
         let publishedExercises = app.descendants(matching: .any).matching(identifier: "catalogPublishedExerciseRow")
         XCTAssertTrue(publishedExercises.firstMatch.waitForExistence(timeout: 3))
         app.buttons["catalogAddMenu"].tap(); app.buttons["Exercise"].tap()

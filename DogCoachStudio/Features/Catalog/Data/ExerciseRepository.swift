@@ -63,7 +63,7 @@ final class SwiftDataExerciseRepository: ExerciseRepository {
             guard let version = currentVersion(exercise), let resolved = ExerciseLocaleResolver.resolve((version.localizations ?? []).map(Self.localization), requestedLocale: locale) else { return nil }
             let haystack = ([resolved.content.title, resolved.content.goal] + version.equipment).joined(separator: " ").folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
             guard needle.isEmpty || haystack.contains(needle) else { return nil }
-            return ExerciseSummary(id: exercise.id, versionID: version.id, versionNumber: version.versionNumber, title: resolved.content.title, goal: resolved.content.goal, durationMinutes: version.durationMinutes, equipment: version.equipment, isPublished: version.publishedAt != nil, isArchived: exercise.isArchived, localeResolution: resolved)
+            return ExerciseSummary(id: exercise.id, versionID: version.id, versionNumber: version.versionNumber, title: resolved.content.title, goal: resolved.content.goal, durationMinutes: version.durationMinutes, equipment: version.equipment, isPublished: version.publishedAt != nil, isArchived: exercise.isArchived, isStandardContent: exercise.contentPackID != nil || exercise.originRawValue == "editorial", localeResolution: resolved)
         }.sorted { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
     }
 
